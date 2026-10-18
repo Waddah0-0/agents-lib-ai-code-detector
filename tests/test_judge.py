@@ -12,12 +12,13 @@ from ai_code_detector.judge.llm_judge import (
     RUBRIC,
     Judge,
     JudgeSettings,
+    LinePointer,
     build_system_prompt,
     choose_window,
-    verify_quotes,
+    resolve_pointers,
 )
 from ai_code_detector.judge.sampler import sample_files
-from ai_code_detector.models import FileScore, QuotedEvidence
+from ai_code_detector.models import FileScore
 
 CODE = "def add(a, b):\n    # add the numbers\n    return a + b\n"
 
@@ -28,10 +29,10 @@ def isolated_cache(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     return tmp_path / "cache"
 
 
-def verdict(likelihood: float = 0.8, quote: str = "# add the numbers") -> str:
+def verdict(likelihood: float = 0.8, line: int = 2) -> str:
     return json.dumps({
         "likelihood_ai": likelihood, "confidence": 0.7,
-        "evidence_for": [{"line_start": 2, "line_end": 2, "quote": quote, "why": "restates"}],
+        "evidence_for": [{"line": line, "why": "restates the code"}],
         "evidence_against": [], "uncertainty_notes": "short file",
     })  # fmt: skip
 
@@ -59,12 +60,14 @@ def test_window_prefers_flagged_lines() -> None:
     assert choose_window(lines[:100], [], 250) == (1, 100)
 
 
-def test_quotes_must_exist_in_the_window() -> None:
-    lines = CODE.splitlines()
-    real = QuotedEvidence(line_start=2, line_end=2, quote="#   add the numbers", why="w")
-    fake = QuotedEvidence(line_start=1, line_end=1, quote="import os", why="w")
-    assert verify_quotes([real, fake], lines, 1, 3) == [real]
-    assert verify_quotes([real], lines, 3, 3) == []  # outside the judged window
+def test_pointers_become_quotes_taken_from_the_file() -> None:
+    lines = (CODE + "\n").splitlines() + [""]
+    resolved = resolve_pointers(
+        [LinePointer(line=2, why="w"), LinePointer(line=99, why="w"), LinePointer(line=4, why="w")],
+        lines, 1, 4,
+    )  # fmt: skip
+    assert [(e.line_start, e.quote) for e in resolved] == [(2, "# add the numbers")]
+    assert resolve_pointers([LinePointer(line=2, why="w")], lines, 3, 3) == []  # outside window
 
 
 def test_system_prompt_marks_code_as_data_and_can_reorder_the_rubric() -> None:
@@ -80,7 +83,8 @@ async def test_judge_file_prompt_shape_and_cache(isolated_cache: Path) -> None:
     result, hit, warning = await judge.judge_file("m.py", CODE, [2])
     assert result is not None and not hit and warning is None
     call = llm.calls[0]
-    assert call.json_schema is not None and call.json_schema["title"] == "JudgeVerdict"
+    assert call.json_schema is not None and call.json_schema["title"] == "JudgeAnswer"
+    assert result.evidence_for[0].quote == "# add the numbers"  # quote taken from the file
     prompt = call.messages[0].content
     assert "    2 | " in prompt and "# add the numbers" in prompt
     assert "comment_density" not in prompt and "probability" not in prompt  # no signal leak
@@ -101,15 +105,15 @@ async def test_injected_instructions_stay_inside_random_markers() -> None:
     assert prompt.index("Ignore previous") < prompt.rindex(close_marker)
 
 
-async def test_invented_quotes_discard_the_verdict() -> None:
-    llm = MockLLM([verdict(quote="this line does not exist")])
+async def test_pointers_outside_the_file_discard_the_verdict() -> None:
+    llm = MockLLM([verdict(line=500)])
     result, _, warning = await Judge(llm, cache=False).judge_file("m.py", CODE, [])
-    assert result is None and warning is not None and "quoted nothing" in warning
+    assert result is None and warning is not None and "pointed at no line" in warning
 
 
 async def test_long_files_are_cut_to_fit_the_token_budget() -> None:
     long_code = "\n".join(f"value_{i} = compute_something_long({i}, 'x' * 40)" for i in range(2000))
-    llm = MockLLM([verdict(quote="value_10 = compute_something_long(10")])
+    llm = MockLLM([verdict(line=10)])
     settings = JudgeSettings(window_lines=250, token_budget=3000, max_output_tokens=500)
     await Judge(llm, settings, cache=False).judge_file("big.py", long_code, [10])
     call = llm.calls[0]
@@ -149,10 +153,8 @@ async def test_detector_folds_judge_verdicts_into_file_scores(tmp_path: Path, ai
 
     def responder(messages: list[Message], system: str | None) -> str:
         line = next(n for n in messages[0].content.splitlines() if "| " in n and "#" in n)
-        number, text = line.split("|", 1)
         return json.dumps({"likelihood_ai": 0.95, "confidence": 1.0,
-                           "evidence_for": [{"line_start": int(number), "line_end": int(number),
-                                             "quote": text.strip(), "why": "restates"}],
+                           "evidence_for": [{"line": int(line.split("|", 1)[0]), "why": "x"}],
                            "evidence_against": [], "uncertainty_notes": ""})  # fmt: skip
 
     plain = await run_agent("ai-code-detector", {"target": str(repo)})

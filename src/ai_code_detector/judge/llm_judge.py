@@ -6,8 +6,9 @@ Design (PLAN §9.5):
 - The model never sees the heuristic signal scores.
 - Long files are cut to one window of at most ``window_lines`` lines, chosen to contain the
   most lines the heuristics flagged; the prompt stays within ``token_budget`` tokens.
-- Each quote must appear in the window; invented quotes are dropped, and a verdict with no
-  valid quote on either side is discarded.
+- The model points at line numbers; the quoted text is taken from the file, so evidence
+  cannot be invented. Pointers outside the window are dropped, and a verdict with no
+  valid pointer on either side is discarded.
 - Verdicts are cached on disk by (provider, model, prompt version, window content).
 - A share of files is judged a second time with the rubric in a different order; large
   disagreement lowers the run's confidence.
@@ -29,11 +30,55 @@ from pathlib import Path
 
 from agents_core.errors import BudgetExceededError, LLMError
 from agents_core.llm import LLMClient
+from pydantic import BaseModel, Field, field_validator
 
-from ai_code_detector.models import FileScore, JudgeVerdict, QuotedEvidence
+from ai_code_detector.models import (
+    MAX_EVIDENCE_ITEMS,
+    MAX_NOTES_CHARS,
+    MAX_WHY_CHARS,
+    FileScore,
+    JudgeVerdict,
+    QuotedEvidence,
+)
 
-PROMPT_VERSION = "judge_v1"
-SCHEMA_TEXT = json.dumps(JudgeVerdict.model_json_schema())
+PROMPT_VERSION = "judge_v2"  # v2: the model points at line numbers; we fill in the quotes
+
+
+class LinePointer(BaseModel):
+    """What the model returns per piece of evidence: a line number and a short reason."""
+
+    line: int
+    why: str = Field(json_schema_extra={"maxLength": MAX_WHY_CHARS})
+
+    @field_validator("why", mode="before")
+    @classmethod
+    def _short(cls, value: object) -> object:
+        return value[:MAX_WHY_CHARS] if isinstance(value, str) else value
+
+
+class JudgeAnswer(BaseModel):
+    """The model's raw answer. Pointing at lines instead of quoting keeps answers short
+    (Ollama does not enforce maxLength, and qwen3.5 quoted a 97-line docstring) and makes
+    invented quotes impossible."""
+
+    likelihood_ai: float = Field(ge=0.0, le=1.0)
+    confidence: float = Field(ge=0.0, le=1.0)
+    evidence_for: list[LinePointer] = Field(default_factory=list)
+    evidence_against: list[LinePointer] = Field(default_factory=list)
+    uncertainty_notes: str = ""
+
+    @field_validator("evidence_for", "evidence_against", mode="before")
+    @classmethod
+    def _few(cls, value: object) -> object:
+        return value[:MAX_EVIDENCE_ITEMS] if isinstance(value, list) else value
+
+    @field_validator("uncertainty_notes", mode="before")
+    @classmethod
+    def _short_notes(cls, value: object) -> object:
+        return value[:MAX_NOTES_CHARS] if isinstance(value, str) else value
+
+
+SCHEMA_TEXT = json.dumps(JudgeAnswer.model_json_schema())
 CHARS_PER_TOKEN = 3  # code is denser than prose (measured ~3 chars/token with qwen2.5)
 RUBRIC = (
     "Comments that restate the next line of code, or explain the obvious.",
@@ -111,17 +156,20 @@ def flagged_lines(score: FileScore) -> list[int]:
     return lines
 
 
-def verify_quotes(
-    evidence: Sequence[QuotedEvidence], lines: Sequence[str], start: int, end: int
+def resolve_pointers(
+    pointers: Sequence[LinePointer], lines: Sequence[str], start: int, end: int
 ) -> list[QuotedEvidence]:
-    """Keep evidence whose quote really appears in the judged window."""
-    window = _WS.sub(" ", "\n".join(lines[start - 1 : end]))
-    kept = []
-    for item in evidence:
-        quote = _WS.sub(" ", item.quote).strip()
-        if len(quote) >= 3 and quote in window:
-            kept.append(item)
-    return kept
+    """Turn line pointers into quoted evidence; drop lines outside the window or blank."""
+    resolved = []
+    for pointer in pointers:
+        if start <= pointer.line <= end and lines[pointer.line - 1].strip():
+            quote = _WS.sub(" ", lines[pointer.line - 1]).strip()
+            resolved.append(
+                QuotedEvidence(
+                    line_start=pointer.line, line_end=pointer.line, quote=quote, why=pointer.why
+                )
+            )
+    return resolved
 
 
 def _cache_dir() -> Path:
@@ -186,17 +234,18 @@ class Judge:
             f"File: {path} ({scope} of {len(lines)} lines)\n\n"
             f"{open_marker}\n{window_text}\n{close_marker}"
         )
-        verdict = await self.llm.complete_structured(
-            JudgeVerdict, prompt, system=system, max_tokens=self.settings.max_output_tokens
+        answer = await self.llm.complete_structured(
+            JudgeAnswer, prompt, system=system, max_tokens=self.settings.max_output_tokens
         )
-        verdict = verdict.model_copy(
-            update={
-                "evidence_for": verify_quotes(verdict.evidence_for, lines, start, end),
-                "evidence_against": verify_quotes(verdict.evidence_against, lines, start, end),
-            }
+        verdict = JudgeVerdict(
+            likelihood_ai=answer.likelihood_ai,
+            confidence=answer.confidence,
+            evidence_for=resolve_pointers(answer.evidence_for, lines, start, end),
+            evidence_against=resolve_pointers(answer.evidence_against, lines, start, end),
+            uncertainty_notes=answer.uncertainty_notes,
         )
         if not verdict.evidence_for and not verdict.evidence_against:
-            return None, False, f"{path}: the judge quoted nothing that is in the file; ignored."
+            return None, False, f"{path}: the judge pointed at no line of the file; ignored."
         if self.cache:
             cache_file.parent.mkdir(parents=True, exist_ok=True)
             cache_file.write_text(verdict.model_dump_json(), encoding="utf-8")
