@@ -1,0 +1,5005 @@
+{
+  "dataset": "v0",
+  "manifest": "agents/ai_code_detector/eval/datasets/v0/manifest.jsonl",
+  "created": "2026-10-18T16:44:17+00:00",
+  "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+  "metrics": {
+    "repository_level": {
+      "B0_constant_prior": {
+        "n": 19,
+        "positives": 7,
+        "auc": 0.5,
+        "ece": 0.0,
+        "at_threshold": [
+          {
+            "threshold": 0.5,
+            "fpr": 0.0,
+            "tpr": 0.0
+          },
+          {
+            "threshold": 0.6,
+            "fpr": 0.0,
+            "tpr": 0.0
+          },
+          {
+            "threshold": 0.7,
+            "fpr": 0.0,
+            "tpr": 0.0
+          }
+        ]
+      },
+      "B1_metadata_only": {
+        "n": 19,
+        "positives": 7,
+        "auc": 1.0,
+        "ece": 0.0,
+        "at_threshold": [
+          {
+            "threshold": 0.5,
+            "fpr": 0.0,
+            "tpr": 1.0
+          },
+          {
+            "threshold": 0.6,
+            "fpr": 0.0,
+            "tpr": 1.0
+          },
+          {
+            "threshold": 0.7,
+            "fpr": 0.0,
+            "tpr": 1.0
+          }
+        ]
+      },
+      "B2_signals": {
+        "n": 19,
+        "positives": 7,
+        "auc": 0.8571,
+        "ece": 0.1673,
+        "at_threshold": [
+          {
+            "threshold": 0.5,
+            "fpr": 0.3333,
+            "tpr": 0.8571
+          },
+          {
+            "threshold": 0.6,
+            "fpr": 0.0833,
+            "tpr": 0.2857
+          },
+          {
+            "threshold": 0.7,
+            "fpr": 0.0,
+            "tpr": 0.0
+          }
+        ]
+      }
+    },
+    "file_level": {
+      "B2_signals": {
+        "n": 1106,
+        "positives": 933,
+        "auc": 0.6357,
+        "ece": 0.2491,
+        "at_threshold": [
+          {
+            "threshold": 0.5,
+            "fpr": 0.8844,
+            "tpr": 0.9764
+          },
+          {
+            "threshold": 0.6,
+            "fpr": 0.3642,
+            "tpr": 0.5498
+          },
+          {
+            "threshold": 0.7,
+            "fpr": 0.0578,
+            "tpr": 0.1265
+          }
+        ]
+      }
+    },
+    "by_era": {
+      "post2023": {
+        "n": 7,
+        "mean_estimate": 0.5683
+      },
+      "pre2021": {
+        "n": 12,
+        "mean_estimate": 0.4651
+      }
+    },
+    "errors": []
+  },
+  "samples": [
+    {
+      "id": "h-itsdangerous",
+      "label": "human",
+      "is_ai": false,
+      "era": "pre2021",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.18,
+      "estimate": 0.4657,
+      "estimate_range": [
+        0.4297,
+        0.5026
+      ],
+      "confidence": "medium",
+      "has_markers": false,
+      "marker_tools": [],
+      "files_analyzed": 10,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "src/itsdangerous/serializer.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/itsdangerous/signer.py",
+          "probability": 0.6726
+        },
+        {
+          "path": "src/itsdangerous/exc.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/itsdangerous/timed.py",
+          "probability": 0.5755
+        },
+        {
+          "path": "src/itsdangerous/url_safe.py",
+          "probability": 0.515
+        },
+        {
+          "path": "src/itsdangerous/encoding.py",
+          "probability": 0.5125
+        },
+        {
+          "path": "docs/conf.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/itsdangerous/__init__.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/itsdangerous/_json.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/itsdangerous/jws.py",
+          "probability": 0.5
+        }
+      ],
+      "repo_signals": {
+        "history_depth": -0.5381
+      }
+    },
+    {
+      "id": "h-records",
+      "label": "human",
+      "is_ai": false,
+      "era": "pre2021",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.12,
+      "estimate": 0.3781,
+      "estimate_range": [
+        0.1,
+        0.9
+      ],
+      "confidence": "low",
+      "has_markers": false,
+      "marker_tools": [],
+      "files_analyzed": 3,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "examples/randomuser-sqlite.py",
+          "probability": 0.5821
+        },
+        {
+          "path": "setup.py",
+          "probability": 0.5
+        },
+        {
+          "path": "records.py",
+          "probability": 0.4928
+        }
+      ],
+      "repo_signals": {
+        "history_depth": -0.7
+      }
+    },
+    {
+      "id": "h-boltons",
+      "label": "human",
+      "is_ai": false,
+      "era": "pre2021",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.36,
+      "estimate": 0.5089,
+      "estimate_range": [
+        0.4888,
+        0.5297
+      ],
+      "confidence": "medium",
+      "has_markers": false,
+      "marker_tools": [],
+      "files_analyzed": 33,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "boltons/statsutils.py",
+          "probability": 0.7206
+        },
+        {
+          "path": "boltons/socketutils.py",
+          "probability": 0.6953
+        },
+        {
+          "path": "boltons/jsonutils.py",
+          "probability": 0.6685
+        },
+        {
+          "path": "boltons/dictutils.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "boltons/formatutils.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "boltons/gcutils.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "boltons/mathutils.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "boltons/mboxutils.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "boltons/pathutils.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "boltons/queueutils.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "boltons/tbutils.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "boltons/typeutils.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "boltons/fileutils.py",
+          "probability": 0.6323
+        },
+        {
+          "path": "boltons/cacheutils.py",
+          "probability": 0.5987
+        },
+        {
+          "path": "boltons/timeutils.py",
+          "probability": 0.5987
+        },
+        {
+          "path": "boltons/urlutils.py",
+          "probability": 0.5939
+        },
+        {
+          "path": "boltons/ecoutils.py",
+          "probability": 0.5866
+        },
+        {
+          "path": "boltons/funcutils.py",
+          "probability": 0.5866
+        },
+        {
+          "path": "boltons/strutils.py",
+          "probability": 0.5615
+        },
+        {
+          "path": "boltons/iterutils.py",
+          "probability": 0.5567
+        },
+        {
+          "path": "boltons/ioutils.py",
+          "probability": 0.555
+        },
+        {
+          "path": "boltons/namedutils.py",
+          "probability": 0.5518
+        },
+        {
+          "path": "boltons/tableutils.py",
+          "probability": 0.5328
+        },
+        {
+          "path": "boltons/deprutils.py",
+          "probability": 0.53
+        },
+        {
+          "path": "boltons/setutils.py",
+          "probability": 0.5265
+        },
+        {
+          "path": "setup.py",
+          "probability": 0.5153
+        },
+        {
+          "path": "misc/bench_omd.py",
+          "probability": 0.5
+        },
+        {
+          "path": "misc/linkify_changelog.py",
+          "probability": 0.5
+        },
+        {
+          "path": "misc/table_html_app.py",
+          "probability": 0.5
+        },
+        {
+          "path": "docs/conf.py",
+          "probability": 0.4502
+        },
+        {
+          "path": "boltons/excutils.py",
+          "probability": 0.4256
+        },
+        {
+          "path": "boltons/debugutils.py",
+          "probability": 0.3739
+        },
+        {
+          "path": "boltons/listutils.py",
+          "probability": 0.3732
+        }
+      ],
+      "repo_signals": {
+        "history_depth": -0.3328
+      }
+    },
+    {
+      "id": "h-blinker",
+      "label": "human",
+      "is_ai": false,
+      "era": "pre2021",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.12,
+      "estimate": 0.4817,
+      "estimate_range": [
+        0.4325,
+        0.5361
+      ],
+      "confidence": "medium",
+      "has_markers": false,
+      "marker_tools": [],
+      "files_analyzed": 6,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "blinker/_saferef.py",
+          "probability": 0.69
+        },
+        {
+          "path": "blinker/base.py",
+          "probability": 0.6586
+        },
+        {
+          "path": "setup.py",
+          "probability": 0.5
+        },
+        {
+          "path": "blinker/__init__.py",
+          "probability": 0.5
+        },
+        {
+          "path": "blinker/_utilities.py",
+          "probability": 0.5
+        },
+        {
+          "path": "docs/source/conf.py",
+          "probability": 0.4502
+        }
+      ],
+      "repo_signals": {
+        "history_depth": -0.4041
+      }
+    },
+    {
+      "id": "h-icecream",
+      "label": "human",
+      "is_ai": false,
+      "era": "pre2021",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.11,
+      "estimate": 0.4271,
+      "estimate_range": [
+        0.1,
+        0.9
+      ],
+      "confidence": "low",
+      "has_markers": false,
+      "marker_tools": [],
+      "files_analyzed": 3,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "setup.py",
+          "probability": 0.5587
+        },
+        {
+          "path": "icecream/icecream.py",
+          "probability": 0.5053
+        },
+        {
+          "path": "icecream/coloring.py",
+          "probability": 0.5
+        }
+      ],
+      "repo_signals": {
+        "history_depth": -0.4662
+      }
+    },
+    {
+      "id": "h-structlog",
+      "label": "human",
+      "is_ai": false,
+      "era": "pre2021",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.19,
+      "estimate": 0.5241,
+      "estimate_range": [
+        0.5004,
+        0.5485
+      ],
+      "confidence": "medium",
+      "has_markers": false,
+      "marker_tools": [],
+      "files_analyzed": 22,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "src/structlog/_config.py",
+          "probability": 0.7275
+        },
+        {
+          "path": "src/structlog/contextvars.py",
+          "probability": 0.7109
+        },
+        {
+          "path": "src/structlog/stdlib.py",
+          "probability": 0.7044
+        },
+        {
+          "path": "src/structlog/types.py",
+          "probability": 0.7021
+        },
+        {
+          "path": "src/structlog/_base.py",
+          "probability": 0.665
+        },
+        {
+          "path": "src/structlog/_generic.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/structlog/_log_levels.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/structlog/_loggers.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/structlog/processors.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/structlog/testing.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/structlog/threadlocal.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/structlog/_frames.py",
+          "probability": 0.6205
+        },
+        {
+          "path": "src/structlog/_greenlets.py",
+          "probability": 0.6191
+        },
+        {
+          "path": "src/structlog/dev.py",
+          "probability": 0.5987
+        },
+        {
+          "path": "src/structlog/twisted.py",
+          "probability": 0.5987
+        },
+        {
+          "path": "docs/conf.py",
+          "probability": 0.5146
+        },
+        {
+          "path": "setup.py",
+          "probability": 0.5
+        },
+        {
+          "path": "typing_examples.py",
+          "probability": 0.5
+        },
+        {
+          "path": "docs/code_examples/twisted_echo.py",
+          "probability": 0.5
+        },
+        {
+          "path": "docs/code_examples/flask_/webapp.py",
+          "probability": 0.5
+        },
+        {
+          "path": "docs/code_examples/getting-started/imaginary_web_better.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/structlog/__init__.py",
+          "probability": 0.5
+        }
+      ],
+      "repo_signals": {
+        "history_depth": -0.4354
+      }
+    },
+    {
+      "id": "h-mycli",
+      "label": "human",
+      "is_ai": false,
+      "era": "pre2021",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.26,
+      "estimate": 0.4345,
+      "estimate_range": [
+        0.4172,
+        0.4531
+      ],
+      "confidence": "medium",
+      "has_markers": false,
+      "marker_tools": [],
+      "files_analyzed": 24,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "mycli/key_bindings.py",
+          "probability": 0.7146
+        },
+        {
+          "path": "mycli/config.py",
+          "probability": 0.7113
+        },
+        {
+          "path": "mycli/packages/parseutils.py",
+          "probability": 0.6394
+        },
+        {
+          "path": "mycli/packages/prompt_utils.py",
+          "probability": 0.6151
+        },
+        {
+          "path": "mycli/packages/paramiko_stub/__init__.py",
+          "probability": 0.6106
+        },
+        {
+          "path": "mycli/packages/filepaths.py",
+          "probability": 0.5987
+        },
+        {
+          "path": "mycli/packages/special/utils.py",
+          "probability": 0.575
+        },
+        {
+          "path": "mycli/packages/completion_engine.py",
+          "probability": 0.5647
+        },
+        {
+          "path": "mycli/clibuffer.py",
+          "probability": 0.5498
+        },
+        {
+          "path": "mycli/packages/special/delimitercommand.py",
+          "probability": 0.5498
+        },
+        {
+          "path": "mycli/main.py",
+          "probability": 0.5237
+        },
+        {
+          "path": "mycli/sqlcompleter.py",
+          "probability": 0.5194
+        },
+        {
+          "path": "mycli/completion_refresher.py",
+          "probability": 0.505
+        },
+        {
+          "path": "release.py",
+          "probability": 0.5
+        },
+        {
+          "path": "setup.py",
+          "probability": 0.5
+        },
+        {
+          "path": "mycli/clistyle.py",
+          "probability": 0.5
+        },
+        {
+          "path": "mycli/clitoolbar.py",
+          "probability": 0.5
+        },
+        {
+          "path": "mycli/magic.py",
+          "probability": 0.5
+        },
+        {
+          "path": "mycli/sqlexecute.py",
+          "probability": 0.5
+        },
+        {
+          "path": "mycli/packages/special/dbcommands.py",
+          "probability": 0.5
+        },
+        {
+          "path": "mycli/packages/special/favoritequeries.py",
+          "probability": 0.5
+        },
+        {
+          "path": "mycli/packages/special/main.py",
+          "probability": 0.5
+        },
+        {
+          "path": "mycli/packages/tabular_output/sql_format.py",
+          "probability": 0.4502
+        },
+        {
+          "path": "mycli/packages/special/iocommands.py",
+          "probability": 0.4378
+        }
+      ],
+      "repo_signals": {
+        "history_depth": -0.5369
+      }
+    },
+    {
+      "id": "h-tqdm",
+      "label": "human",
+      "is_ai": false,
+      "era": "pre2021",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.26,
+      "estimate": 0.4354,
+      "estimate_range": [
+        0.4132,
+        0.4561
+      ],
+      "confidence": "medium",
+      "has_markers": false,
+      "marker_tools": [],
+      "files_analyzed": 29,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "tqdm/contrib/concurrent.py",
+          "probability": 0.69
+        },
+        {
+          "path": "tqdm/contrib/__init__.py",
+          "probability": 0.6726
+        },
+        {
+          "path": "examples/tqdm_wget.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "tqdm/auto.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "tqdm/contrib/telegram.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "tqdm/_monitor.py",
+          "probability": 0.6405
+        },
+        {
+          "path": "examples/redirect_print.py",
+          "probability": 0.6312
+        },
+        {
+          "path": "examples/coroutine_pipe.py",
+          "probability": 0.6303
+        },
+        {
+          "path": "tqdm/contrib/itertools.py",
+          "probability": 0.6021
+        },
+        {
+          "path": "examples/tqdm_requests.py",
+          "probability": 0.5987
+        },
+        {
+          "path": "tqdm/std.py",
+          "probability": 0.5987
+        },
+        {
+          "path": "tqdm/contrib/discord.py",
+          "probability": 0.5987
+        },
+        {
+          "path": "tqdm/asyncio.py",
+          "probability": 0.5826
+        },
+        {
+          "path": "tqdm/autonotebook.py",
+          "probability": 0.5416
+        },
+        {
+          "path": "tqdm/contrib/utils_worker.py",
+          "probability": 0.5403
+        },
+        {
+          "path": "tqdm/keras.py",
+          "probability": 0.506
+        },
+        {
+          "path": ".meta/mkcompletion.py",
+          "probability": 0.5
+        },
+        {
+          "path": ".meta/mkdocs.py",
+          "probability": 0.5
+        },
+        {
+          "path": ".meta/mksnap.py",
+          "probability": 0.5
+        },
+        {
+          "path": "examples/async_coroutines.py",
+          "probability": 0.5
+        },
+        {
+          "path": "examples/parallel_bars.py",
+          "probability": 0.5
+        },
+        {
+          "path": "tqdm/__init__.py",
+          "probability": 0.5
+        },
+        {
+          "path": "tqdm/_tqdm_pandas.py",
+          "probability": 0.4688
+        },
+        {
+          "path": "tqdm/cli.py",
+          "probability": 0.4584
+        },
+        {
+          "path": "benchmarks/benchmarks.py",
+          "probability": 0.4502
+        },
+        {
+          "path": "tqdm/utils.py",
+          "probability": 0.4451
+        },
+        {
+          "path": "examples/7zx.py",
+          "probability": 0.4147
+        },
+        {
+          "path": "tqdm/notebook.py",
+          "probability": 0.4015
+        },
+        {
+          "path": "tqdm/gui.py",
+          "probability": 0.3498
+        }
+      ],
+      "repo_signals": {
+        "history_depth": -0.5102
+      }
+    },
+    {
+      "id": "h-python-fire",
+      "label": "human",
+      "is_ai": false,
+      "era": "pre2021",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.21,
+      "estimate": 0.5641,
+      "estimate_range": [
+        0.5413,
+        0.59
+      ],
+      "confidence": "medium",
+      "has_markers": false,
+      "marker_tools": [],
+      "files_analyzed": 26,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "fire/decorators.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "fire/console/console_attr_os.py",
+          "probability": 0.6554
+        },
+        {
+          "path": "examples/cipher/cipher.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "examples/diff/diff.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "fire/custom_descriptions.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "fire/interact.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "fire/console/console_io.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "fire/console/files.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "fire/console/text.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "fire/formatting_windows.py",
+          "probability": 0.6373
+        },
+        {
+          "path": "fire/console/console_pager.py",
+          "probability": 0.6068
+        },
+        {
+          "path": "fire/console/console_attr.py",
+          "probability": 0.6049
+        },
+        {
+          "path": "fire/__main__.py",
+          "probability": 0.5987
+        },
+        {
+          "path": "fire/parser.py",
+          "probability": 0.5866
+        },
+        {
+          "path": "fire/value_types.py",
+          "probability": 0.5866
+        },
+        {
+          "path": "fire/core.py",
+          "probability": 0.5498
+        },
+        {
+          "path": "fire/testutils.py",
+          "probability": 0.5498
+        },
+        {
+          "path": "fire/trace.py",
+          "probability": 0.5498
+        },
+        {
+          "path": "fire/formatting.py",
+          "probability": 0.5476
+        },
+        {
+          "path": "fire/docstrings.py",
+          "probability": 0.525
+        },
+        {
+          "path": "setup.py",
+          "probability": 0.5187
+        },
+        {
+          "path": "fire/console/encoding.py",
+          "probability": 0.5
+        },
+        {
+          "path": "fire/console/platforms.py",
+          "probability": 0.5
+        },
+        {
+          "path": "fire/completion.py",
+          "probability": 0.4097
+        },
+        {
+          "path": "fire/inspectutils.py",
+          "probability": 0.4043
+        },
+        {
+          "path": "fire/helptext.py",
+          "probability": 0.3694
+        }
+      ],
+      "repo_signals": {}
+    },
+    {
+      "id": "h-arrow",
+      "label": "human",
+      "is_ai": false,
+      "era": "pre2021",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.22,
+      "estimate": 0.4494,
+      "estimate_range": [
+        0.4111,
+        0.4929
+      ],
+      "confidence": "medium",
+      "has_markers": false,
+      "marker_tools": [],
+      "files_analyzed": 10,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "arrow/factory.py",
+          "probability": 0.7186
+        },
+        {
+          "path": "arrow/arrow.py",
+          "probability": 0.6849
+        },
+        {
+          "path": "arrow/util.py",
+          "probability": 0.6761
+        },
+        {
+          "path": "arrow/constants.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "setup.py",
+          "probability": 0.5
+        },
+        {
+          "path": "arrow/__init__.py",
+          "probability": 0.5
+        },
+        {
+          "path": "arrow/formatter.py",
+          "probability": 0.5
+        },
+        {
+          "path": "arrow/locales.py",
+          "probability": 0.5
+        },
+        {
+          "path": "arrow/parser.py",
+          "probability": 0.5
+        },
+        {
+          "path": "docs/conf.py",
+          "probability": 0.5
+        }
+      ],
+      "repo_signals": {
+        "history_depth": -0.6075
+      }
+    },
+    {
+      "id": "h-inflect",
+      "label": "human",
+      "is_ai": false,
+      "era": "pre2021",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.17,
+      "estimate": 0.2979,
+      "estimate_range": [
+        0.1,
+        0.9
+      ],
+      "confidence": "low",
+      "has_markers": false,
+      "marker_tools": [],
+      "files_analyzed": 2,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "docs/conf.py",
+          "probability": 0.5
+        },
+        {
+          "path": "inflect.py",
+          "probability": 0.2968
+        }
+      ],
+      "repo_signals": {
+        "history_depth": -0.3281
+      }
+    },
+    {
+      "id": "h-pluginbase",
+      "label": "human",
+      "is_ai": false,
+      "era": "pre2021",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.12,
+      "estimate": 0.6143,
+      "estimate_range": [
+        0.5734,
+        0.6492
+      ],
+      "confidence": "medium",
+      "has_markers": false,
+      "marker_tools": [],
+      "files_analyzed": 5,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "example/example.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "pluginbase.py",
+          "probability": 0.6211
+        },
+        {
+          "path": "setup.py",
+          "probability": 0.5
+        },
+        {
+          "path": "docs/_themes/flask_theme_support.py",
+          "probability": 0.5
+        },
+        {
+          "path": "docs/conf.py",
+          "probability": 0.4502
+        }
+      ],
+      "repo_signals": {
+        "commit_shape": 0.3316
+      }
+    },
+    {
+      "id": "a-civitas",
+      "label": "ai",
+      "is_ai": true,
+      "era": "post2023",
+      "split": "test",
+      "status": "ok",
+      "seconds": 4.23,
+      "estimate": 0.6076,
+      "estimate_range": [
+        0.6033,
+        0.6118
+      ],
+      "confidence": "medium",
+      "has_markers": true,
+      "marker_tools": [
+        "Claude",
+        "Claude Code",
+        "an AI coding agent (AGENTS.md convention)"
+      ],
+      "files_analyzed": 463,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "backend/app/election_calendar.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/score_display.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/time_utils.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/api/visits.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/pipeline/bill_refresh.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/pipeline/run_tracker.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/pipeline/analyze/claims.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/pipeline/analyze/donor_classifier_ai.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/pipeline/analyze/population_reference.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/pipeline/analyze/score_calculator.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/pipeline/analyze/signal_overlap.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/pipeline/fetch/fec.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/pipeline/fetch/http_utils.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/pipeline/fetch/news_digest.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_tally_enr.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/pipeline/transform/normalize_votes.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "backend/app/pipeline/analyze/score_calibration.py",
+          "probability": 0.7302
+        },
+        {
+          "path": "backend/app/pipeline/analyze/president_scorer.py",
+          "probability": 0.7293
+        },
+        {
+          "path": "backend/app/services/explore_search.py",
+          "probability": 0.7231
+        },
+        {
+          "path": "backend/app/pipeline/analyze/party_platform.py",
+          "probability": 0.7227
+        },
+        {
+          "path": "backend/app/pipeline/fetch/poll_close.py",
+          "probability": 0.7196
+        },
+        {
+          "path": "backend/app/pipeline/explore_ranking.py",
+          "probability": 0.7177
+        },
+        {
+          "path": "backend/app/pipeline/fetch/voteview.py",
+          "probability": 0.7177
+        },
+        {
+          "path": "backend/app/retractions.py",
+          "probability": 0.7109
+        },
+        {
+          "path": "backend/app/pipeline/cache.py",
+          "probability": 0.7109
+        },
+        {
+          "path": "backend/app/pipeline/candidate_dedup.py",
+          "probability": 0.7109
+        },
+        {
+          "path": "backend/app/pipeline/filer_matching.py",
+          "probability": 0.7109
+        },
+        {
+          "path": "backend/app/pipeline/analyze/bluesky_poster.py",
+          "probability": 0.7109
+        },
+        {
+          "path": "backend/app/pipeline/fetch/president_ptr.py",
+          "probability": 0.7109
+        },
+        {
+          "path": "backend/app/pipeline/fetch/senate_ptr.py",
+          "probability": 0.7109
+        },
+        {
+          "path": "backend/app/pipeline/holdings_pipeline.py",
+          "probability": 0.7086
+        },
+        {
+          "path": "backend/app/database.py",
+          "probability": 0.7068
+        },
+        {
+          "path": "backend/app/pipeline/fetch/robots.py",
+          "probability": 0.7068
+        },
+        {
+          "path": "backend/app/score_keeping.py",
+          "probability": 0.7055
+        },
+        {
+          "path": "backend/app/shared_state.py",
+          "probability": 0.6988
+        },
+        {
+          "path": "backend/app/api/presidents.py",
+          "probability": 0.6987
+        },
+        {
+          "path": "backend/app/pipeline/analyze/election_coverage.py",
+          "probability": 0.6985
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates.py",
+          "probability": 0.6979
+        },
+        {
+          "path": "backend/app/broadcast.py",
+          "probability": 0.6914
+        },
+        {
+          "path": "backend/app/file_cache.py",
+          "probability": 0.69
+        },
+        {
+          "path": "backend/app/pipeline/analyze/action_metrics.py",
+          "probability": 0.69
+        },
+        {
+          "path": "backend/app/pipeline/analyze/document_authority.py",
+          "probability": 0.69
+        },
+        {
+          "path": "backend/app/pipeline/analyze/grounding.py",
+          "probability": 0.69
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measure_pdf_sources.py",
+          "probability": 0.69
+        },
+        {
+          "path": "backend/app/pipeline/fetch/civic_info.py",
+          "probability": 0.69
+        },
+        {
+          "path": "backend/app/pipeline/fetch/senate_fd.py",
+          "probability": 0.69
+        },
+        {
+          "path": "backend/scripts/build_district_place_crosswalk.py",
+          "probability": 0.69
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_ct.py",
+          "probability": 0.6859
+        },
+        {
+          "path": "backend/app/api/elections.py",
+          "probability": 0.6857
+        },
+        {
+          "path": "backend/app/services/_scorecard_common.py",
+          "probability": 0.6829
+        },
+        {
+          "path": "backend/app/pipeline/fetch/lda.py",
+          "probability": 0.6821
+        },
+        {
+          "path": "backend/app/api/rate_limit.py",
+          "probability": 0.6792
+        },
+        {
+          "path": "backend/app/pipeline/analyze/bill_analyzer.py",
+          "probability": 0.6792
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_state_common.py",
+          "probability": 0.6767
+        },
+        {
+          "path": "backend/app/pipeline/transform/normalize_members.py",
+          "probability": 0.6745
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_pdf.py",
+          "probability": 0.6738
+        },
+        {
+          "path": "backend/app/main.py",
+          "probability": 0.6733
+        },
+        {
+          "path": "backend/app/http_client.py",
+          "probability": 0.6726
+        },
+        {
+          "path": "backend/app/pipeline/analyze/congress_bluesky.py",
+          "probability": 0.6726
+        },
+        {
+          "path": "backend/app/pipeline/analyze/election_bluesky.py",
+          "probability": 0.6726
+        },
+        {
+          "path": "backend/app/services/president_service.py",
+          "probability": 0.6726
+        },
+        {
+          "path": "backend/app/live_results/sync.py",
+          "probability": 0.6693
+        },
+        {
+          "path": "backend/app/pipeline/analyze/post_composer.py",
+          "probability": 0.6682
+        },
+        {
+          "path": "backend/app/pipeline/vector_store.py",
+          "probability": 0.6675
+        },
+        {
+          "path": "backend/app/pipeline/lexical_index.py",
+          "probability": 0.665
+        },
+        {
+          "path": "backend/app/pipeline/fetch/election_results.py",
+          "probability": 0.665
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidate_sources.py",
+          "probability": 0.665
+        },
+        {
+          "path": "backend/app/pipeline/live_references.py",
+          "probability": 0.6645
+        },
+        {
+          "path": "backend/app/pipeline/analyze/bill_learning.py",
+          "probability": 0.6608
+        },
+        {
+          "path": "backend/app/pipeline/fetch/historical_executive_orders.py",
+          "probability": 0.6585
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_common.py",
+          "probability": 0.6548
+        },
+        {
+          "path": "backend/app/live_results/bluesky.py",
+          "probability": 0.6521
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_election_dates.py",
+          "probability": 0.6512
+        },
+        {
+          "path": "backend/app/pipeline/fetch/daily_digest.py",
+          "probability": 0.6498
+        },
+        {
+          "path": "backend/app/pipeline/stock_pipeline.py",
+          "probability": 0.6487
+        },
+        {
+          "path": "backend/app/pipeline/fetch/nominations.py",
+          "probability": 0.6474
+        },
+        {
+          "path": "backend/app/pipeline/election_pipeline.py",
+          "probability": 0.6468
+        },
+        {
+          "path": "backend/app/atomic_write.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/background.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/comment_periods.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/committee_routing.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/config.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/config_definitions.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/contact.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/district_lines.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/district_places.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/election_phase.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/fact_diff.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/models.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/office_terms.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/photos.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline_chain.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/roll_call_links.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/sqlite_wal.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/state_ballot_scope.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/state_names.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/trending.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/api/cache_headers.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/api/leaderboard.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/api/pipeline_runner.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/api/response_helpers.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/api/senators.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/member_lifecycle.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/rate_limiter.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/analyze/bill_stage.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/analyze/commemorative.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/analyze/cross_reference.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/analyze/floor_speech.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/analyze/lobbying_records.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/analyze/nn_classifier.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/analyze/party_line_record.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/analyze/policy_alignment.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/analyze/race_relevance.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/analyze/sap_position.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/analyze/sponsorship_analysis.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/analyze/story_actor.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/analyze/trend_relevance.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/assemble/senator_builder.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_lookup.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measure_pdf_geometry.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_ak.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_ct.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_hi.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_il.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_in.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_ks.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_ky.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_ma.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_mi.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_ms.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_nh.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_nj.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_tn.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_tx.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_ut.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_va.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_vt.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_wy.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_pdf.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_pdf_sources.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/congress_legislators.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/congressional_record.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/cspan_historians_survey.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/federal_register.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/historical_gdp.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/house_fd.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/house_ptr.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/news_feeds.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/oyez_common.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/peer_gdp.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/presidential_elections.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/presidential_roster.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ptr_common.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidate_filings.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_al.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_civic.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_enhanced_voting.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_in.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_ks.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_ky.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_ma.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_me.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_ms.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_nh.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_nj.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_tabular.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_tn.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_totalvote.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_tx.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_vt.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_wy.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/town_directory.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/transform/committee_data.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/transform/occupation_industry.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/services/explore_keys.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/services/representative_service.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/services/roll_call_shape.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/services/senator_service.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/services/word_search.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/migrations/versions/0003_sponsored_bill_commemorative.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/migrations/versions/0006_trade_owner_reread.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/migrations/versions/0013_justice_loyalty.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/migrations/versions/0017_representative_sworn_date.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/migrations/versions/0018_measure_coverage_freshness.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/migrations/versions/0020_contract_unscored_columns.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/migrations/versions/0022_member_trade_undated.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/migrations/versions/0024_broadcast_post_cards.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/migrations/versions/0033_president_unemployment_inflation.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/migrations/versions/0035_small_donor_share_nullable.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/migrations/versions/0045_candidate_funding_sources.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/migrations/versions/0062_stored_text_fixes.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/scripts/frozen_clock_plugin.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "backend/app/pipeline/fetch/agencies.py",
+          "probability": 0.644
+        },
+        {
+          "path": "backend/app/pipeline/fetch/economic_data.py",
+          "probability": 0.6439
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_mo.py",
+          "probability": 0.6436
+        },
+        {
+          "path": "backend/app/pipeline/analyze/prompts.py",
+          "probability": 0.6421
+        },
+        {
+          "path": "backend/app/live_results/readiness.py",
+          "probability": 0.6409
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_nc.py",
+          "probability": 0.6406
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_certified_table.py",
+          "probability": 0.6406
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_az.py",
+          "probability": 0.6405
+        },
+        {
+          "path": "backend/app/pipeline/fetch/bill_display_titles.py",
+          "probability": 0.6405
+        },
+        {
+          "path": "backend/app/pipeline/analyze/justice_loyalty.py",
+          "probability": 0.6399
+        },
+        {
+          "path": "backend/app/api/throttle.py",
+          "probability": 0.6392
+        },
+        {
+          "path": "backend/app/pipeline/analyze/ground_truth.py",
+          "probability": 0.639
+        },
+        {
+          "path": "backend/app/member_ids.py",
+          "probability": 0.6385
+        },
+        {
+          "path": "backend/migrations/versions/0036_member_id_aliases.py",
+          "probability": 0.6384
+        },
+        {
+          "path": "backend/migrations/versions/0053_election_archives.py",
+          "probability": 0.6384
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_sd_vip.py",
+          "probability": 0.6383
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_pa.py",
+          "probability": 0.638
+        },
+        {
+          "path": "backend/scripts/audit_pac_ratio.py",
+          "probability": 0.638
+        },
+        {
+          "path": "backend/scripts/build_county_district_crosswalk.py",
+          "probability": 0.6373
+        },
+        {
+          "path": "backend/app/services/explore_summary.py",
+          "probability": 0.637
+        },
+        {
+          "path": "backend/app/pipeline/transform/normalize_finance.py",
+          "probability": 0.6364
+        },
+        {
+          "path": "backend/migrations/versions/0021_action_issue_iso_dates.py",
+          "probability": 0.6358
+        },
+        {
+          "path": "backend/app/pipeline/analyze/bluesky_utils.py",
+          "probability": 0.6355
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_clarity.py",
+          "probability": 0.6335
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_md.py",
+          "probability": 0.6329
+        },
+        {
+          "path": "backend/app/forecast/model.py",
+          "probability": 0.6326
+        },
+        {
+          "path": "backend/app/pipeline/calibrate_ranking.py",
+          "probability": 0.6325
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_co.py",
+          "probability": 0.6313
+        },
+        {
+          "path": "backend/app/services/nomination_links.py",
+          "probability": 0.6313
+        },
+        {
+          "path": "backend/scripts/fetch_state_pvi.py",
+          "probability": 0.6307
+        },
+        {
+          "path": "backend/scripts/fetch_senate_classes.py",
+          "probability": 0.6303
+        },
+        {
+          "path": "backend/app/api/congress.py",
+          "probability": 0.6301
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_ar.py",
+          "probability": 0.6286
+        },
+        {
+          "path": "backend/scripts/fetch_state_leg_crosswalk.py",
+          "probability": 0.6286
+        },
+        {
+          "path": "backend/app/scheduler.py",
+          "probability": 0.6273
+        },
+        {
+          "path": "backend/app/api/search.py",
+          "probability": 0.6267
+        },
+        {
+          "path": "backend/app/pipeline/fetch/presidential_approval.py",
+          "probability": 0.6266
+        },
+        {
+          "path": "backend/app/pipeline/fetch/district_pvi.py",
+          "probability": 0.6262
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_canvass_summary_pdf.py",
+          "probability": 0.6249
+        },
+        {
+          "path": "backend/app/forecast/training_polls.py",
+          "probability": 0.623
+        },
+        {
+          "path": "backend/app/pipeline/fetch/senate_classes.py",
+          "probability": 0.6225
+        },
+        {
+          "path": "backend/app/live_results/signals.py",
+          "probability": 0.6222
+        },
+        {
+          "path": "backend/app/api/special_elections.py",
+          "probability": 0.62
+        },
+        {
+          "path": "backend/migrations/versions/0044_member_photos.py",
+          "probability": 0.62
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_wv.py",
+          "probability": 0.6177
+        },
+        {
+          "path": "backend/app/pipeline/fetch/face_detection.py",
+          "probability": 0.6177
+        },
+        {
+          "path": "backend/scripts/fetch_district_pvi.py",
+          "probability": 0.6177
+        },
+        {
+          "path": "backend/scripts/fetch_fec_party_codes.py",
+          "probability": 0.6164
+        },
+        {
+          "path": "backend/app/pipeline/fetch/amendment_purpose.py",
+          "probability": 0.6163
+        },
+        {
+          "path": "backend/app/pipeline/constituent_rescore.py",
+          "probability": 0.6156
+        },
+        {
+          "path": "backend/app/pipeline/fetch/sec_tickers.py",
+          "probability": 0.6154
+        },
+        {
+          "path": "backend/scripts/fetch_state_small_donor_baseline.py",
+          "probability": 0.6151
+        },
+        {
+          "path": "backend/scripts/evaluate_industry_classifier.py",
+          "probability": 0.6135
+        },
+        {
+          "path": "backend/app/api/explore.py",
+          "probability": 0.6134
+        },
+        {
+          "path": "backend/app/pipeline/analyze/constituent_approval.py",
+          "probability": 0.6106
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_me.py",
+          "probability": 0.6106
+        },
+        {
+          "path": "backend/app/services/explore_matches.py",
+          "probability": 0.6106
+        },
+        {
+          "path": "backend/migrations/versions/0011_lobbied_bills.py",
+          "probability": 0.6106
+        },
+        {
+          "path": "backend/migrations/versions/0016_president_financial_disclosures.py",
+          "probability": 0.6106
+        },
+        {
+          "path": "backend/migrations/versions/0058_roll_call_amendment_purpose.py",
+          "probability": 0.6106
+        },
+        {
+          "path": "backend/scripts/research_les_stage_weighting.py",
+          "probability": 0.6106
+        },
+        {
+          "path": "backend/app/pipeline/run_checks.py",
+          "probability": 0.6104
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_source_crawler.py",
+          "probability": 0.6104
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_ga.py",
+          "probability": 0.61
+        },
+        {
+          "path": "backend/app/pipeline/house_pipeline.py",
+          "probability": 0.6093
+        },
+        {
+          "path": "backend/app/pipeline/fetch/fd_common.py",
+          "probability": 0.609
+        },
+        {
+          "path": "backend/app/services/constituent_survey.py",
+          "probability": 0.6083
+        },
+        {
+          "path": "backend/app/pipeline/fetch/omb_statements.py",
+          "probability": 0.6082
+        },
+        {
+          "path": "backend/app/pipeline/analyze/bluesky_spotlight.py",
+          "probability": 0.6079
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_canvass_xml.py",
+          "probability": 0.6079
+        },
+        {
+          "path": "backend/app/ops_alerts.py",
+          "probability": 0.6073
+        },
+        {
+          "path": "backend/scripts/fetch_statewide_district_towns.py",
+          "probability": 0.607
+        },
+        {
+          "path": "backend/scripts/build_redistricting_overlap.py",
+          "probability": 0.6068
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_nv.py",
+          "probability": 0.6064
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_mn.py",
+          "probability": 0.6058
+        },
+        {
+          "path": "backend/app/pipeline/fetch/house_leadership.py",
+          "probability": 0.6052
+        },
+        {
+          "path": "backend/app/policy_relevance.py",
+          "probability": 0.6042
+        },
+        {
+          "path": "backend/scripts/fetch_committee_data.py",
+          "probability": 0.604
+        },
+        {
+          "path": "backend/app/pipeline/lease.py",
+          "probability": 0.6028
+        },
+        {
+          "path": "backend/scripts/fetch_state_population.py",
+          "probability": 0.6023
+        },
+        {
+          "path": "backend/migrations/versions/0049_run_error_detail.py",
+          "probability": 0.6021
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_certified_pdf.py",
+          "probability": 0.6015
+        },
+        {
+          "path": "backend/scripts/research_les_status_benchmark.py",
+          "probability": 0.6001
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_ok.py",
+          "probability": 0.599
+        },
+        {
+          "path": "backend/app/error_utils.py",
+          "probability": 0.5987
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_la.py",
+          "probability": 0.5987
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_or.py",
+          "probability": 0.5987
+        },
+        {
+          "path": "backend/app/pipeline/progress_tracker.py",
+          "probability": 0.5981
+        },
+        {
+          "path": "backend/scripts/fetch_peer_gdp.py",
+          "probability": 0.5981
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_dos_canlist.py",
+          "probability": 0.5979
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_grouped_list_pdf.py",
+          "probability": 0.5978
+        },
+        {
+          "path": "backend/app/services/score_trends.py",
+          "probability": 0.5978
+        },
+        {
+          "path": "backend/app/pipeline/explore_pipeline.py",
+          "probability": 0.5963
+        },
+        {
+          "path": "backend/app/pipeline/fetch/floor_logs.py",
+          "probability": 0.5958
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_nd.py",
+          "probability": 0.5945
+        },
+        {
+          "path": "backend/migrations/env.py",
+          "probability": 0.5943
+        },
+        {
+          "path": "backend/app/pipeline/analyze/early_signal.py",
+          "probability": 0.5934
+        },
+        {
+          "path": "backend/app/pipeline/president_pipeline.py",
+          "probability": 0.5933
+        },
+        {
+          "path": "backend/app/api/admin.py",
+          "probability": 0.5931
+        },
+        {
+          "path": "backend/app/pipeline/analyze/presidential_support.py",
+          "probability": 0.5931
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_or.py",
+          "probability": 0.5929
+        },
+        {
+          "path": "backend/app/api/sitemap.py",
+          "probability": 0.5918
+        },
+        {
+          "path": "backend/app/pipeline/fetch/trending.py",
+          "probability": 0.5891
+        },
+        {
+          "path": "backend/app/pipeline/analyze/trend_evidence.py",
+          "probability": 0.5882
+        },
+        {
+          "path": "backend/app/whats_new.py",
+          "probability": 0.5878
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_fl.py",
+          "probability": 0.5875
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_al.py",
+          "probability": 0.5867
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_wa.py",
+          "probability": 0.5863
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_sc.py",
+          "probability": 0.584
+        },
+        {
+          "path": "backend/app/pipeline/fetch/member_photos.py",
+          "probability": 0.5833
+        },
+        {
+          "path": "backend/app/net_stats.py",
+          "probability": 0.5829
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_voterportal.py",
+          "probability": 0.5827
+        },
+        {
+          "path": "backend/scripts/fetch_poll_close_times.py",
+          "probability": 0.5823
+        },
+        {
+          "path": "backend/scripts/calibrate_position_confidence.py",
+          "probability": 0.5811
+        },
+        {
+          "path": "backend/app/api/bills.py",
+          "probability": 0.581
+        },
+        {
+          "path": "backend/scripts/calibrate_les_credit_scale.py",
+          "probability": 0.5805
+        },
+        {
+          "path": "backend/scripts/apply_committee_data.py",
+          "probability": 0.5787
+        },
+        {
+          "path": "backend/scripts/calibrate_race_post_relevance.py",
+          "probability": 0.5782
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_ca.py",
+          "probability": 0.5774
+        },
+        {
+          "path": "backend/app/race_context.py",
+          "probability": 0.5773
+        },
+        {
+          "path": "backend/app/pipeline/partisan_depth_store.py",
+          "probability": 0.5772
+        },
+        {
+          "path": "backend/scripts/backfill_bill_stages.py",
+          "probability": 0.5762
+        },
+        {
+          "path": "backend/app/pipeline/analyze/justice_analyzer.py",
+          "probability": 0.5759
+        },
+        {
+          "path": "backend/app/pipeline/fetch/justice_votes.py",
+          "probability": 0.5759
+        },
+        {
+          "path": "backend/scripts/fetch_ces_approval.py",
+          "probability": 0.5757
+        },
+        {
+          "path": "backend/app/issue_ids.py",
+          "probability": 0.5744
+        },
+        {
+          "path": "backend/scripts/research_les_stage_classifier.py",
+          "probability": 0.5734
+        },
+        {
+          "path": "backend/scripts/evaluate_explore_search.py",
+          "probability": 0.5721
+        },
+        {
+          "path": "backend/app/services/bill_service.py",
+          "probability": 0.572
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_ri.py",
+          "probability": 0.5714
+        },
+        {
+          "path": "backend/app/api/photos.py",
+          "probability": 0.5713
+        },
+        {
+          "path": "backend/scripts/fetch_site_fonts.py",
+          "probability": 0.571
+        },
+        {
+          "path": "backend/scripts/calibrate_reference_coverage.py",
+          "probability": 0.5708
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_nm.py",
+          "probability": 0.5701
+        },
+        {
+          "path": "backend/app/pipeline/fetch/congress.py",
+          "probability": 0.5693
+        },
+        {
+          "path": "backend/app/election_archive.py",
+          "probability": 0.5674
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_oh.py",
+          "probability": 0.5671
+        },
+        {
+          "path": "backend/app/services/score_findings.py",
+          "probability": 0.5667
+        },
+        {
+          "path": "backend/scripts/build_house_lean_history.py",
+          "probability": 0.5664
+        },
+        {
+          "path": "backend/app/api/feedback.py",
+          "probability": 0.5647
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_ne.py",
+          "probability": 0.5646
+        },
+        {
+          "path": "backend/scripts/fetch_committee_jurisdictions.py",
+          "probability": 0.5646
+        },
+        {
+          "path": "backend/app/ballot_links.py",
+          "probability": 0.5643
+        },
+        {
+          "path": "backend/scripts/check_torch_cpu_pin.py",
+          "probability": 0.5631
+        },
+        {
+          "path": "backend/scripts/fetch_occupation_industry.py",
+          "probability": 0.5626
+        },
+        {
+          "path": "backend/scripts/calibrate_roll_call_links.py",
+          "probability": 0.5615
+        },
+        {
+          "path": "backend/app/services/bill_record.py",
+          "probability": 0.5614
+        },
+        {
+          "path": "backend/app/api/public_mcp.py",
+          "probability": 0.5611
+        },
+        {
+          "path": "backend/app/services/member_positions.py",
+          "probability": 0.5611
+        },
+        {
+          "path": "backend/migrations/versions/0023_broadcast_posts.py",
+          "probability": 0.5611
+        },
+        {
+          "path": "backend/app/pipeline/fetch/state_candidates_vrems.py",
+          "probability": 0.5609
+        },
+        {
+          "path": "backend/app/pipeline/fetch/house_clerk.py",
+          "probability": 0.5597
+        },
+        {
+          "path": "backend/app/calibration_drift.py",
+          "probability": 0.5593
+        },
+        {
+          "path": "backend/app/person_names.py",
+          "probability": 0.5587
+        },
+        {
+          "path": "backend/app/services/committee_record.py",
+          "probability": 0.554
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_oh.py",
+          "probability": 0.5524
+        },
+        {
+          "path": "backend/scripts/build_district_topology.py",
+          "probability": 0.5524
+        },
+        {
+          "path": "backend/app/pipeline/les_rescore.py",
+          "probability": 0.5513
+        },
+        {
+          "path": "backend/app/district_lean.py",
+          "probability": 0.5498
+        },
+        {
+          "path": "backend/app/pipeline/fetch/committee_leadership.py",
+          "probability": 0.5493
+        },
+        {
+          "path": "backend/app/pipeline/fetch/president_fd.py",
+          "probability": 0.5492
+        },
+        {
+          "path": "backend/scripts/build_name_casing.py",
+          "probability": 0.5485
+        },
+        {
+          "path": "backend/app/live_results/specials.py",
+          "probability": 0.5481
+        },
+        {
+          "path": "backend/scripts/calibrate_committee_routing.py",
+          "probability": 0.5473
+        },
+        {
+          "path": "backend/scripts/calibrate_claim_actor.py",
+          "probability": 0.547
+        },
+        {
+          "path": "backend/app/forecast/build.py",
+          "probability": 0.5461
+        },
+        {
+          "path": "backend/app/pipeline/sponsorship_backfill.py",
+          "probability": 0.546
+        },
+        {
+          "path": "backend/migrations/versions/0061_roll_call_links.py",
+          "probability": 0.5458
+        },
+        {
+          "path": "backend/app/pipeline/transform/candidate_names.py",
+          "probability": 0.5453
+        },
+        {
+          "path": "backend/app/pipeline/supplementary_pipeline.py",
+          "probability": 0.5452
+        },
+        {
+          "path": "backend/app/pipeline/fetch/macro_series.py",
+          "probability": 0.5449
+        },
+        {
+          "path": "backend/app/api/this_week.py",
+          "probability": 0.5445
+        },
+        {
+          "path": "backend/scripts/calibrate_constituent_reference.py",
+          "probability": 0.5445
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_id.py",
+          "probability": 0.5438
+        },
+        {
+          "path": "backend/scripts/calibrate_explore_ranking.py",
+          "probability": 0.5433
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_sd.py",
+          "probability": 0.5417
+        },
+        {
+          "path": "backend/app/pipeline/fetch/supreme_court.py",
+          "probability": 0.5403
+        },
+        {
+          "path": "backend/app/pipeline/congress_activity.py",
+          "probability": 0.5401
+        },
+        {
+          "path": "backend/app/pipeline/senate_pipeline.py",
+          "probability": 0.5396
+        },
+        {
+          "path": "backend/scripts/calibrate_member_photos.py",
+          "probability": 0.5395
+        },
+        {
+          "path": "backend/app/api/action.py",
+          "probability": 0.5382
+        },
+        {
+          "path": "backend/app/pipeline/analyze/promise_quality.py",
+          "probability": 0.5381
+        },
+        {
+          "path": "backend/scripts/benchmark_validation.py",
+          "probability": 0.5381
+        },
+        {
+          "path": "backend/scripts/build_election_calendar.py",
+          "probability": 0.5376
+        },
+        {
+          "path": "backend/scripts/fit_forecast_model.py",
+          "probability": 0.5372
+        },
+        {
+          "path": "backend/app/pipeline/fetch/justice_records.py",
+          "probability": 0.5359
+        },
+        {
+          "path": "backend/app/api/election_archive.py",
+          "probability": 0.5356
+        },
+        {
+          "path": "backend/app/api/court.py",
+          "probability": 0.5352
+        },
+        {
+          "path": "backend/migrations/versions/0054_feed_articles.py",
+          "probability": 0.5352
+        },
+        {
+          "path": "backend/app/api/public.py",
+          "probability": 0.5351
+        },
+        {
+          "path": "backend/app/pipeline/fetch/ballot_measures_mt.py",
+          "probability": 0.5349
+        },
+        {
+          "path": "backend/app/pipeline/analyze/trend_poster.py",
+          "probability": 0.5339
+        },
+        {
+          "path": "backend/scripts/check_signal_correlations.py",
+          "probability": 0.5338
+        },
+        {
+          "path": "backend/app/pipeline/justice_pipeline.py",
+          "probability": 0.5337
+        },
+        {
+          "path": "backend/app/services/nomination_service.py",
+          "probability": 0.5334
+        },
+        {
+          "path": "backend/app/api/notable.py",
+          "probability": 0.5325
+        },
+        {
+          "path": "backend/app/pipeline/analyze/bluesky_engagement.py",
+          "probability": 0.5321
+        },
+        {
+          "path": "backend/scripts/build_district_lean.py",
+          "probability": 0.5308
+        },
+        {
+          "path": "backend/app/pipeline/analyze/ollama_client.py",
+          "probability": 0.53
+        },
+        {
+          "path": "backend/app/redistricting.py",
+          "probability": 0.5294
+        },
+        {
+          "path": "backend/app/api/feed.py",
+          "probability": 0.5293
+        },
+        {
+          "path": "backend/app/api/redistricting.py",
+          "probability": 0.5285
+        },
+        {
+          "path": "backend/app/services/congress_service.py",
+          "probability": 0.5285
+        },
+        {
+          "path": "backend/app/pipeline/fetch/fr_rulemaking.py",
+          "probability": 0.528
+        },
+        {
+          "path": "backend/app/api/agencies.py",
+          "probability": 0.5279
+        },
+        {
+          "path": "backend/app/services/bill_journey.py",
+          "probability": 0.5276
+        },
+        {
+          "path": "backend/app/pipeline/transform/industry_classifier.py",
+          "probability": 0.5265
+        },
+        {
+          "path": "backend/app/pipeline/fetch/special_elections.py",
+          "probability": 0.5261
+        },
+        {
+          "path": "backend/app/forecast/polls.py",
+          "probability": 0.5247
+        },
+        {
+          "path": "backend/scripts/calibrate_action_cuts.py",
+          "probability": 0.5233
+        },
+        {
+          "path": "backend/scripts/calibrate_site_search.py",
+          "probability": 0.5231
+        },
+        {
+          "path": "backend/app/pipeline/fetch/govinfo.py",
+          "probability": 0.522
+        },
+        {
+          "path": "backend/app/forecast/accountability.py",
+          "probability": 0.5215
+        },
+        {
+          "path": "backend/app/api/politicians.py",
+          "probability": 0.5198
+        },
+        {
+          "path": "backend/scripts/research_constituent_alignment.py",
+          "probability": 0.5189
+        },
+        {
+          "path": "backend/scripts/research_president_scores.py",
+          "probability": 0.5179
+        },
+        {
+          "path": "backend/app/pipeline/fetch/regulations_gov.py",
+          "probability": 0.5171
+        },
+        {
+          "path": "backend/app/schemas.py",
+          "probability": 0.5169
+        },
+        {
+          "path": "backend/app/voter_calendar.py",
+          "probability": 0.5166
+        },
+        {
+          "path": "backend/app/api/election_map.py",
+          "probability": 0.5158
+        },
+        {
+          "path": "backend/app/pipeline/fetch/presidential_actions.py",
+          "probability": 0.5154
+        },
+        {
+          "path": "backend/app/pipeline/assemble/validator.py",
+          "probability": 0.5133
+        },
+        {
+          "path": "backend/app/api/cards.py",
+          "probability": 0.5132
+        },
+        {
+          "path": "backend/scripts/calibrate_trend_gates.py",
+          "probability": 0.5132
+        },
+        {
+          "path": "backend/migrations/versions/0059_action_issue_explore_keys.py",
+          "probability": 0.5127
+        },
+        {
+          "path": "backend/scripts/research_justice_loyalty.py",
+          "probability": 0.5126
+        },
+        {
+          "path": "backend/app/services/explore_coverage.py",
+          "probability": 0.5121
+        },
+        {
+          "path": "backend/app/services/court_service.py",
+          "probability": 0.512
+        },
+        {
+          "path": "backend/app/api/nominations.py",
+          "probability": 0.5115
+        },
+        {
+          "path": "backend/app/pipeline/analyze/action_center.py",
+          "probability": 0.5105
+        },
+        {
+          "path": "backend/app/site_search.py",
+          "probability": 0.5095
+        },
+        {
+          "path": "backend/app/services/holdings_service.py",
+          "probability": 0.5095
+        },
+        {
+          "path": "backend/scripts/fetch_silver_bulletin_polls.py",
+          "probability": 0.5069
+        },
+        {
+          "path": "backend/migrations/versions/0046_presidential_support.py",
+          "probability": 0.5068
+        },
+        {
+          "path": "backend/scripts/research_house_housekeeping_loyalty.py",
+          "probability": 0.5065
+        },
+        {
+          "path": "backend/migrations/versions/0052_nominations.py",
+          "probability": 0.5053
+        },
+        {
+          "path": "backend/app/services/congress_glance.py",
+          "probability": 0.5048
+        },
+        {
+          "path": "backend/app/data_refresh.py",
+          "probability": 0.5031
+        },
+        {
+          "path": "backend/scripts/calibrate_commemorative.py",
+          "probability": 0.503
+        },
+        {
+          "path": "backend/scripts/fetch_bluesky_activity.py",
+          "probability": 0.5017
+        },
+        {
+          "path": "backend/app/entity_feeds.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/app/site_search_index.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/app/special_elections.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/app/api/compare.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/app/api/health.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/app/api/justices.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/app/api/pipeline.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/app/api/presidential_support.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/app/api/representatives.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/app/api/sections.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/app/api/sources.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/app/live_results/summary.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/app/services/justice_service.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/app/services/presidential_support_service.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/app/services/record_cards.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/migrations/versions/0005_financial_holdings.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/migrations/versions/0007_congress_activity.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/migrations/versions/0026_election_results.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/migrations/versions/0048_trend_posts.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/migrations/versions/0050_agencies.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/migrations/versions/0055_special_elections.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/scripts/calibrate_lda_bill_match.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/scripts/rescore.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/scripts/seed_ui_fixture.py",
+          "probability": 0.5
+        },
+        {
+          "path": "backend/scripts/evaluate_embedding_models.py",
+          "probability": 0.4996
+        },
+        {
+          "path": "backend/scripts/audit_member_ideal_points.py",
+          "probability": 0.4979
+        },
+        {
+          "path": "backend/migrations/versions/0030_issue_fact_links.py",
+          "probability": 0.4966
+        },
+        {
+          "path": "backend/scripts/calibrate_agency_crosswalk.py",
+          "probability": 0.4845
+        },
+        {
+          "path": "backend/scripts/audit_funding_components.py",
+          "probability": 0.4733
+        },
+        {
+          "path": "backend/app/api/router.py",
+          "probability": 0.4256
+        },
+        {
+          "path": "backend/migrations/versions/0001_baseline.py",
+          "probability": 0.4256
+        }
+      ],
+      "repo_signals": {}
+    },
+    {
+      "id": "a-qsent",
+      "label": "ai",
+      "is_ai": true,
+      "era": "post2023",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.17,
+      "estimate": 0.5321,
+      "estimate_range": [
+        0.513,
+        0.5509
+      ],
+      "confidence": "low",
+      "has_markers": true,
+      "marker_tools": [
+        "Claude",
+        "Claude Code"
+      ],
+      "files_analyzed": 23,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "src/qsf/forecasting/pipeline.py",
+          "probability": 0.678
+        },
+        {
+          "path": "src/qsf/common/providers.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/qsf/features/targets.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/qsf/backtesting/metrics.py",
+          "probability": 0.6405
+        },
+        {
+          "path": "src/qsf/features/preparation.py",
+          "probability": 0.5943
+        },
+        {
+          "path": "src/qsf/common/logging.py",
+          "probability": 0.5744
+        },
+        {
+          "path": "src/qsf/features/engineering.py",
+          "probability": 0.5736
+        },
+        {
+          "path": "src/qsf/backtesting/walk_forward.py",
+          "probability": 0.5691
+        },
+        {
+          "path": "src/qsf/ingestion/news.py",
+          "probability": 0.5565
+        },
+        {
+          "path": "src/qsf/ingestion/social.py",
+          "probability": 0.5284
+        },
+        {
+          "path": "src/qsf/nlp/relevance.py",
+          "probability": 0.5231
+        },
+        {
+          "path": "src/qsf/agents/news_comparison.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/qsf/agents/workflow.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/qsf/forecasting/__init__.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/qsf/forecasting/models.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/qsf/ingestion/market.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/qsf/ingestion/news_alphavantage.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/qsf/ingestion/news_marketaux.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/qsf/ingestion/news_massive.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/qsf/nlp/sentiment.py",
+          "probability": 0.5
+        },
+        {
+          "path": "scripts/generate_features.py",
+          "probability": 0.4256
+        },
+        {
+          "path": "src/qsf/api/auth.py",
+          "probability": 0.4256
+        },
+        {
+          "path": "src/qsf/api/main.py",
+          "probability": 0.4256
+        }
+      ],
+      "repo_signals": {}
+    },
+    {
+      "id": "a-frago",
+      "label": "ai",
+      "is_ai": true,
+      "era": "post2023",
+      "split": "test",
+      "status": "ok",
+      "seconds": 2.69,
+      "estimate": 0.6469,
+      "estimate_range": [
+        0.6417,
+        0.6517
+      ],
+      "confidence": "medium",
+      "has_markers": true,
+      "marker_tools": [
+        "Claude",
+        "Claude Code"
+      ],
+      "files_analyzed": 356,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "src/frago/agent_driver/kernel_backend.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/agent_driver/streamer.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/agent_driver/transcript_source.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/autostart/base.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/browser/cdp/client.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/browser/cdp/retry.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/browser/cdp/commands/scroll.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/browser/cdp/commands/zoom.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/cli/apps_commands.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/cli/cloud_commands.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/cli/start_command.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/cli/workspace.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/cloud/installer.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/cloud/market.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/context/matcher.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/init/configurator.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/init/formatter.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/init/hook_binary.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/init/installer.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/init/models.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/init/opencode_plugin.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/init/profile_manager.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/init/recovery.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/init/resources.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/init/retired_artifacts.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/recipes/__init__.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/recipes/app_state.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/recipes/contract.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/recipes/github_rate_limit.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/recipes/publish.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/run/context.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/run/domain_dict.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/run/run_log_adapter.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/run/utils.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/server/daemon.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/server/utils.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/server/websocket.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/server/routes/data_repo.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/server/routes/guide.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/server/routes/init.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/server/routes/system.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/server/routes/workbench.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/server/services/coreagent_runner.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/server/services/pa_tmux_runner.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/server/services/ui_session_runner.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/server/services/version_service.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/server/services/workbench_new_session.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/server/services/workbench_stream_bridge.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/session/formatter.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/session/record_reader.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/session/session_index.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/session/stream.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/session/sync.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/session/adapters/__init__.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "src/frago/cli/server_command.py",
+          "probability": 0.731
+        },
+        {
+          "path": "src/frago/run/manager.py",
+          "probability": 0.7308
+        },
+        {
+          "path": "src/frago/agent_driver/tmux_session.py",
+          "probability": 0.7261
+        },
+        {
+          "path": "src/frago/cli/file_commands.py",
+          "probability": 0.7231
+        },
+        {
+          "path": "src/frago/cli/user_commands.py",
+          "probability": 0.7231
+        },
+        {
+          "path": "src/frago/server/state/broadcaster.py",
+          "probability": 0.7231
+        },
+        {
+          "path": "src/frago/session/coreagent_store.py",
+          "probability": 0.7231
+        },
+        {
+          "path": "src/frago/session/opencode_store.py",
+          "probability": 0.7215
+        },
+        {
+          "path": "src/frago/browser/cdp/commands/status.py",
+          "probability": 0.7199
+        },
+        {
+          "path": "src/frago/server/app.py",
+          "probability": 0.7198
+        },
+        {
+          "path": "src/frago/config/config_service.py",
+          "probability": 0.7179
+        },
+        {
+          "path": "src/frago/cli/agent_friendly.py",
+          "probability": 0.7177
+        },
+        {
+          "path": "src/frago/session/opencode_stream.py",
+          "probability": 0.7152
+        },
+        {
+          "path": "src/frago/server/services/sync_service.py",
+          "probability": 0.7114
+        },
+        {
+          "path": "src/frago/desktop/stage.py",
+          "probability": 0.7109
+        },
+        {
+          "path": "src/frago/recipes/context.py",
+          "probability": 0.7109
+        },
+        {
+          "path": "src/frago/server/services/base_service.py",
+          "probability": 0.7109
+        },
+        {
+          "path": "src/frago/server/services/workbench_agents.py",
+          "probability": 0.7109
+        },
+        {
+          "path": "src/frago/server/routes/viewer.py",
+          "probability": 0.7098
+        },
+        {
+          "path": "src/frago/server/routes/settings.py",
+          "probability": 0.7079
+        },
+        {
+          "path": "src/frago/server/services/viewer_service.py",
+          "probability": 0.7051
+        },
+        {
+          "path": "src/frago/server/services/community_recipe_service.py",
+          "probability": 0.7045
+        },
+        {
+          "path": "src/frago/server/services/system_service.py",
+          "probability": 0.703
+        },
+        {
+          "path": "src/frago/agent_driver/drivers/opencode.py",
+          "probability": 0.7021
+        },
+        {
+          "path": "src/frago/server/services/init_service.py",
+          "probability": 0.7012
+        },
+        {
+          "path": "src/frago/session/agy_store.py",
+          "probability": 0.701
+        },
+        {
+          "path": "src/frago/cloud/client.py",
+          "probability": 0.7
+        },
+        {
+          "path": "src/frago/cloud/config.py",
+          "probability": 0.6982
+        },
+        {
+          "path": "src/frago/server/state/manager.py",
+          "probability": 0.6979
+        },
+        {
+          "path": "src/frago/server/services/primary_agent_service.py",
+          "probability": 0.6973
+        },
+        {
+          "path": "src/frago/cli/agent_command.py",
+          "probability": 0.6954
+        },
+        {
+          "path": "src/frago/agent_driver/pool.py",
+          "probability": 0.6953
+        },
+        {
+          "path": "src/frago/cli/update_command.py",
+          "probability": 0.6948
+        },
+        {
+          "path": "src/frago/recipes/runner.py",
+          "probability": 0.6917
+        },
+        {
+          "path": "src/frago/agent_driver/driver.py",
+          "probability": 0.69
+        },
+        {
+          "path": "src/frago/browser/cdp/config.py",
+          "probability": 0.69
+        },
+        {
+          "path": "src/frago/browser/cdp/logger.py",
+          "probability": 0.69
+        },
+        {
+          "path": "src/frago/desktop/refs.py",
+          "probability": 0.69
+        },
+        {
+          "path": "src/frago/init/config_manager.py",
+          "probability": 0.69
+        },
+        {
+          "path": "src/frago/init/ui.py",
+          "probability": 0.69
+        },
+        {
+          "path": "src/frago/recipes/env_loader.py",
+          "probability": 0.69
+        },
+        {
+          "path": "src/frago/recipes/registry.py",
+          "probability": 0.69
+        },
+        {
+          "path": "src/frago/server/services/session_send.py",
+          "probability": 0.69
+        },
+        {
+          "path": "src/frago/team/state.py",
+          "probability": 0.6893
+        },
+        {
+          "path": "src/frago/run/screenshot.py",
+          "probability": 0.6864
+        },
+        {
+          "path": "src/frago/agent_driver/drivers/claude.py",
+          "probability": 0.6849
+        },
+        {
+          "path": "src/frago/recipes/command_grants.py",
+          "probability": 0.6847
+        },
+        {
+          "path": "src/frago/cli/init_command.py",
+          "probability": 0.684
+        },
+        {
+          "path": "src/frago/server/security.py",
+          "probability": 0.6838
+        },
+        {
+          "path": "src/frago/browser/cdp/transport.py",
+          "probability": 0.6837
+        },
+        {
+          "path": "src/frago/server/services/update_service.py",
+          "probability": 0.6824
+        },
+        {
+          "path": "src/frago/session/adapters/agy_records.py",
+          "probability": 0.6771
+        },
+        {
+          "path": "src/frago/team/sync.py",
+          "probability": 0.677
+        },
+        {
+          "path": "src/frago/cli/autostart_command.py",
+          "probability": 0.6764
+        },
+        {
+          "path": "src/frago/run/logger.py",
+          "probability": 0.6764
+        },
+        {
+          "path": "src/frago/run/models.py",
+          "probability": 0.6748
+        },
+        {
+          "path": "src/frago/browser/backends/base.py",
+          "probability": 0.6742
+        },
+        {
+          "path": "src/frago/server/routes/todos.py",
+          "probability": 0.6736
+        },
+        {
+          "path": "src/frago/browser/cdp/commands/screenshot.py",
+          "probability": 0.673
+        },
+        {
+          "path": "src/frago/server/routes/agent.py",
+          "probability": 0.673
+        },
+        {
+          "path": "src/frago/recipes/checks.py",
+          "probability": 0.6726
+        },
+        {
+          "path": "src/frago/session/monitor.py",
+          "probability": 0.6726
+        },
+        {
+          "path": "src/frago/server/routes/recipes.py",
+          "probability": 0.671
+        },
+        {
+          "path": "src/frago/cli/todo_commands.py",
+          "probability": 0.6689
+        },
+        {
+          "path": "src/frago/cloud/auth.py",
+          "probability": 0.6689
+        },
+        {
+          "path": "src/frago/server/services/primary/lifecycle.py",
+          "probability": 0.6689
+        },
+        {
+          "path": "src/frago/session/session_origin.py",
+          "probability": 0.6682
+        },
+        {
+          "path": "src/frago/recipes/installer.py",
+          "probability": 0.6679
+        },
+        {
+          "path": "src/frago/session/storage.py",
+          "probability": 0.666
+        },
+        {
+          "path": "src/frago/recipes/execution_store.py",
+          "probability": 0.6659
+        },
+        {
+          "path": "src/frago/recipes/runtime/frago_recipe.py",
+          "probability": 0.665
+        },
+        {
+          "path": "src/frago/session/title_manager.py",
+          "probability": 0.664
+        },
+        {
+          "path": "src/frago/recipes/usage_tracker.py",
+          "probability": 0.6626
+        },
+        {
+          "path": "src/frago/server/services/official_resource_sync_service.py",
+          "probability": 0.6621
+        },
+        {
+          "path": "src/frago/cli/context_commands.py",
+          "probability": 0.6604
+        },
+        {
+          "path": "src/frago/server/services/workbench_handoff.py",
+          "probability": 0.6579
+        },
+        {
+          "path": "src/frago/server/identity.py",
+          "probability": 0.6575
+        },
+        {
+          "path": "src/frago/browser/cdp/types.py",
+          "probability": 0.6557
+        },
+        {
+          "path": "src/frago/def_/registry.py",
+          "probability": 0.6537
+        },
+        {
+          "path": "src/frago/session/codex_store.py",
+          "probability": 0.6526
+        },
+        {
+          "path": "src/frago/recipes/folders.py",
+          "probability": 0.6517
+        },
+        {
+          "path": "scripts/dev_launch_extension.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/agent_driver/drivers/agy.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/agent_driver/drivers/codex.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/autostart/__init__.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/browser/proxy_detect.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/browser/cdp/exceptions.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/browser/cdp/commands/dom.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/browser/cdp/commands/input.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/browser/cdp/commands/runtime.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/browser/cdp/commands/target.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/browser/cdp/commands/wait.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/cli/agy_hook.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/cli/desktop_commands.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/files/guard.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/init/agent_core.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/init/app_control.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/init/checker.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/init/codex_hooks.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/init/profile_target_backup.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/init/profile_targets.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/recipes/birth.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/recipes/data_migration.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/recipes/isolation.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/recipes/metadata.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/server/launch_guard.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/server/routes/app_pages.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/server/routes/app_run.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/server/routes/bus.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/server/services/guide_service.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/server/services/subprocess_utils.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/server/services/team_presence.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/server/services/todo_drop_service.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/server/services/virtual_os_lifecycle.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/server/services/workbench_pins.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/server/state/loader.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/session/__init__.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/session/engine_cli.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/viewer/browser.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/viewer/modes/media.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/watcher/models.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "src/frago/server/routes/files.py",
+          "probability": 0.6438
+        },
+        {
+          "path": "src/frago/browser/cdp/tab_group_manager.py",
+          "probability": 0.6437
+        },
+        {
+          "path": "src/frago/session/transcript_completion.py",
+          "probability": 0.6428
+        },
+        {
+          "path": "src/frago/server/services/pa_prompts.py",
+          "probability": 0.6427
+        },
+        {
+          "path": "src/frago/server/services/routing/conv_key.py",
+          "probability": 0.6421
+        },
+        {
+          "path": "src/frago/server/services/webui_uploads.py",
+          "probability": 0.6416
+        },
+        {
+          "path": "src/frago/session/session_files.py",
+          "probability": 0.6413
+        },
+        {
+          "path": "src/frago/server/services/agent_service.py",
+          "probability": 0.6401
+        },
+        {
+          "path": "src/frago/init/__init__.py",
+          "probability": 0.6395
+        },
+        {
+          "path": "src/frago/server/services/workbench_branch.py",
+          "probability": 0.637
+        },
+        {
+          "path": "src/frago/session/usage_tick.py",
+          "probability": 0.6367
+        },
+        {
+          "path": "src/frago/browser/cdp/launcher.py",
+          "probability": 0.6359
+        },
+        {
+          "path": "src/frago/files/trash.py",
+          "probability": 0.6353
+        },
+        {
+          "path": "src/frago/team/relay.py",
+          "probability": 0.6343
+        },
+        {
+          "path": "src/frago/server/routes/auth.py",
+          "probability": 0.6339
+        },
+        {
+          "path": "src/frago/desktop/registry.py",
+          "probability": 0.6293
+        },
+        {
+          "path": "src/frago/todo/store.py",
+          "probability": 0.627
+        },
+        {
+          "path": "src/frago/session/adapters/claude_code_records.py",
+          "probability": 0.6261
+        },
+        {
+          "path": "src/frago/files/ops.py",
+          "probability": 0.6257
+        },
+        {
+          "path": "src/frago/session/agy_sync.py",
+          "probability": 0.6246
+        },
+        {
+          "path": "src/frago/session/models.py",
+          "probability": 0.6198
+        },
+        {
+          "path": "src/frago/server/services/file_history.py",
+          "probability": 0.6185
+        },
+        {
+          "path": "src/frago/server/services/primary/dispatcher.py",
+          "probability": 0.617
+        },
+        {
+          "path": "src/frago/server/routes/teaming.py",
+          "probability": 0.6155
+        },
+        {
+          "path": "src/frago/cli/serve_command.py",
+          "probability": 0.6146
+        },
+        {
+          "path": "src/frago/server/routes/team.py",
+          "probability": 0.6146
+        },
+        {
+          "path": "src/frago/server/services/github_service.py",
+          "probability": 0.6144
+        },
+        {
+          "path": "src/frago/init/user_resource_seed.py",
+          "probability": 0.6138
+        },
+        {
+          "path": "src/frago/server/services/todo_compose_service.py",
+          "probability": 0.6133
+        },
+        {
+          "path": "src/frago/server/services/tmux_sessions_service.py",
+          "probability": 0.6119
+        },
+        {
+          "path": "src/frago/browser/cdp/commands/page.py",
+          "probability": 0.6106
+        },
+        {
+          "path": "src/frago/cli/git_utils.py",
+          "probability": 0.6106
+        },
+        {
+          "path": "src/frago/context/resolver.py",
+          "probability": 0.6106
+        },
+        {
+          "path": "src/frago/server/routes/claude_sessions.py",
+          "probability": 0.6106
+        },
+        {
+          "path": "src/frago/server/services/hook_review_service.py",
+          "probability": 0.6106
+        },
+        {
+          "path": "src/frago/server/services/workbench_views.py",
+          "probability": 0.6075
+        },
+        {
+          "path": "src/frago/browser/cdp/browser_detection.py",
+          "probability": 0.6061
+        },
+        {
+          "path": "src/frago/cli/drive_command.py",
+          "probability": 0.6057
+        },
+        {
+          "path": "src/frago/cli/session_commands.py",
+          "probability": 0.6056
+        },
+        {
+          "path": "src/frago/init/claude_installer.py",
+          "probability": 0.6055
+        },
+        {
+          "path": "src/frago/viewer/modes/document.py",
+          "probability": 0.6055
+        },
+        {
+          "path": "src/frago/compat.py",
+          "probability": 0.605
+        },
+        {
+          "path": "src/frago/server/services/file_service.py",
+          "probability": 0.6042
+        },
+        {
+          "path": "src/frago/session/parser.py",
+          "probability": 0.603
+        },
+        {
+          "path": "src/frago/server/services/pa_outbox.py",
+          "probability": 0.6029
+        },
+        {
+          "path": "src/frago/server/routes/__init__.py",
+          "probability": 0.6012
+        },
+        {
+          "path": "src/frago/server/routes/workspace.py",
+          "probability": 0.6012
+        },
+        {
+          "path": "src/frago/server/services/recipe_service.py",
+          "probability": 0.6003
+        },
+        {
+          "path": "src/frago/server/services/team_sync_service.py",
+          "probability": 0.6002
+        },
+        {
+          "path": "src/frago/cli/view_command.py",
+          "probability": 0.5994
+        },
+        {
+          "path": "src/frago/session/unified_record.py",
+          "probability": 0.5992
+        },
+        {
+          "path": "src/frago/desktop/voice.py",
+          "probability": 0.5989
+        },
+        {
+          "path": "src/frago/autostart/linux.py",
+          "probability": 0.5981
+        },
+        {
+          "path": "src/frago/session/self_id.py",
+          "probability": 0.5971
+        },
+        {
+          "path": "src/frago/desktop/broker.py",
+          "probability": 0.5967
+        },
+        {
+          "path": "src/frago/server/services/recipe_supervisor.py",
+          "probability": 0.5931
+        },
+        {
+          "path": "src/frago/run/discovery.py",
+          "probability": 0.5907
+        },
+        {
+          "path": "src/frago/browser/__init__.py",
+          "probability": 0.5881
+        },
+        {
+          "path": "src/frago/client/scripts/check_teaming_small_screen.py",
+          "probability": 0.5876
+        },
+        {
+          "path": "src/frago/cli/team_commands.py",
+          "probability": 0.5847
+        },
+        {
+          "path": "src/frago/telemetry/trace.py",
+          "probability": 0.5847
+        },
+        {
+          "path": "src/frago/browser/backends/extension.py",
+          "probability": 0.5839
+        },
+        {
+          "path": "src/frago/session/opencode_sync.py",
+          "probability": 0.583
+        },
+        {
+          "path": "src/frago/skills/skill_prompt.py",
+          "probability": 0.5829
+        },
+        {
+          "path": "src/frago/server/services/ui_session_lifecycle.py",
+          "probability": 0.5818
+        },
+        {
+          "path": "src/frago/server/state/models.py",
+          "probability": 0.5815
+        },
+        {
+          "path": "src/frago/session/coreagent_sync.py",
+          "probability": 0.5812
+        },
+        {
+          "path": "src/frago/def_/schema_validator.py",
+          "probability": 0.5805
+        },
+        {
+          "path": "src/frago/recipes/background.py",
+          "probability": 0.5795
+        },
+        {
+          "path": "scripts/generate_extension_id.py",
+          "probability": 0.5774
+        },
+        {
+          "path": "src/frago/session/search.py",
+          "probability": 0.5763
+        },
+        {
+          "path": "src/frago/cli/commands.py",
+          "probability": 0.5754
+        },
+        {
+          "path": "src/frago/browser/extension/lifecycle.py",
+          "probability": 0.5751
+        },
+        {
+          "path": "src/frago/server/runner.py",
+          "probability": 0.575
+        },
+        {
+          "path": "src/frago/server/services/workbench_marks.py",
+          "probability": 0.5734
+        },
+        {
+          "path": "src/frago/server/services/recipe_secrets_service.py",
+          "probability": 0.5728
+        },
+        {
+          "path": "src/frago/server/models.py",
+          "probability": 0.5719
+        },
+        {
+          "path": "src/frago/server/restarter.py",
+          "probability": 0.5713
+        },
+        {
+          "path": "src/frago/server/services/coreagent_output.py",
+          "probability": 0.5713
+        },
+        {
+          "path": "src/frago/session/codex_sync.py",
+          "probability": 0.5697
+        },
+        {
+          "path": "src/frago/server/routes/pa.py",
+          "probability": 0.5696
+        },
+        {
+          "path": "src/frago/recipes/schedule.py",
+          "probability": 0.568
+        },
+        {
+          "path": "src/frago/server/services/primary/watcher.py",
+          "probability": 0.5674
+        },
+        {
+          "path": "src/frago/server/services/timeline_service.py",
+          "probability": 0.5638
+        },
+        {
+          "path": "src/frago/desktop/health.py",
+          "probability": 0.5617
+        },
+        {
+          "path": "src/frago/server/state/__init__.py",
+          "probability": 0.5611
+        },
+        {
+          "path": "src/frago/server/services/session_watchdog.py",
+          "probability": 0.5587
+        },
+        {
+          "path": "src/frago/server/services/schedule_resume.py",
+          "probability": 0.5581
+        },
+        {
+          "path": "src/frago/cli/book_commands.py",
+          "probability": 0.5578
+        },
+        {
+          "path": "src/frago/server/routes/config.py",
+          "probability": 0.5574
+        },
+        {
+          "path": "src/frago/run/perception.py",
+          "probability": 0.5562
+        },
+        {
+          "path": "src/frago/desktop/aos.py",
+          "probability": 0.5561
+        },
+        {
+          "path": "src/frago/server/services/main_config_service.py",
+          "probability": 0.5556
+        },
+        {
+          "path": "src/frago/watcher/service.py",
+          "probability": 0.5552
+        },
+        {
+          "path": "src/frago/server/services/routing/thread_classifier.py",
+          "probability": 0.5539
+        },
+        {
+          "path": "src/frago/autostart/macos.py",
+          "probability": 0.5522
+        },
+        {
+          "path": "src/frago/server/services/schedule_compose_service.py",
+          "probability": 0.552
+        },
+        {
+          "path": "src/frago/server/services/data_repo_service.py",
+          "probability": 0.5509
+        },
+        {
+          "path": "src/frago/team/live.py",
+          "probability": 0.5509
+        },
+        {
+          "path": "src/frago/cli/deployment_agent.py",
+          "probability": 0.5503
+        },
+        {
+          "path": "src/frago/config/agent_language.py",
+          "probability": 0.5498
+        },
+        {
+          "path": "src/frago/recipes/template.py",
+          "probability": 0.5498
+        },
+        {
+          "path": "src/frago/server/routes/github_star.py",
+          "probability": 0.5498
+        },
+        {
+          "path": "src/frago/server/routes/workbench_marks.py",
+          "probability": 0.5498
+        },
+        {
+          "path": "src/frago/session/claude_sessions.py",
+          "probability": 0.5498
+        },
+        {
+          "path": "src/frago/server/services/ingestion/scheduler.py",
+          "probability": 0.5481
+        },
+        {
+          "path": "src/frago/server/services/orphan_recipe_cleanup_service.py",
+          "probability": 0.5477
+        },
+        {
+          "path": "src/frago/cli/main.py",
+          "probability": 0.5474
+        },
+        {
+          "path": "src/frago/server/services/session_observer.py",
+          "probability": 0.547
+        },
+        {
+          "path": "src/frago/server/services/resume_inbox.py",
+          "probability": 0.5466
+        },
+        {
+          "path": "src/frago/server/services/schedule_executor.py",
+          "probability": 0.5435
+        },
+        {
+          "path": "src/frago/cli/extension_commands.py",
+          "probability": 0.5422
+        },
+        {
+          "path": "src/frago/context/__init__.py",
+          "probability": 0.5403
+        },
+        {
+          "path": "src/frago/server/services/primary/rotation.py",
+          "probability": 0.5396
+        },
+        {
+          "path": "src/frago/run/exceptions.py",
+          "probability": 0.539
+        },
+        {
+          "path": "src/frago/server/services/primary/helpers.py",
+          "probability": 0.536
+        },
+        {
+          "path": "src/frago/telemetry/client.py",
+          "probability": 0.5357
+        },
+        {
+          "path": "src/frago/def_/query_engine.py",
+          "probability": 0.5356
+        },
+        {
+          "path": "src/frago/browser/backends/__init__.py",
+          "probability": 0.5352
+        },
+        {
+          "path": "src/frago/server/services/task_lifecycle.py",
+          "probability": 0.5352
+        },
+        {
+          "path": "src/frago/todo/categories.py",
+          "probability": 0.5341
+        },
+        {
+          "path": "src/frago/init/exceptions.py",
+          "probability": 0.5321
+        },
+        {
+          "path": "src/frago/browser/profile_seed.py",
+          "probability": 0.5309
+        },
+        {
+          "path": "src/frago/autostart/windows.py",
+          "probability": 0.53
+        },
+        {
+          "path": "src/frago/browser/cdp/process.py",
+          "probability": 0.53
+        },
+        {
+          "path": "src/frago/server/services/__init__.py",
+          "probability": 0.53
+        },
+        {
+          "path": "src/frago/server/services/workbench_groups.py",
+          "probability": 0.5299
+        },
+        {
+          "path": "src/frago/skills/registry.py",
+          "probability": 0.5294
+        },
+        {
+          "path": "src/frago/cli/recipe_commands.py",
+          "probability": 0.5282
+        },
+        {
+          "path": "src/frago/server/routes/schedules.py",
+          "probability": 0.5278
+        },
+        {
+          "path": "src/frago/browser/cdp/commands/visual_effects.py",
+          "probability": 0.5274
+        },
+        {
+          "path": "src/frago/session/adapters/codex_records.py",
+          "probability": 0.527
+        },
+        {
+          "path": "src/frago/server/services/primary/delivery.py",
+          "probability": 0.5266
+        },
+        {
+          "path": "src/frago/server/services/daemon_service.py",
+          "probability": 0.5262
+        },
+        {
+          "path": "src/frago/telemetry/config.py",
+          "probability": 0.5254
+        },
+        {
+          "path": "src/frago/cli/remote_commands.py",
+          "probability": 0.5252
+        },
+        {
+          "path": "src/frago/init/channel_wizard.py",
+          "probability": 0.5239
+        },
+        {
+          "path": "src/frago/browser/cdp/tab_manager.py",
+          "probability": 0.5187
+        },
+        {
+          "path": "src/frago/server/services/claude_usage_service.py",
+          "probability": 0.5187
+        },
+        {
+          "path": "src/frago/cli/hook_rules_commands.py",
+          "probability": 0.5175
+        },
+        {
+          "path": "src/frago/recipes/output_handler.py",
+          "probability": 0.5165
+        },
+        {
+          "path": "src/frago/cli/reply_command.py",
+          "probability": 0.5153
+        },
+        {
+          "path": "src/frago/session/adapters/opencode_records.py",
+          "probability": 0.5152
+        },
+        {
+          "path": "src/frago/cli/browser_commands.py",
+          "probability": 0.515
+        },
+        {
+          "path": "src/frago/server/services/environment_service.py",
+          "probability": 0.5111
+        },
+        {
+          "path": "src/frago/server/services/gh_install_service.py",
+          "probability": 0.5105
+        },
+        {
+          "path": "src/frago/browser/cdp/commands/__init__.py",
+          "probability": 0.5102
+        },
+        {
+          "path": "src/frago/browser/cdp/session.py",
+          "probability": 0.5085
+        },
+        {
+          "path": "src/frago/server/services/schedule_pending.py",
+          "probability": 0.5065
+        },
+        {
+          "path": "src/frago/session/token_calendar.py",
+          "probability": 0.506
+        },
+        {
+          "path": "src/frago/server/services/pa_context_builder.py",
+          "probability": 0.5059
+        },
+        {
+          "path": "src/frago/browser/extension/protocol.py",
+          "probability": 0.5042
+        },
+        {
+          "path": "src/frago/server/routes/skills.py",
+          "probability": 0.5035
+        },
+        {
+          "path": "src/frago/server/services/skill_service.py",
+          "probability": 0.5029
+        },
+        {
+          "path": "src/frago/context/report.py",
+          "probability": 0.5023
+        },
+        {
+          "path": "src/frago/server/services/workbench_titles.py",
+          "probability": 0.5002
+        },
+        {
+          "path": "src/frago/agent_driver/__init__.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/agent_driver/transcript.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/browser/cft_fetch.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/browser/backends/cdp.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/cli/channel_commands.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/cli/chat.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/cli/daemon_commands.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/cli/def_commands.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/cli/profile_commands.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/cli/schedule_commands.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/cloud/__init__.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/recipes/exceptions.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/recipes/execution.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/run/insights.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/server/routes/browser_dashboard.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/server/services/environment_upgrade_service.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/server/services/recipe_forge.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/server/services/scheduler_service.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/server/services/tab_cleanup_service.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/server/services/primary/rendering.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/skills/agent_skills.py",
+          "probability": 0.5
+        },
+        {
+          "path": "src/frago/cli/workspace_commands.py",
+          "probability": 0.4853
+        },
+        {
+          "path": "src/frago/browser/extension/native_host.py",
+          "probability": 0.4835
+        },
+        {
+          "path": "src/frago/viewer/modes/present.py",
+          "probability": 0.473
+        },
+        {
+          "path": "src/frago/cli/skill_commands.py",
+          "probability": 0.4502
+        }
+      ],
+      "repo_signals": {
+        "readme_patterns": 0.3
+      }
+    },
+    {
+      "id": "a-tilmeld",
+      "label": "ai",
+      "is_ai": true,
+      "era": "post2023",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.33,
+      "estimate": 0.5839,
+      "estimate_range": [
+        0.5541,
+        0.6163
+      ],
+      "confidence": "medium",
+      "has_markers": true,
+      "marker_tools": [
+        "Claude"
+      ],
+      "files_analyzed": 15,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "inmobile.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "suresms.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "push.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "smstekst.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "kilde.py",
+          "probability": 0.644
+        },
+        {
+          "path": "notifications.py",
+          "probability": 0.6274
+        },
+        {
+          "path": "make_icons.py",
+          "probability": 0.6158
+        },
+        {
+          "path": "passkeys.py",
+          "probability": 0.5982
+        },
+        {
+          "path": "system_info.py",
+          "probability": 0.5959
+        },
+        {
+          "path": "gigasms.py",
+          "probability": 0.5702
+        },
+        {
+          "path": "auth.py",
+          "probability": 0.5498
+        },
+        {
+          "path": "db.py",
+          "probability": 0.503
+        },
+        {
+          "path": "app.py",
+          "probability": 0.5
+        },
+        {
+          "path": "tools/byg_jagtgraenser.py",
+          "probability": 0.47
+        },
+        {
+          "path": "jagttider.py",
+          "probability": 0.4502
+        }
+      ],
+      "repo_signals": {}
+    },
+    {
+      "id": "a-web-port",
+      "label": "ai",
+      "is_ai": true,
+      "era": "post2023",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.12,
+      "estimate": 0.5233,
+      "estimate_range": [
+        0.5,
+        0.547
+      ],
+      "confidence": "low",
+      "has_markers": true,
+      "marker_tools": [
+        "Claude",
+        "OpenAI Codex"
+      ],
+      "files_analyzed": 8,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "tools/web_port.py",
+          "probability": 0.6457
+        },
+        {
+          "path": "tools/package.py",
+          "probability": 0.5
+        },
+        {
+          "path": "tools/serve.py",
+          "probability": 0.5
+        },
+        {
+          "path": "tools/shader_arrays.py",
+          "probability": 0.5
+        },
+        {
+          "path": "tools/shader_depth.py",
+          "probability": 0.5
+        },
+        {
+          "path": "tools/shaders.py",
+          "probability": 0.5
+        },
+        {
+          "path": "tools/verify.py",
+          "probability": 0.5
+        },
+        {
+          "path": "tools/verify_cpp.py",
+          "probability": 0.5
+        }
+      ],
+      "repo_signals": {}
+    },
+    {
+      "id": "a-agentic-deep-research-with-token-factory-and-tavily",
+      "label": "ai",
+      "is_ai": true,
+      "era": "post2023",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.41,
+      "estimate": 0.4986,
+      "estimate_range": [
+        0.4933,
+        0.5039
+      ],
+      "confidence": "low",
+      "has_markers": true,
+      "marker_tools": [
+        "Devin",
+        "an AI coding agent (AGENTS.md convention)"
+      ],
+      "files_analyzed": 56,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "app/ingestion/budget.py",
+          "probability": 0.7311
+        },
+        {
+          "path": "app/graph/bounds.py",
+          "probability": 0.6045
+        },
+        {
+          "path": "app/graph/errors.py",
+          "probability": 0.5552
+        },
+        {
+          "path": "app/contracts/v3/ports.py",
+          "probability": 0.5277
+        },
+        {
+          "path": "app/research/errors.py",
+          "probability": 0.515
+        },
+        {
+          "path": "app/research/actions.py",
+          "probability": 0.5073
+        },
+        {
+          "path": "app/extraction/errors.py",
+          "probability": 0.5039
+        },
+        {
+          "path": "app/cli.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/config.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/service.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/api/main.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/contracts/ids.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/contracts/ports.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/contracts/v3/corpus.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/contracts/v3/ids.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/contracts/v3/models.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/domains/robotics.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/extraction/__init__.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/extraction/extractor.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/extraction/fixtures.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/extraction/prompts.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/extraction/resolution.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/extraction/transport.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/extraction/validation.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/graph/__init__.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/graph/corpus.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/graph/coverage.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/graph/queries.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/graph/records.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/graph/repository.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/graph/schema.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/ingestion/fixtures.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/ingestion/records.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/ingestion/tavily.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/ingestion/text.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/ingestion/v3.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/intelligence/cycle.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/intelligence/service.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/intelligence/stream.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/reporting/__init__.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/reporting/citations.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/reporting/synthesis.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/reporting/template.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/research/context.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/research/nebius.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/research/planner.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/research/readiness.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/ui/client.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/ui/corpus_client.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/ui/graph.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/ui/mapping.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/ui/pages/1_Corpus_intelligence.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/contracts/models.py",
+          "probability": 0.4256
+        },
+        {
+          "path": "app/reporting/writer.py",
+          "probability": 0.4256
+        },
+        {
+          "path": "app/ui/main.py",
+          "probability": 0.4256
+        },
+        {
+          "path": "app/ui/synthetic.py",
+          "probability": 0.4256
+        }
+      ],
+      "repo_signals": {}
+    },
+    {
+      "id": "a-ledgerpilot",
+      "label": "ai",
+      "is_ai": true,
+      "era": "post2023",
+      "split": "test",
+      "status": "ok",
+      "seconds": 0.17,
+      "estimate": 0.5854,
+      "estimate_range": [
+        0.5772,
+        0.5943
+      ],
+      "confidence": "medium",
+      "has_markers": true,
+      "marker_tools": [
+        "Devin"
+      ],
+      "files_analyzed": 12,
+      "methodology_version": "detector-0.1.0+methodology-v0+markers-v1",
+      "files": [
+        {
+          "path": "app/config.py",
+          "probability": 0.5744
+        },
+        {
+          "path": "app/security.py",
+          "probability": 0.5261
+        },
+        {
+          "path": "scripts/run_demo_scenario.py",
+          "probability": 0.5259
+        },
+        {
+          "path": "app/alerts.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/data_gen.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/financing.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/forecasting.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/kpis.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/main.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/tools.py",
+          "probability": 0.5
+        },
+        {
+          "path": "app/agent.py",
+          "probability": 0.47
+        },
+        {
+          "path": "app/sandbox.py",
+          "probability": 0.4502
+        }
+      ],
+      "repo_signals": {
+        "commit_shape": 0.425
+      }
+    }
+  ]
+}

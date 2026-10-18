@@ -13,9 +13,8 @@ ai-code-detector = "ai_code_detector.agent:AICodeDetector"
 
 [tool.agents-lib]
 id = "ai-code-detector"
-stage = "planned"
-# Mirroring is turned on in Phase 3, once the agent does real work:
-# mirror = "Waddah0-0/agents-lib-ai-code-detector"
+stage = "experimental"
+mirror = "Waddah0-0/agents-lib-ai-code-detector"
 
 [build-system]
 requires = ["hatchling"]

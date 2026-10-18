@@ -3,8 +3,12 @@
 Estimates how likely it is that a repository, or parts of it, was written with AI
 assistance, and always shows the reasons behind the estimate.
 
-> **Status: planned.** The heuristic signals and the evaluation harness come first
-> (phase 3), then the model-based judge (phase 4). Nothing here runs yet.
+> **Status: experimental.** The heuristic signals work, but their weights are uncalibrated
+> guesses (methodology v0), so the detector never reports more than medium confidence. On
+> the first, small evaluation dataset it ranks AI-built repositories above human ones fairly
+> well (AUC 0.86 over 19 repositories), but it also scores a third of the human
+> repositories above 0.5. Treat every number as a rough indication. Calibration and the
+> model-based judge come next.
 
 ## What it does
 
@@ -74,8 +78,6 @@ a contractor or a job candidate.
 
 ## Usage
 
-Not runnable yet. Once phase 3 lands, it will work like this:
-
 ```bash
 agents run ai-code-detector https://github.com/owner/repo --format markdown
 agents run ai-code-detector ./path/to/project --format json --out report.json
@@ -85,7 +87,11 @@ agents run ai-code-detector ./path/to/project --format json --out report.json
 
 This agent lives in the [agents-lib](https://github.com/Waddah0-0/agents-lib) monorepo, in
 [`agents/ai_code_detector`](https://github.com/Waddah0-0/agents-lib/tree/main/agents/ai_code_detector).
-Once it does real work it is also mirrored, read-only, to its own repository; open issues
-and pull requests in the main repository.
+It is mirrored, read-only, to
+[Waddah0-0/agents-lib-ai-code-detector](https://github.com/Waddah0-0/agents-lib-ai-code-detector);
+open issues and pull requests in the main repository.
+
+The evaluation harness lives in `eval/`: `eval/run.py` scores a dataset manifest, and
+`eval/datasets/v0/README.md` describes the first dataset and its biases.
 
 Run its tests with `uv run pytest agents/ai_code_detector`.
