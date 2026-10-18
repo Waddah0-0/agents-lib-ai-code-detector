@@ -31,6 +31,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from agents_core.config import get_settings
 from agents_core.loaders.git import read_commits_sync
 from ai_code_detector.markers import commit_marker_tools, load_markers
 
@@ -55,7 +56,8 @@ def search_repos(query: str, pages: int) -> list[str]:
         url = "https://api.github.com/search/commits?per_page=100&sort=committer-date&page="
         url += f"{page}&q=" + urllib.parse.quote(query)
         headers = {"Accept": "application/vnd.github+json", "User-Agent": "agents-lib-eval"}
-        token = os.environ.get("GITHUB_TOKEN")
+        secret = get_settings().github_token  # GITHUB_TOKEN env var or .env
+        token = secret.get_secret_value() if secret else None
         if token:
             headers["Authorization"] = f"Bearer {token}"
         request = urllib.request.Request(url, headers=headers)
