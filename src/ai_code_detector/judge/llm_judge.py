@@ -33,6 +33,7 @@ from agents_core.llm import LLMClient
 from ai_code_detector.models import FileScore, JudgeVerdict, QuotedEvidence
 
 PROMPT_VERSION = "judge_v1"
+SCHEMA_TEXT = json.dumps(JudgeVerdict.model_json_schema())
 CHARS_PER_TOKEN = 3  # code is denser than prose (measured ~3 chars/token with qwen2.5)
 RUBRIC = (
     "Comments that restate the next line of code, or explain the obvious.",
@@ -149,7 +150,9 @@ class Judge:
         while True:
             start, end = choose_window(lines, flagged, max_lines)
             text = numbered(lines, start, end)
-            tokens = (len(system) + len(text) + 200) / CHARS_PER_TOKEN
+            # complete_structured appends the JSON schema and instructions to the system prompt
+            overhead = len(SCHEMA_TEXT) + 400
+            tokens = (len(system) + len(text) + overhead) / CHARS_PER_TOKEN
             if (
                 tokens + self.settings.max_output_tokens <= self.settings.token_budget
                 or max_lines <= 40

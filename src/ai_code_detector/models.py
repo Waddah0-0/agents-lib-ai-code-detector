@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Literal
 
 from agents_core import AgentInput, Evidence
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 Confidence = Literal["low", "medium", "high"]
 
@@ -49,11 +49,37 @@ class MetadataMarker(BaseModel):
     detail: str
 
 
+MAX_QUOTE_CHARS = 160
+MAX_WHY_CHARS = 100
+MAX_EVIDENCE_ITEMS = 3
+MAX_NOTES_CHARS = 160
+
+
+def _trim(value: object, limit: int) -> object:
+    return value[:limit] if isinstance(value, str) else value
+
+
 class QuotedEvidence(BaseModel):
+    """One quoted line. Limits keep local-model answers short (generation is the slow part);
+    they are advertised in the JSON schema for constrained decoding and enforced by trimming,
+    so an over-long answer is shortened rather than rejected."""
+
     line_start: int
     line_end: int
-    quote: str
-    why: str
+    quote: str = Field(json_schema_extra={"maxLength": MAX_QUOTE_CHARS})
+    why: str = Field(json_schema_extra={"maxLength": MAX_WHY_CHARS})
+
+    @field_validator("quote", mode="before")
+    @classmethod
+    def _short_quote(cls, value: object) -> object:
+        if isinstance(value, str):
+            value = value.split("\n", 1)[0]  # one line only
+        return _trim(value, MAX_QUOTE_CHARS)
+
+    @field_validator("why", mode="before")
+    @classmethod
+    def _short_why(cls, value: object) -> object:
+        return _trim(value, MAX_WHY_CHARS)
 
 
 class JudgeVerdict(BaseModel):
@@ -61,9 +87,23 @@ class JudgeVerdict(BaseModel):
 
     likelihood_ai: float = Field(ge=0.0, le=1.0)
     confidence: float = Field(ge=0.0, le=1.0)
-    evidence_for: list[QuotedEvidence] = Field(default_factory=list)
-    evidence_against: list[QuotedEvidence] = Field(default_factory=list)
-    uncertainty_notes: str = ""
+    evidence_for: list[QuotedEvidence] = Field(
+        default_factory=list, json_schema_extra={"maxItems": MAX_EVIDENCE_ITEMS}
+    )
+    evidence_against: list[QuotedEvidence] = Field(
+        default_factory=list, json_schema_extra={"maxItems": MAX_EVIDENCE_ITEMS}
+    )
+    uncertainty_notes: str = Field(default="", json_schema_extra={"maxLength": MAX_NOTES_CHARS})
+
+    @field_validator("evidence_for", "evidence_against", mode="before")
+    @classmethod
+    def _few_items(cls, value: object) -> object:
+        return value[:MAX_EVIDENCE_ITEMS] if isinstance(value, list) else value
+
+    @field_validator("uncertainty_notes", mode="before")
+    @classmethod
+    def _short_notes(cls, value: object) -> object:
+        return _trim(value, MAX_NOTES_CHARS)
 
 
 class FileScore(BaseModel):

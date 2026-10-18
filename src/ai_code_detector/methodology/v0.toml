@@ -35,9 +35,12 @@ docs = 0.3
 [judge]
 weight = 0.5
 min_lines = 30
-window_lines = 250
-token_budget = 6000
-max_output_tokens = 700
+# Sized for a local 7B model on an 8 GB GPU: a ~7.5K-token prompt took ~30 s per call
+# (2026-10-18), so prompts stay near 3.5K tokens.
+window_lines = 150
+token_budget = 3500
+# Typical answers are ~300-450 tokens at ~20 tokens/s; 800 is a cap for rare long ones.
+max_output_tokens = 800
 agreement_share = 0.2
 agreement_min_files = 2
 disagreement_threshold = 0.3
