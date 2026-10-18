@@ -71,8 +71,10 @@ def _weighted_mean(files: Sequence[FileScore], default: float) -> float:
 
 
 def repo_estimate(files: Sequence[FileScore], shift: float, methodology: Methodology) -> float:
+    """sigmoid(intercept + coefficient x logit(size-weighted mean file probability) + shift)."""
     base = _weighted_mean(files, sigmoid(methodology.bias))
-    return sigmoid(logit(base) + shift)
+    z = methodology.repo_intercept + methodology.repo_file_coefficient * logit(base)
+    return sigmoid(z + shift)
 
 
 def estimate_range(

@@ -32,6 +32,16 @@ class Methodology:
         return float(self.data["bias"])
 
     @property
+    def repo_intercept(self) -> float:
+        """Repository model: log-odds intercept (v0: 0)."""
+        return float(self.data.get("repo_model", {}).get("intercept", 0.0))
+
+    @property
+    def repo_file_coefficient(self) -> float:
+        """Repository model: weight on the files' mean log-odds (v0: 1)."""
+        return float(self.data.get("repo_model", {}).get("file_coefficient", 1.0))
+
+    @property
     def file_weights(self) -> dict[str, float]:
         return {k: float(v) for k, v in self.data["file_weights"].items()}
 

@@ -1,0 +1,150 @@
+{
+  "created": "2026-10-18T17:40:33.930371+00:00",
+  "criteria": {
+    "pages": 5,
+    "min_commits": 10,
+    "min_marker_share": 0.8,
+    "language": "python",
+    "min_files_of_language": 8,
+    "max_files": 2000,
+    "since": "2025-01-01T00:00:00+00:00",
+    "per_query": 3,
+    "query": null,
+    "exclude": "C:\\Users\\Lenovo\\AppData\\Local\\Temp\\ai_seen.json"
+  },
+  "candidates": [
+    {
+      "repo": "CarlLee1983/AnswerMe",
+      "head": "e400d7f6f7e8fa38b481e78c78ce64d0379248f0",
+      "commits": 68,
+      "marker_share": 0.868,
+      "tools": [
+        "Claude Code"
+      ],
+      "language": "python",
+      "language_files": 8,
+      "code_files": 8,
+      "first_commit": "2026-10-04T21:04:09+08:00",
+      "query": "\"Generated with Claude Code\""
+    },
+    {
+      "repo": "DeepCivic/womblex",
+      "head": "581131ecc711b038f0fba1420470703bb736f717",
+      "commits": 495,
+      "marker_share": 0.816,
+      "tools": [
+        "Claude",
+        "Claude Code"
+      ],
+      "language": "python",
+      "language_files": 339,
+      "code_files": 377,
+      "first_commit": "2026-08-25T10:10:05+10:00",
+      "query": "\"Generated with Claude Code\""
+    },
+    {
+      "repo": "clifguy/cas",
+      "head": "4f70ecbb8ffe30d5623dd104ace754b729bec41f",
+      "commits": 1070,
+      "marker_share": 0.879,
+      "tools": [
+        "Claude",
+        "Claude Code"
+      ],
+      "language": "python",
+      "language_files": 686,
+      "code_files": 763,
+      "first_commit": "2026-03-30T18:27:50-05:00",
+      "query": "\"Generated with Claude Code\""
+    },
+    {
+      "repo": "kingxiaozhe/cm-workflow",
+      "head": "a401be7b9930376e83d9dbc611cbc8e67c090149",
+      "commits": 344,
+      "marker_share": 0.849,
+      "tools": [
+        "Claude",
+        "OpenAI Codex"
+      ],
+      "language": "python",
+      "language_files": 31,
+      "code_files": 31,
+      "first_commit": "2026-07-07T23:33:59+08:00",
+      "query": "\"Co-authored-by: Codex\""
+    },
+    {
+      "repo": "touyou/skills",
+      "head": "6a3c5b11c7ff0121ccc7f872e825d62147923a69",
+      "commits": 41,
+      "marker_share": 0.805,
+      "tools": [
+        "Claude",
+        "OpenAI Codex"
+      ],
+      "language": "python",
+      "language_files": 16,
+      "code_files": 16,
+      "first_commit": "2026-05-04T08:34:35+09:00",
+      "query": "\"Co-authored-by: Codex\""
+    },
+    {
+      "repo": "kkmmyr/Pic2PDF_Viewer",
+      "head": "c425cd5f355fa98872773845e8d11e4b4b0a0f28",
+      "commits": 934,
+      "marker_share": 0.936,
+      "tools": [
+        "Claude",
+        "OpenAI Codex"
+      ],
+      "language": "python",
+      "language_files": 647,
+      "code_files": 1051,
+      "first_commit": "2026-01-11T14:06:30+09:00",
+      "query": "\"Co-authored-by: Codex\""
+    },
+    {
+      "repo": "nandogaarenstroom-code/AI-benchmarking-",
+      "head": "73b22a6af8933416b57fa92f0941a5a8029bcaa7",
+      "commits": 74,
+      "marker_share": 0.811,
+      "tools": [
+        "GitHub Copilot coding agent"
+      ],
+      "language": "python",
+      "language_files": 15,
+      "code_files": 15,
+      "first_commit": "2026-10-04T22:02:10+02:00",
+      "query": "author-email:198982749+Copilot@users.noreply.github.com"
+    },
+    {
+      "repo": "Afernan413/ParlayMaker",
+      "head": "f99f2e6ae26925c34b0afc8dc59f01cc7f8cd9e4",
+      "commits": 43,
+      "marker_share": 0.93,
+      "tools": [
+        "Claude",
+        "GitHub Copilot coding agent"
+      ],
+      "language": "python",
+      "language_files": 68,
+      "code_files": 74,
+      "first_commit": "2026-09-18T23:40:20+00:00",
+      "query": "author-email:198982749+Copilot@users.noreply.github.com"
+    },
+    {
+      "repo": "frayel/devagent",
+      "head": "8b75bd36c8f92ce4dfcb024cee138305f763cd70",
+      "commits": 319,
+      "marker_share": 0.972,
+      "tools": [
+        "Claude",
+        "Jules"
+      ],
+      "language": "python",
+      "language_files": 154,
+      "code_files": 156,
+      "first_commit": "2026-09-25T17:30:48-03:00",
+      "query": "author:google-labs-jules[bot]"
+    }
+  ]
+}

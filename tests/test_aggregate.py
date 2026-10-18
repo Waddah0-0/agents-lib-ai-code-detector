@@ -66,3 +66,14 @@ def test_confidence_levels() -> None:
     assert level == "medium" and len(reasons) == 3
     level, reasons = confidence_level(ConfidenceFacts(1, 2, 0.8, 0.9), M)
     assert level == "low" and len(reasons) == 3
+
+
+def test_repo_model_parameters_default_to_v0_behaviour() -> None:
+    files = [file(0.8), file(0.6)]
+    assert M.repo_intercept == 0.0 and M.repo_file_coefficient == 1.0
+    fitted = Methodology(
+        "x", {**M.data, "repo_model": {"intercept": -1.0, "file_coefficient": 2.0}}
+    )
+    assert repo_estimate(files, 0.0, fitted) != repo_estimate(files, 0.0, M)
+    flat = Methodology("x", {**M.data, "repo_model": {"intercept": 0.0, "file_coefficient": 0.0}})
+    assert repo_estimate(files, 0.0, flat) == pytest.approx(0.5)

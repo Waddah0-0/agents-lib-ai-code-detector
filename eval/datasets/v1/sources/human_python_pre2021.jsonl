@@ -1,0 +1,10 @@
+{"repo": "marshmallow-code/marshmallow", "commit": "e0bc19ed1d3902f27e378976f92e739dc6183f74", "date": "2020-12-25T05:14:41Z", "commits_until_then": 2906, "py_files": 36, "files": 87}
+{"repo": "Delgan/loguru", "commit": "bb7ee25c860d8203ea26fedff234d5ae5436e010", "date": "2020-12-19T17:17:53+01:00", "commits_until_then": 545, "py_files": 142, "files": 253}
+{"repo": "sdispater/pendulum", "commit": "daa4b936daf3f4dfa7d211aa0ac1e9d82d5401d4", "date": "2020-07-24T20:00:50+02:00", "commits_until_then": 696, "py_files": 185, "files": 234}
+{"repo": "tartley/colorama", "commit": "01c7b64cd1f7625da2c822514f326c6b88189865", "date": "2020-12-30T12:15:59-06:00", "commits_until_then": 286, "py_files": 23, "files": 49}
+{"repo": "PyCQA/pyflakes", "commit": "0e4194b238ffd006441f1a33373062d9c7272d0e", "date": "2020-12-07T09:12:27-08:00", "commits_until_then": 501, "py_files": 23, "files": 33}
+{"repo": "python-humanize/humanize", "commit": "a0f03c137ab33a9b4896789b94edb95ab635f9df", "date": "2020-12-12T19:10:37+02:00", "commits_until_then": 377, "py_files": 11, "files": 78}
+{"repo": "httpie/cli", "commit": "6922a0c912ae83757d92262da2e2c595ec26ca8f", "date": "2020-12-24T21:34:30+01:00", "commits_until_then": 1296, "py_files": 62, "files": 87}
+{"repo": "agronholm/apscheduler", "commit": "f04931f42bccdd8c647e29643225dd66aa75ce4b", "date": "2020-11-10T14:00:49+02:00", "commits_until_then": 759, "py_files": 45, "files": 94}
+{"repo": "pyeve/cerberus", "commit": "b2d438950c3b79a0bbb9030e63221573aaef06f0", "date": "2020-09-30T19:33:28+02:00", "commits_until_then": 1078, "py_files": 24, "files": 71}
+{"repo": "scrapinghub/dateparser", "commit": "a45b23e2bee251a3715c10a224d978ff7c16b8a4", "date": "2020-12-16T15:52:49+01:00", "commits_until_then": 1262, "py_files": 262, "files": 539}

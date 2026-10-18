@@ -1,0 +1,5 @@
+{"repo": "gentoo/portage", "commit": "fedb73b14765362b41d3dfa5b3708f7a35dd2caa", "date": "2026-10-17T06:02:11+01:00", "commits_until_then": 19116, "py_files": 742, "files": 1078}
+{"repo": "gentoo/gentoolkit", "commit": "4a82d2497daf65ce504b145c9f15267225b6f46f", "date": "2026-10-10T23:56:46+01:00", "commits_until_then": 1488, "py_files": 82, "files": 181}
+{"repo": "gentoo/mirrorselect", "commit": "df80ea7c8eb497cca2605f31b097b3eefa1b9b17", "date": "2026-10-07T20:35:32+01:00", "commits_until_then": 231, "py_files": 21, "files": 36}
+{"repo": "pkgcore/pkgcheck", "commit": "d8762bb2daf439d43614ceb809303cf2b1327cdc", "date": "2026-10-17T10:23:44+03:00", "commits_until_then": 4640, "py_files": 144, "files": 1479}
+{"repo": "pkgcore/pkgdev", "commit": "7bcfce7ad35ba4104fb7400b1fbc14e40d6d3094", "date": "2026-10-16T12:10:09+03:00", "commits_until_then": 574, "py_files": 32, "files": 55}

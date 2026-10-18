@@ -1,0 +1,265 @@
+{
+  "created": "2026-10-18T18:19:43.064541+00:00",
+  "criteria": {
+    "pages": 5,
+    "min_commits": 10,
+    "min_marker_share": 0.8,
+    "language": "javascript",
+    "min_files_of_language": 8,
+    "max_files": 2000,
+    "since": "2025-01-01T00:00:00+00:00",
+    "per_query": 3,
+    "query": null,
+    "exclude": null
+  },
+  "candidates": [
+    {
+      "repo": "Favourkass/kinkord",
+      "head": "d9eab519f2a9e3f2966b89c33f37c0aee9e317ac",
+      "commits": 275,
+      "marker_share": 0.807,
+      "tools": [
+        "Claude",
+        "Claude Code"
+      ],
+      "language": "javascript",
+      "language_files": 808,
+      "code_files": 808,
+      "first_commit": "2026-05-30T13:20:02+01:00",
+      "query": "\"Generated with Claude Code\""
+    },
+    {
+      "repo": "terrying/my-blog",
+      "head": "b46af3a518a7f74d8a5934eb5d0b2fcd62a37454",
+      "commits": 449,
+      "marker_share": 0.918,
+      "tools": [
+        "Claude",
+        "Claude Code"
+      ],
+      "language": "javascript",
+      "language_files": 90,
+      "code_files": 90,
+      "first_commit": "2025-08-18T13:02:25+08:00",
+      "query": "\"Generated with Claude Code\""
+    },
+    {
+      "repo": "averinpa/parea-app",
+      "head": "36e445509fab533d87bc4e6ee43503441879a2c4",
+      "commits": 919,
+      "marker_share": 0.862,
+      "tools": [
+        "Claude"
+      ],
+      "language": "javascript",
+      "language_files": 66,
+      "code_files": 74,
+      "first_commit": "2026-03-10T20:24:42+02:00",
+      "query": "\"noreply@anthropic.com\""
+    },
+    {
+      "repo": "DmytroKostiuk123/bamboobrush",
+      "head": "b007ca0ddfad443d232702bf61facbbb6212c2f5",
+      "commits": 212,
+      "marker_share": 0.995,
+      "tools": [
+        "Claude"
+      ],
+      "language": "javascript",
+      "language_files": 10,
+      "code_files": 10,
+      "first_commit": "2026-06-24T23:34:48+02:00",
+      "query": "\"noreply@anthropic.com\""
+    },
+    {
+      "repo": "arqenriquez/juego-mundial-clubes",
+      "head": "d7536c88ec3a057b967da009ee7ddfc9d92223d9",
+      "commits": 32,
+      "marker_share": 0.875,
+      "tools": [
+        "Claude"
+      ],
+      "language": "javascript",
+      "language_files": 19,
+      "code_files": 19,
+      "first_commit": "2026-07-12T18:31:23-07:00",
+      "query": "\"noreply@anthropic.com\""
+    },
+    {
+      "repo": "ibalashov/absurdissimo",
+      "head": "dcf12e5cdac517e33544a84d1ffa906b067d54de",
+      "commits": 129,
+      "marker_share": 0.868,
+      "tools": [
+        "Claude",
+        "Claude Code"
+      ],
+      "language": "javascript",
+      "language_files": 91,
+      "code_files": 91,
+      "first_commit": "2026-06-29T20:46:12+03:00",
+      "query": "\"Co-authored-by: Codex\""
+    },
+    {
+      "repo": "michelabboud/tabkebab-chrome-ext",
+      "head": "e7297e336f4d24b4952b9461d2e8f0a92c705559",
+      "commits": 144,
+      "marker_share": 0.931,
+      "tools": [
+        "Claude",
+        "OpenAI Codex"
+      ],
+      "language": "javascript",
+      "language_files": 177,
+      "code_files": 177,
+      "first_commit": "2026-01-31T03:30:48+02:00",
+      "query": "\"Co-authored-by: Codex\""
+    },
+    {
+      "repo": "pauldeng/node-red-contrib-centrifuge",
+      "head": "96b59013816d5ceff07b0c1b1f000464cac4c1bb",
+      "commits": 10,
+      "marker_share": 0.8,
+      "tools": [
+        "Claude",
+        "OpenAI Codex"
+      ],
+      "language": "javascript",
+      "language_files": 55,
+      "code_files": 55,
+      "first_commit": "2026-09-13T20:01:52+10:00",
+      "query": "\"Co-authored-by: Codex\""
+    },
+    {
+      "repo": "ivoarnet/family-butler-v2",
+      "head": "93ccaf890c20312645df201a2a3cf257d42165ef",
+      "commits": 74,
+      "marker_share": 0.919,
+      "tools": [
+        "GitHub Copilot coding agent"
+      ],
+      "language": "javascript",
+      "language_files": 115,
+      "code_files": 115,
+      "first_commit": "2026-09-22T11:12:05+02:00",
+      "query": "author-email:198982749+Copilot@users.noreply.github.com"
+    },
+    {
+      "repo": "martin-macak/claude-code-mod-tracking",
+      "head": "9855470bee8b53ddf04f04edbbc80906f69771cb",
+      "commits": 37,
+      "marker_share": 0.892,
+      "tools": [
+        "Claude Code",
+        "GitHub Copilot coding agent"
+      ],
+      "language": "javascript",
+      "language_files": 161,
+      "code_files": 168,
+      "first_commit": "2026-10-09T16:02:21+02:00",
+      "query": "author-email:198982749+Copilot@users.noreply.github.com"
+    },
+    {
+      "repo": "visubramaniam/vsp360-mcp",
+      "head": "3cbd153255707e783d23f347f4bce1c1163de1b7",
+      "commits": 96,
+      "marker_share": 0.969,
+      "tools": [
+        "Claude",
+        "GitHub Copilot coding agent"
+      ],
+      "language": "javascript",
+      "language_files": 10,
+      "code_files": 10,
+      "first_commit": "2026-10-11T14:37:53-04:00",
+      "query": "author-email:198982749+Copilot@users.noreply.github.com"
+    },
+    {
+      "repo": "SylvainRoy/warships",
+      "head": "910ad4419c8e6af2361561f83ffa1d6f6a089308",
+      "commits": 59,
+      "marker_share": 0.983,
+      "tools": [
+        "Devin"
+      ],
+      "language": "javascript",
+      "language_files": 33,
+      "code_files": 33,
+      "first_commit": "2026-10-16T20:43:54+00:00",
+      "query": "author:devin-ai-integration[bot]"
+    },
+    {
+      "repo": "libertasjyotish-cmd/Jyotish_SNS_ShortMovie",
+      "head": "3cf76638a90609df95021f707dc0ca361301b5d8",
+      "commits": 234,
+      "marker_share": 0.962,
+      "tools": [
+        "Devin",
+        "Jules"
+      ],
+      "language": "javascript",
+      "language_files": 160,
+      "code_files": 169,
+      "first_commit": "2026-08-10T17:01:09+00:00",
+      "query": "author:devin-ai-integration[bot]"
+    },
+    {
+      "repo": "maruhiapp/maruhi",
+      "head": "1f5e8517563992a16508fcea0c7925b9746e748f",
+      "commits": 811,
+      "marker_share": 0.809,
+      "tools": [
+        "Claude",
+        "Cursor",
+        "Devin"
+      ],
+      "language": "javascript",
+      "language_files": 799,
+      "code_files": 801,
+      "first_commit": "2026-07-31T23:35:31+09:00",
+      "query": "author:devin-ai-integration[bot]"
+    },
+    {
+      "repo": "raciel88p/mj-calendario",
+      "head": "62e90873d3aab61c9710f7fc75a4eabacbc33d6a",
+      "commits": 17,
+      "marker_share": 1.0,
+      "tools": [
+        "Jules"
+      ],
+      "language": "javascript",
+      "language_files": 18,
+      "code_files": 19,
+      "first_commit": "2026-10-18T00:50:00+00:00",
+      "query": "author:google-labs-jules[bot]"
+    },
+    {
+      "repo": "jmarcooo/SPO-Calendar-Project",
+      "head": "d0591cb4b5b27218d034d18aa0a51e79e5cd05a8",
+      "commits": 180,
+      "marker_share": 0.811,
+      "tools": [
+        "Jules"
+      ],
+      "language": "javascript",
+      "language_files": 13,
+      "code_files": 13,
+      "first_commit": "2026-09-28T17:18:55+08:00",
+      "query": "author:google-labs-jules[bot]"
+    },
+    {
+      "repo": "rutaabali3/WHATSAPP_BOT_404",
+      "head": "475f179988bc8546d6a173f5ea5a6af50cf3a20e",
+      "commits": 83,
+      "marker_share": 0.94,
+      "tools": [
+        "Jules"
+      ],
+      "language": "javascript",
+      "language_files": 50,
+      "code_files": 50,
+      "first_commit": "2026-08-31T01:47:34+05:00",
+      "query": "author:google-labs-jules[bot]"
+    }
+  ]
+}

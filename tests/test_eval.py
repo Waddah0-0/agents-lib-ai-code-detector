@@ -72,7 +72,7 @@ async def test_end_to_end_on_local_samples(tmp_path: Path) -> None:
     manifest = tmp_path / "manifest.jsonl"
     lines = [
         {"id": label, "label": label, "era": "post2023", "provenance": "fixture",
-         "provenance_confidence": "high", "split": "test",
+         "provenance_confidence": "high", "split": "train",
          "source": {"kind": "local", "path": label}}
         for label in ("ai", "human")
     ]  # fmt: skip
@@ -82,8 +82,11 @@ async def test_end_to_end_on_local_samples(tmp_path: Path) -> None:
     report = await run.main_async(manifest, out, None)
 
     assert json.loads(out.read_text("utf-8"))["metrics"] == report["metrics"]
-    repo = report["metrics"]["repository_level"]
-    assert repo["B2_signals"]["auc"] == 1.0
-    assert repo["B0_constant_prior"]["auc"] == 0.5
-    assert report["metrics"]["file_level"]["B2_signals"]["n"] == 12
+    train = report["metrics"]["train"]
+    assert train["repository_level"]["B2_signals"]["auc"] == 1.0
+    assert train["repository_level"]["B0_constant_prior"]["auc"] == 0.5
+    assert train["file_level"]["B2_signals"]["n"] == 12
+    assert train["groups"]["language=python"]["n"] == 2
+    skipped = await run.main_async(manifest, tmp_path / "r2.json", None, {"test"})
+    assert skipped["samples"] == []  # test split only when asked
     assert report["metrics"]["errors"] == []
