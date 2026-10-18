@@ -6,6 +6,12 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "agents-lib-core",
+    # 0.26.0 corrupts memory (reproducible access violation parsing TypeScript, 2026-10-18);
+    # 0.24-0.25.2 are fine. Lift the cap only after re-running tests/test_signals.py on a
+    # large TS repo.
+    "tree-sitter>=0.24,<0.26",
+    "tree-sitter-javascript>=0.23",
+    "tree-sitter-typescript>=0.23",
 ]
 
 [project.entry-points."agents_lib.agents"]

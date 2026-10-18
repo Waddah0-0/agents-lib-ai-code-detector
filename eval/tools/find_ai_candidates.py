@@ -6,7 +6,8 @@ How a repository qualifies (all must hold):
 - not a fork; at most ``--max-files`` files;
 - at least ``--min-commits`` commits, and at least ``--min-marker-share`` of them carry an
   AI marker (trailer, generated-with line or bot identity);
-- at least ``--min-py`` Python files, and Python makes up most of its code files;
+- at least ``--min-files-of-language`` files in ``--language``, and that language makes up
+  most of its code files;
 - first commit on or after ``--since``.
 
 Markers are used only to *select and label* samples; the detector's estimate never uses them,
@@ -46,6 +47,10 @@ QUERIES = (
     '"Co-Authored-By: Gemini"',
     'author-name:"(aider)"',
 )
+LANGUAGE_SUFFIXES = {
+    "python": {".py"},
+    "javascript": {".js", ".jsx", ".mjs", ".cjs", ".ts", ".tsx", ".mts", ".cts"},
+}
 CODE_SUFFIXES = {".py", ".js", ".ts", ".tsx", ".jsx", ".go", ".rs", ".java", ".rb", ".php", ".cs",
                  ".cpp", ".c", ".kt", ".swift", ".vue", ".svelte"}  # fmt: skip
 
@@ -93,8 +98,8 @@ def inspect(full_name: str, args: argparse.Namespace) -> dict[str, Any] | None:
         if len(names) > args.max_files:
             return None
         code = [n for n in names if Path(n).suffix in CODE_SUFFIXES]
-        py = [n for n in code if n.endswith(".py")]
-        if len(py) < args.min_py or len(py) < 0.6 * len(code):
+        py = [n for n in code if Path(n).suffix in LANGUAGE_SUFFIXES[args.language]]
+        if len(py) < args.min_files_of_language or len(py) < 0.6 * len(code):
             return None
         commits = read_commits_sync(repo)
         if len(commits) < args.min_commits:
@@ -111,7 +116,8 @@ def inspect(full_name: str, args: argparse.Namespace) -> dict[str, Any] | None:
             "commits": len(commits),
             "marker_share": round(share, 3),
             "tools": tools,
-            "py_files": len(py),
+            "language": args.language,
+            "language_files": len(py),
             "code_files": len(code),
             "first_commit": first.isoformat(),
         }
@@ -128,7 +134,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--pages", type=int, default=2)
     parser.add_argument("--min-commits", type=int, default=10)
     parser.add_argument("--min-marker-share", type=float, default=0.8)
-    parser.add_argument("--min-py", type=int, default=8)
+    parser.add_argument("--language", choices=sorted(LANGUAGE_SUFFIXES), default="python")
+    parser.add_argument("--min-files-of-language", type=int, default=8)
     parser.add_argument("--max-files", type=int, default=2000)
     parser.add_argument("--since", default="2025-01-01T00:00:00+00:00")
     parser.add_argument("--per-query", type=int, default=4, help="qualifying repos per query")
@@ -156,7 +163,7 @@ def main(argv: list[str] | None = None) -> int:
                 accepted.append({**result, "query": query})
                 line = (
                     f"  + {name}: {result['commits']} commits, {result['marker_share']:.0%} "
-                    f"marked, {result['py_files']} .py, {result['tools']}"
+                    f"marked, {result['language_files']} {args.language} files, {result['tools']}"
                 )
                 print(line, file=sys.stderr)
     report = {

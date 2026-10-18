@@ -112,3 +112,22 @@ SMOKE = {"ai": 0.83, "human": 0.27}  # methodology v0; update only with a new me
 
 def test_registry_lists_the_detector() -> None:
     assert "ai-code-detector" in AgentRegistry().ids()
+
+
+async def test_javascript_and_typescript_repositories(tmp_path: Path) -> None:
+    fixtures = Path(__file__).parent / "fixtures"
+    ai, human = tmp_path / "ts_ai", tmp_path / "js_human"
+    ai.mkdir()
+    human.mkdir()
+    for i in range(6):
+        (ai / f"util{i}.ts").write_text((fixtures / "ai_style.ts.txt").read_text("utf-8"), "utf-8")
+        (human / f"t{i}.js").write_text(
+            (fixtures / "human_style.js.txt").read_text("utf-8"), "utf-8"
+        )
+    (ai / "types.d.ts").write_text("export type X = number;\n" * 30, "utf-8")  # not analysed
+    (ai / "util.test.ts").write_text((fixtures / "ai_style.ts.txt").read_text("utf-8"), "utf-8")
+    ts = (await detect(ai))["data"]
+    js = (await detect(human))["data"]
+    assert ts["files_analyzed"] == 6 and js["files_analyzed"] == 6
+    assert ts["languages"] == {"typescript": 8} and js["languages"] == {"javascript": 6}
+    assert ts["estimate"] > 0.65 > 0.35 > js["estimate"]

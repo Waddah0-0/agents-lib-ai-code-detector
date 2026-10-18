@@ -5,14 +5,15 @@ from __future__ import annotations
 from pathlib import Path
 
 from ai_code_detector.methodology import load_methodology
-from ai_code_detector.python_source import parse_python, split_words
-from ai_code_detector.signals.python_file import (
+from ai_code_detector.signals.file import (
     CommentDensity,
     DeadOrDebugCode,
     Idiosyncrasy,
     NamingPatterns,
     RestatingComments,
 )
+from ai_code_detector.source import parse_source, split_words
+from ai_code_detector.source.python import parse_python
 
 M = load_methodology()
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -92,3 +93,50 @@ def test_dead_and_debug_code_is_human_evidence() -> None:
 def test_prose_comments_are_not_code() -> None:
     text = "# Note: this is fine.\n# see the docs for details\nx = 1\n"
     assert strengths(DeadOrDebugCode(), text) == []
+
+
+TS_AI = (FIXTURES / "ai_style.ts.txt").read_text(encoding="utf-8")
+JS_HUMAN = (FIXTURES / "human_style.js.txt").read_text(encoding="utf-8")
+
+
+def test_parse_typescript() -> None:
+    source = parse_source("m.ts", TS_AI)
+    assert source is not None and source.language == "typescript"
+    names = {f.name: f for f in source.functions}
+    assert {"processData", "getValue", "isValid", "formatOutput", "filterItems"} <= set(names)
+    assert names["isValid"].has_docstring and names["getValue"].has_docstring  # JSDoc above
+    assert names["isValid"].statements == 1
+    assert source.docstring_lines > 10
+    assert "inputData" in source.identifiers and "resultList" in source.identifiers
+
+
+def test_parse_javascript_human_traces() -> None:
+    source = parse_source("m.js", JS_HUMAN)
+    assert source is not None and source.language == "javascript"
+    assert len(source.commented_code_lines) == 2
+    assert [text for _, text in source.debug_statements] == ['console.log("here")', "debugger"]
+    assert source.quote_styles["'"] and source.quote_styles['"']
+
+
+def test_unsupported_and_broken_sources() -> None:
+    assert parse_source("types.go", "package main") is None
+    assert parse_source("broken.js", "function (( {{{ ]]] " * 50) is None
+
+
+def test_typescript_signals_lean_ai() -> None:
+    source = parse_source("m.ts", TS_AI)
+    assert source is not None
+    signals = (CommentDensity(), RestatingComments(), NamingPatterns())
+    hits = {h.signal_id: h.strength for s in signals for h in s.evaluate(source, M)}
+    assert hits["comment_density"] > 0.5
+    assert hits["restating_comments"] > 0.5
+    assert hits["naming_patterns"] > 0  # camelCase generic names: resultList, inputData
+
+
+def test_javascript_signals_lean_human() -> None:
+    source = parse_source("m.js", JS_HUMAN)
+    assert source is not None
+    hits = {h.signal_id: h.strength for s in (Idiosyncrasy(), DeadOrDebugCode(), NamingPatterns())
+            for h in s.evaluate(source, M)}  # fmt: skip
+    assert hits["idiosyncrasy"] < 0 and hits["dead_or_debug_code"] < 0
+    assert hits["naming_patterns"] < 0

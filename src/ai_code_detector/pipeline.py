@@ -24,12 +24,12 @@ from ai_code_detector.aggregate import (
 from ai_code_detector.markers import MarkerSet, detect_commit_markers, detect_config_files
 from ai_code_detector.methodology import Methodology
 from ai_code_detector.models import DetectorInput, DetectorOutput, FileScore, SignalHit
-from ai_code_detector.python_source import parse_python
 from ai_code_detector.signals import FILE_SIGNALS, REPO_SIGNALS, RepoContext
+from ai_code_detector.source import is_supported, parse_source
 
 MAX_COMMITS = 5000
 FILE_BATCH = 50
-SUPPORTED_LANGUAGES = {"python"}
+SUPPORTED_LANGUAGES = {"python", "javascript", "typescript"}
 CODE_LANGUAGES = {
     "python", "javascript", "typescript", "java", "kotlin", "scala", "go", "rust", "ruby", "php",
     "swift", "c", "cpp", "csharp", "fsharp", "dart", "lua", "r", "objective-c", "elixir",
@@ -54,10 +54,14 @@ def is_test_path(path: str) -> bool:
     p = PurePosixPath(path)
     name = p.name
     return (
-        any(part in {"test", "tests", "testing"} for part in p.parts[:-1])
+        any(
+            part in {"test", "tests", "testing", "__tests__", "spec", "e2e"}
+            for part in p.parts[:-1]
+        )
         or name.startswith("test_")
         or name.endswith("_test.py")
         or name == "conftest.py"
+        or any(f".{kind}." in name for kind in ("test", "spec"))  # foo.test.ts, bar.spec.js
     )
 
 
@@ -67,7 +71,7 @@ def _analyse_file(ws: Workspace, info: FileInfo, methodology: Methodology) -> Fi
         text = ws.read_text(info)
     except OSError:
         return "unreadable"
-    source = parse_python(info.path, text)
+    source = parse_source(info.path, text)
     if source is None:
         return "unparseable"
     if source.code_lines < methodology.min_code_lines:
@@ -150,7 +154,7 @@ async def detect(
     # 4. file signals (in batches off the event loop, so progress and cancellation keep working)
     candidates = [
         f for f in ws.files
-        if f.language in SUPPORTED_LANGUAGES and f.path.endswith(".py")
+        if f.language in SUPPORTED_LANGUAGES and is_supported(f.path)
         and (params.include_tests or not is_test_path(f.path))
     ]  # fmt: skip
     scored: list[FileScore] = []
@@ -180,7 +184,7 @@ async def detect(
 
     if skip_reasons["unparseable"] or skip_reasons["unreadable"]:
         n = skip_reasons["unparseable"] + skip_reasons["unreadable"]
-        warnings.append(f"{n} Python files could not be read or parsed and were skipped.")
+        warnings.append(f"{n} source files could not be read or parsed and were skipped.")
         partial = True
     if params.use_llm_judge:
         warnings.append(
@@ -224,7 +228,7 @@ async def detect(
     findings = _findings(output, repo_hits, main_files, scored, methodology, supported_share)
     summary = (
         f"Estimated likelihood that this code was written with AI assistance: {estimate:.2f} "
-        f"(range {low:.2f}-{high:.2f}, {confidence} confidence), from {len(main_files)} Python "
+        f"(range {low:.2f}-{high:.2f}, {confidence} confidence), from {len(main_files)} source "
         f"files and {len(commits)} commits."
     )
     if found_markers:
@@ -314,8 +318,8 @@ def _findings(
             Finding(
                 title="Coverage",
                 summary=(
-                    f"Only {supported_share:.0%} of the code is Python, the only language "
-                    f"analysed file by file so far. Not analysed: {langs}."
+                    f"Only {supported_share:.0%} of the code is in a language analysed file by "
+                    f"file (Python, JavaScript, TypeScript). Not analysed: {langs}."
                 ),
             )
         )

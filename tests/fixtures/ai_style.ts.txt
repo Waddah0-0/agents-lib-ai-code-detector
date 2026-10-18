@@ -1,0 +1,58 @@
+/**
+ * Utility functions for processing user data.
+ */
+
+/**
+ * Processes the input data and returns the result.
+ * @param inputData - The input data to process.
+ * @returns The processed result list.
+ */
+export function processData(inputData: number[]): number[] {
+  // Initialize the result list
+  const resultList: number[] = [];
+  // Iterate over each item in the input data
+  for (const item of inputData) {
+    // Append the processed item to the result list
+    resultList.push(item * 2);
+  }
+  // Return the result list
+  return resultList;
+}
+
+/**
+ * Gets the value for the given key from the dictionary.
+ */
+export const getValue = (dataDict: Record<string, number>, key: string): number | undefined =>
+  dataDict[key];
+
+/**
+ * Checks whether the value is valid.
+ */
+export function isValid(value: unknown): boolean {
+  return value !== null && value !== undefined;
+}
+
+/**
+ * Formats the output data as a string.
+ */
+export function formatOutput(outputData: unknown): string {
+  return String(outputData);
+}
+
+/**
+ * Filters the items that are greater than the threshold.
+ */
+export function filterItems(items: number[], threshold: number): number[] {
+  // Create an empty array for the filtered items
+  const filteredItems: number[] = [];
+  // Loop through each item in the items
+  for (const item of items) {
+    // Check if the item is greater than the threshold
+    if (item > threshold) {
+      // Add the item to the filtered items
+      filteredItems.push(item);
+    }
+  }
+  // Return the filtered items
+  return filteredItems;
+}

@@ -11,7 +11,7 @@ from agents_core.loaders import GitCommit, Workspace
 
 from ai_code_detector.methodology import Methodology
 from ai_code_detector.models import SignalHit
-from ai_code_detector.python_source import PythonFile
+from ai_code_detector.source import SourceFile
 
 
 @dataclass
@@ -47,10 +47,10 @@ class RepoSignal(_Signal):
 
 
 class FileSignal(_Signal):
-    """Looks at one parsed Python file."""
+    """Looks at one parsed source file (any supported language)."""
 
     @abstractmethod
-    def evaluate(self, source: PythonFile, methodology: Methodology) -> list[SignalHit]: ...
+    def evaluate(self, source: SourceFile, methodology: Methodology) -> list[SignalHit]: ...
 
 
 def clamp01(value: float) -> float:

@@ -1,16 +1,15 @@
-"""File-level signals for Python source."""
+"""File-level signals. They read a language-neutral :class:`SourceFile` (Python, JS, TS)."""
 
 from __future__ import annotations
 
-import ast
 import re
 
 from agents_core import Evidence
 
 from ai_code_detector.methodology import Methodology
 from ai_code_detector.models import SignalHit
-from ai_code_detector.python_source import PythonFile, split_words
 from ai_code_detector.signals.base import FileSignal, ramp
+from ai_code_detector.source import SourceFile, split_words
 
 _STOPWORDS = {
     "the", "a", "an", "to", "of", "and", "or", "for", "in", "on", "with", "is", "are", "be",
@@ -22,6 +21,7 @@ _GENERIC_NAMES = {
     "temp", "obj", "element", "elements", "input_data", "output_data", "processed_data",
     "result_list", "final_result", "user_input", "my_list", "my_dict", "data_list", "data_dict",
     "result_dict", "output_list", "input_value", "return_value", "new_list", "filtered_data",
+    "result_array", "data_array", "response_data", "result_data", "item_list",
 }  # fmt: skip
 _GENERIC_FUNCTION = re.compile(r"^(process|handle|perform|execute|manage)_")
 _SHORT_OK = {"i", "j", "k", "x", "y", "z", "_", "n", "e", "f"}
@@ -32,33 +32,35 @@ _INFORMAL = re.compile(
     r"magic number|no idea|why does this work|don't ask)\b",
     re.IGNORECASE,
 )
-_DEBUG_WORDS = {"here", "debug", "test", "xxx", "ok", "hello", "asdf", "got here", "reached"}
-_CODE_HINT = re.compile(r"[(=\[]|^\s*(import|from|return|if|for|while|def|class)\b")
 
 
-def _location(source: PythonFile, line: int, end: int | None = None) -> str:
+def _location(source: SourceFile, line: int, end: int | None = None) -> str:
     return f"{source.path}:{line}" + (f"-{end}" if end and end != line else "")
+
+
+def _snake(name: str) -> str:
+    """``processData`` and ``process_data`` both become ``process_data``."""
+    return "_".join(split_words(name))
 
 
 class CommentDensity(FileSignal):
     """Many comments and docstrings, especially on trivial functions, are typical of AI code."""
 
     id = "comment_density"
-    version = "1"
+    version = "2"  # v2: counts comment lines (block comments span lines); JSDoc = docstring
     family = "comments"
 
-    def evaluate(self, source: PythonFile, methodology: Methodology) -> list[SignalHit]:
+    def evaluate(self, source: SourceFile, methodology: Methodology) -> list[SignalHit]:
         t = methodology.thresholds_for(self.id)
-        own_comments = sum(1 for c in source.comments if c.own_line)
-        density = (own_comments + source.docstring_lines) / max(source.code_lines, 1)
+        comment_lines = source.own_line_comment_lines
+        density = (comment_lines + source.docstring_lines) / max(source.code_lines, 1)
         trivial = [f for f in source.functions if f.statements <= t["trivial_max_statements"]]
         documented = [f for f in trivial if f.has_docstring]
 
         density_part = ramp(density, t["density_low"], t["density_high"])
         trivial_part = 0.0
-        ratio = len(documented) / len(trivial) if trivial else 0.0
         if len(trivial) >= t["trivial_min_count"]:
-            trivial_part = ramp(ratio, t["trivial_ratio_low"], 1.0)
+            trivial_part = ramp(len(documented) / len(trivial), t["trivial_ratio_low"], 1.0)
 
         if density_part or trivial_part:
             strength = min(1.0, 0.6 * density_part + 0.6 * trivial_part)
@@ -80,8 +82,8 @@ class CommentDensity(FileSignal):
             return [
                 self.hit(
                     t["sparse_strength"],
-                    f"Almost no comments ({own_comments} for {source.code_lines} code lines); "
-                    "AI-written code is rarely this sparse.",
+                    f"Almost no comments ({comment_lines} lines for {source.code_lines} code "
+                    "lines); AI-written code is rarely this sparse.",
                     [Evidence(kind="file", location=source.path, detail="sparse comments")],
                 )
             ]
@@ -95,22 +97,21 @@ class RestatingComments(FileSignal):
     version = "1"
     family = "comments"
 
-    def evaluate(self, source: PythonFile, methodology: Methodology) -> list[SignalHit]:
+    def evaluate(self, source: SourceFile, methodology: Methodology) -> list[SignalHit]:
         t = methodology.thresholds_for(self.id)
         eligible = 0
         restating: list[tuple[int, str]] = []
+        marker = "#" if source.language == "python" else "//"
         for comment in source.comments:
             words = [w for w in split_words(comment.text) if w not in _STOPWORDS and len(w) > 1]
-            if not (t["min_words"] <= len(words) <= t["max_words"]):
-                continue
-            if _TODO.search(comment.text):
+            if not (t["min_words"] <= len(words) <= t["max_words"]) or _TODO.search(comment.text):
                 continue
             target = comment.line if not comment.own_line else source.next_code_line(comment.line)
             if target is None or target > len(source.lines):
                 continue
             code = source.lines[target - 1]
             if not comment.own_line:
-                code = code.split("#", 1)[0]
+                code = code.split(marker, 1)[0]
             code_words = set(split_words(code))
             if not code_words:
                 continue
@@ -129,10 +130,14 @@ class RestatingComments(FileSignal):
                 min(1.0, 0.3 + ratio),
                 f"{len(restating)} of {eligible} comments only restate the code next to them.",
                 [
-                    Evidence(kind="file", location=_location(source, line), detail=f"# {text[:80]}")
+                    Evidence(
+                        kind="file",
+                        location=_location(source, line),
+                        detail=f"{marker} {text[:80]}",
+                    )
                     for line, text in restating[:3]
                 ],
-            )
+            )  # fmt: skip
         ]
 
 
@@ -140,20 +145,22 @@ class NamingPatterns(FileSignal):
     """Long, generic, uniformly descriptive names lean AI; terse abbreviations lean human."""
 
     id = "naming_patterns"
-    version = "1"
+    version = "2"  # v2: camelCase names are compared in snake_case form
     family = "naming"
 
-    def evaluate(self, source: PythonFile, methodology: Methodology) -> list[SignalHit]:
+    def evaluate(self, source: SourceFile, methodology: Methodology) -> list[SignalHit]:
         t = methodology.thresholds_for(self.id)
         names = {n for n in source.identifiers if not n.startswith("__")}
         if len(names) < t["min_identifiers"]:
             return []
-        generic = sorted(n for n in names if n in _GENERIC_NAMES or _GENERIC_FUNCTION.match(n))
+        generic = sorted(
+            n for n in names if _snake(n) in _GENERIC_NAMES or _GENERIC_FUNCTION.match(_snake(n))
+        )
         considered = [n for n in names if n not in _SHORT_OK]
         if not considered:
             return []
         avg_len = sum(len(n) for n in considered) / len(considered)
-        short = [n for n in considered if len(n.strip("_")) <= 2]
+        short = [n for n in considered if len(n.strip("_$")) <= 2]
         generic_ratio = len(generic) / len(names)
         short_ratio = len(short) / len(considered)
 
@@ -167,11 +174,11 @@ class NamingPatterns(FileSignal):
                 )
             ]
         if short_ratio >= t["short_ratio"]:
+            shown = ", ".join(sorted(short)[:5])
             return [
                 self.hit(
                     -0.3,
-                    f"Terse abbreviated names ({', '.join(sorted(short)[:5])}), "
-                    "a habit of people more than of AI tools.",
+                    f"Terse abbreviated names ({shown}), a habit of people more than of AI tools.",
                     [
                         Evidence(
                             kind="file", location=source.path, detail=", ".join(sorted(short)[:8])
@@ -189,14 +196,14 @@ class Idiosyncrasy(FileSignal):
     version = "1"
     family = "human_traces"
 
-    def evaluate(self, source: PythonFile, methodology: Methodology) -> list[SignalHit]:
+    def evaluate(self, source: SourceFile, methodology: Methodology) -> list[SignalHit]:
         t = methodology.thresholds_for(self.id)
         found: list[tuple[int, str]] = []
         for comment in source.comments:
             if _TODO.search(comment.text) and _TODO_PERSONAL.search(comment.text):
-                found.append((comment.line, f"personal note: # {comment.text[:70]}"))
+                found.append((comment.line, f"personal note: {comment.text[:70]}"))
             elif _INFORMAL.search(comment.text):
-                found.append((comment.line, f"informal remark: # {comment.text[:70]}"))
+                found.append((comment.line, f"informal remark: {comment.text[:70]}"))
         strength = t["per_marker"] * len(found)
         parts = [f"{len(found)} personal or informal comments"] if found else []
 
@@ -223,16 +230,6 @@ class Idiosyncrasy(FileSignal):
         ]
 
 
-def _looks_like_code(text: str) -> bool:
-    if not _CODE_HINT.search(text) or text.endswith((".", "?", "!")):
-        return False
-    try:
-        ast.parse(text)
-    except SyntaxError:
-        return False
-    return True
-
-
 class DeadOrDebugCode(FileSignal):
     """Commented-out code and leftover debugging are rare in freshly generated code."""
 
@@ -240,24 +237,15 @@ class DeadOrDebugCode(FileSignal):
     version = "1"
     family = "human_traces"
 
-    def evaluate(self, source: PythonFile, methodology: Methodology) -> list[SignalHit]:
+    def evaluate(self, source: SourceFile, methodology: Methodology) -> list[SignalHit]:
         t = methodology.thresholds_for(self.id)
         blocks: list[int] = []
         previous = -2
-        for comment in source.comments:
-            if comment.own_line and _looks_like_code(comment.text):
-                if comment.line != previous + 1:
-                    blocks.append(comment.line)
-                previous = comment.line
-
-        debug: list[tuple[int, str]] = []
-        for line, name, args in source.calls:
-            if name == "print" and args and args[0].strip(" .!:").lower() in _DEBUG_WORDS:
-                debug.append((line, f'print("{args[0]}")'))
-            elif name in {"breakpoint", "set_trace"}:
-                debug.append((line, f"{name}()"))
-        debug += [(line, f"import {mod}") for line, mod in source.imports if mod in {"pdb", "ipdb"}]
-
+        for line in sorted(source.commented_code_lines):
+            if line != previous + 1:
+                blocks.append(line)
+            previous = line
+        debug = source.debug_statements
         if not blocks and not debug:
             return []
         strength = t["per_block"] * len(blocks) + t["per_debug"] * len(debug)

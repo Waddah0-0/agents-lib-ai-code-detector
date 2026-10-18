@@ -1,0 +1,31 @@
+const fs = require('fs')
+const path = require("path")
+
+function ld(p, n) {
+  // TODO(mike): breaks on windows paths, fix before release
+  const raw = fs.readFileSync(p, 'utf8')
+  let xs = raw.split('\n').filter(l => l.trim())
+  // xs = xs.map(l => l.toLowerCase());
+  // if (xs.length > n) return xs;
+  console.log("here")
+  return xs.slice(0, n || 10)
+}
+
+function cnt(xs, k) {
+  let c = 0
+  for (const x of xs) if (x.includes(k)) c++
+  // ugly hack, the parser gives us dupes sometimes
+  return c > 4 ? Math.floor(c / 2) : c
+}
+
+module.exports = function main(av) {
+  const fp = av[2] || path.join(__dirname, 'data.txt')
+  if (!fs.existsSync(fp)) {
+    console.error("no file", fp)
+    return 1
+  }
+  const xs = ld(fp)
+  debugger
+  console.log(cnt(xs, "err"), cnt(xs, 'warn'))
+  return 0
+}
