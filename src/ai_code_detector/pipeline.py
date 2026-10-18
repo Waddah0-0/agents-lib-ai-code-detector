@@ -21,6 +21,8 @@ from ai_code_detector.aggregate import (
     repo_estimate,
     repo_shift,
 )
+from ai_code_detector.judge.llm_judge import Judge, JudgeRun, JudgeSettings
+from ai_code_detector.judge.sampler import sample_files
 from ai_code_detector.markers import MarkerSet, detect_commit_markers, detect_config_files
 from ai_code_detector.methodology import Methodology
 from ai_code_detector.models import DetectorInput, DetectorOutput, FileScore, SignalHit
@@ -85,6 +87,59 @@ def _analyse_file(ws: Workspace, info: FileInfo, methodology: Methodology) -> Fi
         probability=round(file_probability(hits, methodology), 4),
         signals=hits,
     )
+
+
+async def _run_judge(
+    ws: Workspace,
+    params: DetectorInput,
+    ctx: RunContext,
+    methodology: Methodology,
+    scored: list[FileScore],
+) -> JudgeRun:
+    """Judge a sample of files and fold the verdicts into their probabilities."""
+    if ctx.llm is None:
+        return JudgeRun(
+            warnings=["The LLM judge was requested, but no model is configured."], partial=True
+        )
+    cfg = methodology.section("judge")
+    settings = JudgeSettings(
+        window_lines=int(cfg["window_lines"]),
+        token_budget=int(cfg["token_budget"]),
+        max_output_tokens=int(cfg["max_output_tokens"]),
+        agreement_share=float(cfg["agreement_share"]),
+        agreement_min_files=int(cfg["agreement_min_files"]),
+        disagreement_threshold=float(cfg["disagreement_threshold"]),
+    )
+    sample = sample_files(
+        scored, max_files=params.max_files_for_judge, min_lines=int(cfg["min_lines"]),
+        seed_text=ws.source,
+    )  # fmt: skip
+    if not sample:
+        return JudgeRun(warnings=["No file was large enough for the LLM judge."])
+    texts = await asyncio.to_thread(lambda: [ws.read_text(f.path) for f in sample])
+    llm = ctx.llm.session(max_cost_usd=params.max_cost_usd)
+
+    def progress(index: int, total: int, path: str) -> None:
+        ctx.report_progress("judge", f"Judging {path} ({index + 1}/{total})", 0.9)
+
+    run = await Judge(llm, settings).run(
+        list(zip(sample, texts, strict=True)),
+        max_seconds=params.max_judge_seconds,
+        cancelled=lambda: ctx.cancel_token.cancelled,
+        progress=progress,
+    )
+    for f in scored:
+        verdict = run.verdicts.get(f.path)
+        if verdict is not None:
+            f.judge = verdict
+            f.probability = round(
+                file_probability(f.signals, methodology, verdict.likelihood_ai, verdict.confidence),
+                4,
+            )
+    if not run.verdicts:
+        run.warnings.append("The LLM judge produced no usable verdicts.")
+        run.partial = True
+    return run
 
 
 def _ranked_evidence(
@@ -186,12 +241,16 @@ async def detect(
         n = skip_reasons["unparseable"] + skip_reasons["unreadable"]
         warnings.append(f"{n} source files could not be read or parsed and were skipped.")
         partial = True
+    # 5-6. LLM judge on a sample of files
+    judge_disagreement = False
     if params.use_llm_judge:
-        warnings.append(
-            "The LLM judge is not available yet (phase 4); "
-            "the estimate uses heuristic signals only."
+        judge_outcome = await _run_judge(ws, params, ctx, methodology, scored)
+        warnings += judge_outcome.warnings
+        partial = partial or judge_outcome.partial
+        judge_disagreement = judge_outcome.disagreement is not None and (
+            judge_outcome.disagreement
+            > float(methodology.section("judge")["disagreement_threshold"])
         )
-        partial = True
 
     # 7. aggregate
     ctx.report_progress("aggregate", "Combining the evidence", 0.95)
@@ -208,7 +267,10 @@ async def detect(
     supported_share = supported_bytes / code_bytes if code_bytes else 0.0
     families = {h.family for h in repo_hits} | {h.family for f in main_files for h in f.signals}
     confidence, reasons = confidence_level(
-        ConfidenceFacts(len(families), len(main_files), high - low, supported_share), methodology
+        ConfidenceFacts(
+            len(families), len(main_files), high - low, supported_share, judge_disagreement
+        ),
+        methodology,
     )
 
     output = DetectorOutput(

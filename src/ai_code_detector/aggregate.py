@@ -37,10 +37,23 @@ def family_scores(hits: Iterable[SignalHit], secondary_factor: float) -> dict[st
     return scores
 
 
-def file_probability(hits: Sequence[SignalHit], methodology: Methodology) -> float:
+def file_logit(hits: Sequence[SignalHit], methodology: Methodology) -> float:
     weights = methodology.file_weights
     scores = family_scores(hits, methodology.secondary_factor)
-    z = methodology.bias + sum(weights.get(f, 0.0) * s for f, s in scores.items())
+    return methodology.bias + sum(weights.get(f, 0.0) * s for f, s in scores.items())
+
+
+def file_probability(
+    hits: Sequence[SignalHit],
+    methodology: Methodology,
+    judge_likelihood: float | None = None,
+    judge_confidence: float = 1.0,
+) -> float:
+    """Signals' log-odds, plus the judge's (scaled by its confidence) when it ran."""
+    z = file_logit(hits, methodology)
+    if judge_likelihood is not None:
+        weight = float(methodology.section("judge")["weight"])
+        z += weight * judge_confidence * logit(min(max(judge_likelihood, 0.05), 0.95))
     return sigmoid(z)
 
 
@@ -89,6 +102,7 @@ class ConfidenceFacts:
     files: int
     width: float
     supported_share: float
+    judge_disagreement: bool = False
 
 
 def confidence_level(
@@ -116,8 +130,13 @@ def confidence_level(
     uncalibrated = (
         f"methodology {methodology.version} has not been calibrated against evaluation data yet"
     )
+    disagreement = "the LLM judge gave inconsistent verdicts when its rubric was reordered"
     if all(ok for ok, _ in high_checks):
+        if facts.judge_disagreement:
+            return "medium", [disagreement]
         return ("high", []) if methodology.calibrated else ("medium", [uncalibrated])
     if all(ok for ok, _ in medium_checks):
+        if facts.judge_disagreement:
+            return "low", [reason for ok, reason in high_checks if not ok] + [disagreement]
         return "medium", [reason for ok, reason in high_checks if not ok]
     return "low", [reason for ok, reason in medium_checks if not ok]

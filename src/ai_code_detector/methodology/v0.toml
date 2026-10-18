@@ -30,6 +30,18 @@ human_traces = 1.0
 history = 0.8
 docs = 0.3
 
+# LLM judge (phase 4). weight: log-odds added per unit of logit(judge likelihood),
+# scaled by the judge's own confidence. Until calibration (v1) this is a guess.
+[judge]
+weight = 0.5
+min_lines = 30
+window_lines = 250
+token_budget = 6000
+max_output_tokens = 700
+agreement_share = 0.2
+agreement_min_files = 2
+disagreement_threshold = 0.3
+
 [bootstrap]
 resamples = 1000
 seed = 1234

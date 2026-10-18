@@ -63,10 +63,10 @@ async def test_history_signals(ai_repo: Path, human_repo: Path) -> None:
     assert depth and depth[0]["strength"] < 0
 
 
-async def test_judge_request_is_partial_until_phase_4(ai_repo: Path) -> None:
+async def test_judge_without_a_model_is_partial(ai_repo: Path) -> None:
     result = (await detect(ai_repo, use_llm_judge=True))["result"]
     assert result.status == "partial"
-    assert any("LLM judge is not available" in w for w in result.warnings)
+    assert any("no model is configured" in w for w in result.warnings)
 
 
 async def test_unparseable_files_make_the_result_partial(ai_repo: Path) -> None:
