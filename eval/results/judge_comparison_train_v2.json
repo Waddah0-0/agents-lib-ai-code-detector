@@ -1,0 +1,905 @@
+[
+  {
+    "model": "qwen3.5:9b",
+    "success_rate": 1.0,
+    "seconds_per_file": 14.014,
+    "mean_ai": 0.468,
+    "mean_human": 0.178,
+    "mean_recent_human": 0.233,
+    "file_auc": 0.8788,
+    "rows": [
+      {
+        "sample": "a-absurdissimo",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "site/components/CommunityProfile.tsx",
+        "seconds": 14.5,
+        "output_tokens": 185,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "a-absurdissimo",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "site/app/admin/incubator/format.ts",
+        "seconds": 10.0,
+        "output_tokens": 120,
+        "likelihood": 0.25,
+        "error": null
+      },
+      {
+        "sample": "a-bamboobrush",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "reviews.js",
+        "seconds": 21.1,
+        "output_tokens": 291,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "a-bamboobrush",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "gtag.js",
+        "seconds": 15.6,
+        "output_tokens": 191,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "a-family-butler-v2",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "frontend/src/shared/theme/tokens.ts",
+        "seconds": 17.7,
+        "output_tokens": 221,
+        "likelihood": 0.85,
+        "error": null
+      },
+      {
+        "sample": "a-family-butler-v2",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "frontend/src/features/settings/components/EventTypeDialog.tsx",
+        "seconds": 10.5,
+        "output_tokens": 118,
+        "likelihood": 0.85,
+        "error": null
+      },
+      {
+        "sample": "a-ai-benchmarking-",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "app.py",
+        "seconds": 12.9,
+        "output_tokens": 167,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "a-ai-benchmarking-",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "backend/hardware.py",
+        "seconds": 14.2,
+        "output_tokens": 178,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "a-answerme",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "scripts/check.py",
+        "seconds": 17.1,
+        "output_tokens": 214,
+        "likelihood": 0.65,
+        "error": null
+      },
+      {
+        "sample": "a-cas",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "scripts/dump_mcp_catalog.py",
+        "seconds": 11.1,
+        "output_tokens": 123,
+        "likelihood": 0.15,
+        "error": null
+      },
+      {
+        "sample": "a-cas",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "sage/services/vault_source_errors.py",
+        "seconds": 13.2,
+        "output_tokens": 166,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "h-apscheduler",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "apscheduler/triggers/calendarinterval.py",
+        "seconds": 13.8,
+        "output_tokens": 174,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "h-apscheduler",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "apscheduler/marshalling.py",
+        "seconds": 13.6,
+        "output_tokens": 172,
+        "likelihood": 0.1,
+        "error": null
+      },
+      {
+        "sample": "h-arrow",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "arrow/factory.py",
+        "seconds": 11.6,
+        "output_tokens": 143,
+        "likelihood": 0.1,
+        "error": null
+      },
+      {
+        "sample": "h-arrow",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "arrow/util.py",
+        "seconds": 12.7,
+        "output_tokens": 157,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "h-blinker",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "blinker/_saferef.py",
+        "seconds": 10.5,
+        "output_tokens": 116,
+        "likelihood": 0.1,
+        "error": null
+      },
+      {
+        "sample": "h-blinker",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "docs/source/conf.py",
+        "seconds": 15.2,
+        "output_tokens": 185,
+        "likelihood": 0.1,
+        "error": null
+      },
+      {
+        "sample": "h-axios",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "lib/helpers/isURLSameOrigin.js",
+        "seconds": 13.6,
+        "output_tokens": 165,
+        "likelihood": 0.1,
+        "error": null
+      },
+      {
+        "sample": "h-axios",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "karma.conf.js",
+        "seconds": 11.1,
+        "output_tokens": 123,
+        "likelihood": 0.1,
+        "error": null
+      },
+      {
+        "sample": "h-chalk",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "source/templates.js",
+        "seconds": 13.8,
+        "output_tokens": 163,
+        "likelihood": 0.1,
+        "error": null
+      },
+      {
+        "sample": "h-chalk",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "source/index.js",
+        "seconds": 29.2,
+        "output_tokens": 352,
+        "likelihood": 0.1,
+        "error": null
+      },
+      {
+        "sample": "h-immer",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "src/utils/plugins.ts",
+        "seconds": 11.3,
+        "output_tokens": 117,
+        "likelihood": 0.1,
+        "error": null
+      },
+      {
+        "sample": "h-immer",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "src/core/scope.ts",
+        "seconds": 15.3,
+        "output_tokens": 175,
+        "likelihood": 0.1,
+        "error": null
+      },
+      {
+        "sample": "h-gentoolkit",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "pym/gentoolkit/module_base.py",
+        "seconds": 15.6,
+        "output_tokens": 186,
+        "likelihood": 0.1,
+        "error": null
+      },
+      {
+        "sample": "h-gentoolkit",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "pym/gentoolkit/errors.py",
+        "seconds": 11.7,
+        "output_tokens": 128,
+        "likelihood": 0.1,
+        "error": null
+      },
+      {
+        "sample": "h-mirrorselect",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "mirrorselect/selectors/shallow.py",
+        "seconds": 13.8,
+        "output_tokens": 159,
+        "likelihood": 0.5,
+        "error": null
+      },
+      {
+        "sample": "h-mirrorselect",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "mirrorselect/selectors/deep.py",
+        "seconds": 10.4,
+        "output_tokens": 109,
+        "likelihood": 0.1,
+        "error": null
+      },
+      {
+        "sample": "h-pkgcheck",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "src/pkgcheck/checks/acct.py",
+        "seconds": 13.9,
+        "output_tokens": 165,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "h-pkgcheck",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "doc/generate/pkgcheck/keywords.py",
+        "seconds": 11.4,
+        "output_tokens": 135,
+        "likelihood": 0.2,
+        "error": null
+      }
+    ]
+  },
+  {
+    "model": "qwen2.5:7b",
+    "success_rate": 1.0,
+    "seconds_per_file": 7.424,
+    "mean_ai": 0.505,
+    "mean_human": 0.472,
+    "mean_recent_human": 0.45,
+    "file_auc": 0.5581,
+    "rows": [
+      {
+        "sample": "a-absurdissimo",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "site/components/CommunityProfile.tsx",
+        "seconds": 11.9,
+        "output_tokens": 152,
+        "likelihood": 0.7,
+        "error": null
+      },
+      {
+        "sample": "a-absurdissimo",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "site/app/admin/incubator/format.ts",
+        "seconds": 7.8,
+        "output_tokens": 196,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "a-bamboobrush",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "reviews.js",
+        "seconds": 7.6,
+        "output_tokens": 181,
+        "likelihood": 0.6,
+        "error": null
+      },
+      {
+        "sample": "a-bamboobrush",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "gtag.js",
+        "seconds": 8.5,
+        "output_tokens": 185,
+        "likelihood": 0.2,
+        "error": null
+      },
+      {
+        "sample": "a-family-butler-v2",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "frontend/src/shared/theme/tokens.ts",
+        "seconds": 7.5,
+        "output_tokens": 184,
+        "likelihood": 0.3,
+        "error": null
+      },
+      {
+        "sample": "a-family-butler-v2",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "frontend/src/features/settings/components/EventTypeDialog.tsx",
+        "seconds": 7.4,
+        "output_tokens": 188,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "a-ai-benchmarking-",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "app.py",
+        "seconds": 6.9,
+        "output_tokens": 175,
+        "likelihood": 0.5,
+        "error": null
+      },
+      {
+        "sample": "a-ai-benchmarking-",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "backend/hardware.py",
+        "seconds": 6.6,
+        "output_tokens": 167,
+        "likelihood": 0.75,
+        "error": null
+      },
+      {
+        "sample": "a-answerme",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "scripts/check.py",
+        "seconds": 8.4,
+        "output_tokens": 217,
+        "likelihood": 0.7,
+        "error": null
+      },
+      {
+        "sample": "a-cas",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "scripts/dump_mcp_catalog.py",
+        "seconds": 6.8,
+        "output_tokens": 170,
+        "likelihood": 0.6,
+        "error": null
+      },
+      {
+        "sample": "a-cas",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "sage/services/vault_source_errors.py",
+        "seconds": 6.5,
+        "output_tokens": 164,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "h-apscheduler",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "apscheduler/triggers/calendarinterval.py",
+        "seconds": 6.9,
+        "output_tokens": 175,
+        "likelihood": 0.5,
+        "error": null
+      },
+      {
+        "sample": "h-apscheduler",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "apscheduler/marshalling.py",
+        "seconds": 7.4,
+        "output_tokens": 186,
+        "likelihood": 0.6,
+        "error": null
+      },
+      {
+        "sample": "h-arrow",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "arrow/factory.py",
+        "seconds": 7.2,
+        "output_tokens": 180,
+        "likelihood": 0.6,
+        "error": null
+      },
+      {
+        "sample": "h-arrow",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "arrow/util.py",
+        "seconds": 6.2,
+        "output_tokens": 153,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "h-blinker",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "blinker/_saferef.py",
+        "seconds": 8.5,
+        "output_tokens": 196,
+        "likelihood": 0.25,
+        "error": null
+      },
+      {
+        "sample": "h-blinker",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "docs/source/conf.py",
+        "seconds": 6.9,
+        "output_tokens": 151,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "h-axios",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "lib/helpers/isURLSameOrigin.js",
+        "seconds": 6.7,
+        "output_tokens": 175,
+        "likelihood": 0.3,
+        "error": null
+      },
+      {
+        "sample": "h-axios",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "karma.conf.js",
+        "seconds": 6.1,
+        "output_tokens": 144,
+        "likelihood": 0.5,
+        "error": null
+      },
+      {
+        "sample": "h-chalk",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "source/templates.js",
+        "seconds": 7.4,
+        "output_tokens": 182,
+        "likelihood": 0.8,
+        "error": null
+      },
+      {
+        "sample": "h-chalk",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "source/index.js",
+        "seconds": 7.3,
+        "output_tokens": 178,
+        "likelihood": 0.65,
+        "error": null
+      },
+      {
+        "sample": "h-immer",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "src/utils/plugins.ts",
+        "seconds": 6.8,
+        "output_tokens": 160,
+        "likelihood": 0.6,
+        "error": null
+      },
+      {
+        "sample": "h-immer",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "src/core/scope.ts",
+        "seconds": 6.7,
+        "output_tokens": 162,
+        "likelihood": 0.2,
+        "error": null
+      },
+      {
+        "sample": "h-gentoolkit",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "pym/gentoolkit/module_base.py",
+        "seconds": 8.1,
+        "output_tokens": 200,
+        "likelihood": 0.5,
+        "error": null
+      },
+      {
+        "sample": "h-gentoolkit",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "pym/gentoolkit/errors.py",
+        "seconds": 8.3,
+        "output_tokens": 200,
+        "likelihood": 0.3,
+        "error": null
+      },
+      {
+        "sample": "h-mirrorselect",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "mirrorselect/selectors/shallow.py",
+        "seconds": 7.6,
+        "output_tokens": 184,
+        "likelihood": 0.5,
+        "error": null
+      },
+      {
+        "sample": "h-mirrorselect",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "mirrorselect/selectors/deep.py",
+        "seconds": 7.3,
+        "output_tokens": 184,
+        "likelihood": 0.4,
+        "error": null
+      },
+      {
+        "sample": "h-pkgcheck",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "src/pkgcheck/checks/acct.py",
+        "seconds": 6.8,
+        "output_tokens": 176,
+        "likelihood": 0.6,
+        "error": null
+      },
+      {
+        "sample": "h-pkgcheck",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "doc/generate/pkgcheck/keywords.py",
+        "seconds": 7.2,
+        "output_tokens": 189,
+        "likelihood": 0.4,
+        "error": null
+      }
+    ]
+  },
+  {
+    "model": "qwen2.5-coder:7b-instruct-q6_K",
+    "success_rate": 1.0,
+    "seconds_per_file": 17.648,
+    "mean_ai": 0.8,
+    "mean_human": 0.739,
+    "mean_recent_human": 0.783,
+    "file_auc": 0.5833,
+    "rows": [
+      {
+        "sample": "a-absurdissimo",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "site/components/CommunityProfile.tsx",
+        "seconds": 24.7,
+        "output_tokens": 208,
+        "likelihood": 0.7,
+        "error": null
+      },
+      {
+        "sample": "a-absurdissimo",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "site/app/admin/incubator/format.ts",
+        "seconds": 17.6,
+        "output_tokens": 215,
+        "likelihood": 0.8,
+        "error": null
+      },
+      {
+        "sample": "a-bamboobrush",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "reviews.js",
+        "seconds": 19.5,
+        "output_tokens": 239,
+        "likelihood": 0.7,
+        "error": null
+      },
+      {
+        "sample": "a-bamboobrush",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "gtag.js",
+        "seconds": 14.4,
+        "output_tokens": 173,
+        "likelihood": 0.9,
+        "error": null
+      },
+      {
+        "sample": "a-family-butler-v2",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "frontend/src/shared/theme/tokens.ts",
+        "seconds": 18.8,
+        "output_tokens": 229,
+        "likelihood": 0.8,
+        "error": null
+      },
+      {
+        "sample": "a-family-butler-v2",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "frontend/src/features/settings/components/EventTypeDialog.tsx",
+        "seconds": 17.9,
+        "output_tokens": 223,
+        "likelihood": 0.7,
+        "error": null
+      },
+      {
+        "sample": "a-ai-benchmarking-",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "app.py",
+        "seconds": 17.2,
+        "output_tokens": 213,
+        "likelihood": 0.8,
+        "error": null
+      },
+      {
+        "sample": "a-ai-benchmarking-",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "backend/hardware.py",
+        "seconds": 14.2,
+        "output_tokens": 174,
+        "likelihood": 0.7,
+        "error": null
+      },
+      {
+        "sample": "a-answerme",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "scripts/check.py",
+        "seconds": 15.8,
+        "output_tokens": 195,
+        "likelihood": 0.9,
+        "error": null
+      },
+      {
+        "sample": "a-cas",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "scripts/dump_mcp_catalog.py",
+        "seconds": 15.5,
+        "output_tokens": 191,
+        "likelihood": 0.9,
+        "error": null
+      },
+      {
+        "sample": "a-cas",
+        "is_ai": true,
+        "era": "post2023",
+        "file": "sage/services/vault_source_errors.py",
+        "seconds": 19.8,
+        "output_tokens": 251,
+        "likelihood": 0.9,
+        "error": null
+      },
+      {
+        "sample": "h-apscheduler",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "apscheduler/triggers/calendarinterval.py",
+        "seconds": 19.2,
+        "output_tokens": 242,
+        "likelihood": 0.7,
+        "error": null
+      },
+      {
+        "sample": "h-apscheduler",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "apscheduler/marshalling.py",
+        "seconds": 15.2,
+        "output_tokens": 185,
+        "likelihood": 0.8,
+        "error": null
+      },
+      {
+        "sample": "h-arrow",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "arrow/factory.py",
+        "seconds": 14.4,
+        "output_tokens": 174,
+        "likelihood": 0.8,
+        "error": null
+      },
+      {
+        "sample": "h-arrow",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "arrow/util.py",
+        "seconds": 14.4,
+        "output_tokens": 175,
+        "likelihood": 0.8,
+        "error": null
+      },
+      {
+        "sample": "h-blinker",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "blinker/_saferef.py",
+        "seconds": 19.4,
+        "output_tokens": 239,
+        "likelihood": 0.5,
+        "error": null
+      },
+      {
+        "sample": "h-blinker",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "docs/source/conf.py",
+        "seconds": 14.7,
+        "output_tokens": 168,
+        "likelihood": 0.5,
+        "error": null
+      },
+      {
+        "sample": "h-axios",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "lib/helpers/isURLSameOrigin.js",
+        "seconds": 18.9,
+        "output_tokens": 217,
+        "likelihood": 0.8,
+        "error": null
+      },
+      {
+        "sample": "h-axios",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "karma.conf.js",
+        "seconds": 18.2,
+        "output_tokens": 204,
+        "likelihood": 0.3,
+        "error": null
+      },
+      {
+        "sample": "h-chalk",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "source/templates.js",
+        "seconds": 19.6,
+        "output_tokens": 228,
+        "likelihood": 0.9,
+        "error": null
+      },
+      {
+        "sample": "h-chalk",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "source/index.js",
+        "seconds": 20.6,
+        "output_tokens": 238,
+        "likelihood": 0.8,
+        "error": null
+      },
+      {
+        "sample": "h-immer",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "src/utils/plugins.ts",
+        "seconds": 18.9,
+        "output_tokens": 217,
+        "likelihood": 0.8,
+        "error": null
+      },
+      {
+        "sample": "h-immer",
+        "is_ai": false,
+        "era": "pre2021",
+        "file": "src/core/scope.ts",
+        "seconds": 19.5,
+        "output_tokens": 229,
+        "likelihood": 0.9,
+        "error": null
+      },
+      {
+        "sample": "h-gentoolkit",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "pym/gentoolkit/module_base.py",
+        "seconds": 17.2,
+        "output_tokens": 198,
+        "likelihood": 0.7,
+        "error": null
+      },
+      {
+        "sample": "h-gentoolkit",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "pym/gentoolkit/errors.py",
+        "seconds": 15.6,
+        "output_tokens": 177,
+        "likelihood": 0.8,
+        "error": null
+      },
+      {
+        "sample": "h-mirrorselect",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "mirrorselect/selectors/shallow.py",
+        "seconds": 18.4,
+        "output_tokens": 216,
+        "likelihood": 0.7,
+        "error": null
+      },
+      {
+        "sample": "h-mirrorselect",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "mirrorselect/selectors/deep.py",
+        "seconds": 19.8,
+        "output_tokens": 215,
+        "likelihood": 0.8,
+        "error": null
+      },
+      {
+        "sample": "h-pkgcheck",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "src/pkgcheck/checks/acct.py",
+        "seconds": 15.8,
+        "output_tokens": 177,
+        "likelihood": 0.9,
+        "error": null
+      },
+      {
+        "sample": "h-pkgcheck",
+        "is_ai": false,
+        "era": "post2023",
+        "file": "doc/generate/pkgcheck/keywords.py",
+        "seconds": 16.6,
+        "output_tokens": 190,
+        "likelihood": 0.8,
+        "error": null
+      }
+    ]
+  }
+]
