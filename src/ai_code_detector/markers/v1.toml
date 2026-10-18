@@ -1,0 +1,98 @@
+# Explicit traces of AI coding tools (methodology: "metadata markers").
+#
+# Markers prove that a tool was used. They never enter the statistical estimate, because they
+# are trivially added or removed; they are reported separately.
+#
+# Every commit marker below was checked against a real public commit on 2026-10-18 (the
+# `example` field). Add new markers only with a verified example.
+
+version = "v1"
+
+# Files or folders created or read by AI coding tools. Paths are relative to the analysed root.
+[[config_file]]
+path = "CLAUDE.md"
+tool = "Claude Code"
+
+[[config_file]]
+path = ".claude"
+tool = "Claude Code"
+
+[[config_file]]
+path = "AGENTS.md"
+tool = "an AI coding agent (AGENTS.md convention)"
+
+[[config_file]]
+path = "GEMINI.md"
+tool = "Gemini CLI"
+
+[[config_file]]
+path = ".cursorrules"
+tool = "Cursor"
+
+[[config_file]]
+path = ".cursor/rules"
+tool = "Cursor"
+
+[[config_file]]
+path = ".github/copilot-instructions.md"
+tool = "GitHub Copilot"
+
+[[config_file]]
+path = ".windsurfrules"
+tool = "Windsurf"
+
+[[config_file]]
+path = ".clinerules"
+tool = "Cline"
+
+[[config_file]]
+path = ".aider.conf.yml"
+tool = "Aider"
+
+# Co-author trailers: matched (case-insensitively) against each "Co-authored-by:" line.
+[[trailer]]
+pattern = '<noreply@anthropic\.com>'
+tool = "Claude"
+example = "adanalife/infra@3d78c8a36c"
+
+[[trailer]]
+pattern = '^co-authored-by:\s*gemini\b.*<noreply@google\.com>'
+tool = "Gemini"
+example = "seanpor/JA4proxy@b7150f7451"
+
+[[trailer]]
+pattern = '<noreply@openai\.com>'
+tool = "OpenAI Codex"
+example = "openflowfm/visuals@f8b135806e"
+
+[[trailer]]
+pattern = '<cursoragent@cursor\.com>'
+tool = "Cursor"
+example = "juliano-pezzini/mytruetrack@4a62fff1c0"
+
+# Lines anywhere in a commit message.
+[[message_line]]
+pattern = 'generated with \[?claude code'
+tool = "Claude Code"
+example = "briandconnelly/skills@51be76c730"
+
+# Author or committer identities ("name <email>"), matched case-insensitively.
+[[identity]]
+pattern = '\(aider\)\s*<'
+tool = "Aider"
+example = "uwislab/urobot-mcp@478a4e9c25"
+
+[[identity]]
+pattern = '<198982749\+copilot@users\.noreply\.github\.com>'
+tool = "GitHub Copilot coding agent"
+example = "Mryan2005/novel-manager@a6fc1dfdf3"
+
+[[identity]]
+pattern = 'devin-ai-integration\[bot\]'
+tool = "Devin"
+example = "Huvinesh-Rajendran-12/culture-engine@8793214468"
+
+[[identity]]
+pattern = 'google-labs-jules\[bot\]'
+tool = "Jules"
+example = "rvoidex7/entropy-forge@4efef3bc21"

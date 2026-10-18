@@ -1,0 +1,100 @@
+# Methodology v0: hand-set weights and thresholds (phase 3, before any data).
+#
+# These numbers are starting guesses, not calibrated values. Phase 4 replaces them with
+# weights fitted on the evaluation dataset (methodology v1). Change nothing here without
+# re-running the evaluation and recording the results.
+
+version = "v0"
+
+# Inside a signal family, the strongest hit counts fully and the others by this factor.
+secondary_factor = 0.25
+
+# Python files with fewer code lines than this are too small to judge and are skipped.
+min_code_lines = 15
+
+# Prior log-odds of AI assistance when there is no evidence (0.0 means 0.5).
+bias = 0.0
+
+# Log-odds weight per file-level family.
+[file_weights]
+comments = 1.0
+naming = 0.4
+human_traces = 1.0
+
+# Log-odds shift per repository-level family, applied to the repository estimate.
+[repo_weights]
+history = 0.8
+docs = 0.3
+
+[bootstrap]
+resamples = 1000
+seed = 1234
+low_quantile = 0.10
+high_quantile = 0.90
+min_files = 5
+
+[confidence]
+high_families = 3
+high_files = 20
+high_max_width = 0.25
+high_supported_share = 0.8
+medium_families = 2
+medium_files = 5
+medium_max_width = 0.45
+
+[thresholds.comment_density]
+density_low = 0.20          # (comment + docstring lines) / code lines where AI evidence starts
+density_high = 0.60         # ... and where it is at full strength
+trivial_max_statements = 2  # a function with at most this many statements is "trivial"
+trivial_min_count = 3
+trivial_ratio_low = 0.5     # share of trivial functions with docstrings where evidence starts
+sparse_density = 0.02       # below this, with enough code, comments are evidence of a human
+sparse_min_code_lines = 60
+sparse_strength = -0.3
+
+[thresholds.restating_comments]
+min_words = 2
+max_words = 10
+min_overlap = 0.6
+min_count = 2
+min_ratio = 0.25
+
+[thresholds.naming_patterns]
+min_identifiers = 10
+generic_ratio = 0.15
+min_avg_length = 8.0
+short_ratio = 0.25
+
+[thresholds.idiosyncrasy]
+per_marker = 0.25
+quote_min_strings = 10
+quote_min_minority = 0.25
+quote_strength = 0.2
+max_strength = 0.8
+
+[thresholds.dead_or_debug_code]
+per_block = 0.2
+per_debug = 0.3
+max_strength = 0.8
+
+[thresholds.commit_shape]
+min_files = 10
+first_share = 0.6
+large_commit_files = 15
+large_commit_share = 0.3
+min_commits_for_large = 5
+single_commit_strength = 0.25
+
+[thresholds.history_depth]
+min_commits = 30
+min_span_days = 90
+messy_share = 0.15
+small_min_commits = 10
+small_min_span_days = 30
+small_messy_share = 0.2
+
+[thresholds.readme_patterns]
+emoji_headings = 3
+template_sections = 5
+marketing_words = 3
+max_strength = 0.6

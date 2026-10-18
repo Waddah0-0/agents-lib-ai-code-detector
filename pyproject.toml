@@ -8,6 +8,9 @@ dependencies = [
     "agents-lib-core",
 ]
 
+[project.entry-points."agents_lib.agents"]
+ai-code-detector = "ai_code_detector.agent:AICodeDetector"
+
 [tool.agents-lib]
 id = "ai-code-detector"
 stage = "planned"

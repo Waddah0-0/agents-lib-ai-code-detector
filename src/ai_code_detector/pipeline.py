@@ -1,0 +1,323 @@
+"""The detector pipeline: ingest -> markers -> repo signals -> file signals -> aggregate -> report.
+
+Steps match PLAN §9.3. The LLM judge (steps 5-6) arrives in phase 4.
+"""
+
+from __future__ import annotations
+
+import asyncio
+from collections import Counter
+from dataclasses import dataclass, field
+from pathlib import PurePosixPath
+
+from agents_core import Evidence, Finding, RunContext
+from agents_core.loaders import FileInfo, Workspace
+
+from ai_code_detector.aggregate import (
+    ConfidenceFacts,
+    confidence_level,
+    estimate_range,
+    file_probability,
+    repo_estimate,
+    repo_shift,
+)
+from ai_code_detector.markers import MarkerSet, detect_commit_markers, detect_config_files
+from ai_code_detector.methodology import Methodology
+from ai_code_detector.models import DetectorInput, DetectorOutput, FileScore, SignalHit
+from ai_code_detector.python_source import parse_python
+from ai_code_detector.signals import FILE_SIGNALS, REPO_SIGNALS, RepoContext
+
+MAX_COMMITS = 5000
+FILE_BATCH = 50
+SUPPORTED_LANGUAGES = {"python"}
+CODE_LANGUAGES = {
+    "python", "javascript", "typescript", "java", "kotlin", "scala", "go", "rust", "ruby", "php",
+    "swift", "c", "cpp", "csharp", "fsharp", "dart", "lua", "r", "objective-c", "elixir",
+    "erlang", "haskell", "clojure", "julia", "zig", "shell", "powershell", "sql", "vue", "svelte",
+}  # fmt: skip
+CAVEAT = (
+    "This is an estimate, not proof: clean human code can look machine-made and edited AI code "
+    "can look human. Do not use it as the sole basis for accusing anyone."
+)
+
+
+@dataclass
+class Detection:
+    output: DetectorOutput
+    summary: str
+    findings: list[Finding]
+    warnings: list[str] = field(default_factory=list)
+    partial: bool = False
+
+
+def is_test_path(path: str) -> bool:
+    p = PurePosixPath(path)
+    name = p.name
+    return (
+        any(part in {"test", "tests", "testing"} for part in p.parts[:-1])
+        or name.startswith("test_")
+        or name.endswith("_test.py")
+        or name == "conftest.py"
+    )
+
+
+def _analyse_file(ws: Workspace, info: FileInfo, methodology: Methodology) -> FileScore | str:
+    """A scored file, or the reason it was skipped."""
+    try:
+        text = ws.read_text(info)
+    except OSError:
+        return "unreadable"
+    source = parse_python(info.path, text)
+    if source is None:
+        return "unparseable"
+    if source.code_lines < methodology.min_code_lines:
+        return "too_small"
+    hits = [hit for signal in FILE_SIGNALS for hit in signal.evaluate(source, methodology)]
+    return FileScore(
+        path=info.path,
+        language=info.language,
+        lines=source.code_lines,
+        is_test=is_test_path(info.path),
+        probability=round(file_probability(hits, methodology), 4),
+        signals=hits,
+    )
+
+
+def _ranked_evidence(
+    repo_hits: list[SignalHit],
+    files: list[FileScore],
+    methodology: Methodology,
+    toward_ai: bool,
+    limit: int = 5,
+) -> list[Evidence]:
+    weights = {**methodology.file_weights, **methodology.repo_weights}
+    candidates: list[tuple[float, SignalHit, str | None]] = []
+    for hit in repo_hits:
+        candidates.append((hit.strength * weights.get(hit.family, 0.0), hit, None))
+    for f in files:
+        for hit in f.signals:
+            candidates.append((hit.strength * weights.get(hit.family, 0.0), hit, f.path))
+    chosen = [c for c in candidates if (c[0] > 0) == toward_ai and c[0] != 0]
+    chosen.sort(key=lambda c: abs(c[0]), reverse=True)
+    evidence = []
+    for score, hit, path in chosen[:limit]:
+        first = hit.evidence[0] if hit.evidence else None
+        evidence.append(
+            Evidence(
+                kind=first.kind if first else "file",
+                location=(first.location if first else None) or path,
+                detail=hit.explanation,
+                weight=round(score, 3),
+            )
+        )
+    return evidence
+
+
+async def detect(
+    ws: Workspace,
+    params: DetectorInput,
+    ctx: RunContext,
+    methodology: Methodology,
+    markers: MarkerSet,
+    methodology_version: str,
+) -> Detection:
+    warnings: list[str] = []
+    partial = False
+
+    # 2. metadata markers and history
+    ctx.report_progress("markers", "Reading history and looking for AI tool markers", 0.1)
+    commits = []
+    changed: dict[str, list[str]] = {}
+    if ws.git is not None and ws.git.head is not None:
+        commits = await ws.git.commits(max_count=MAX_COMMITS)
+        changed = await ws.git.changed_files(max_count=MAX_COMMITS)
+    else:
+        warnings.append("No git history was available, so history signals were skipped.")
+    truncated = len(commits) >= MAX_COMMITS
+    if truncated:
+        warnings.append(f"Only the newest {MAX_COMMITS} commits were read.")
+    found_markers = detect_config_files(ws, markers)
+    commit_markers, marked_shas = detect_commit_markers(commits, markers)
+    found_markers += commit_markers
+    ctx.check_cancelled()
+
+    # 3. repository signals
+    ctx.report_progress("repo_signals", "Evaluating the repository", 0.2)
+    repo_ctx = RepoContext(ws, methodology, commits, changed, history_truncated=truncated)
+    repo_hits = [hit for signal in REPO_SIGNALS for hit in signal.evaluate(repo_ctx)]
+    ctx.check_cancelled()
+
+    # 4. file signals (in batches off the event loop, so progress and cancellation keep working)
+    candidates = [
+        f for f in ws.files
+        if f.language in SUPPORTED_LANGUAGES and f.path.endswith(".py")
+        and (params.include_tests or not is_test_path(f.path))
+    ]  # fmt: skip
+    scored: list[FileScore] = []
+    skip_reasons: Counter[str] = Counter()
+    for start in range(0, len(candidates), FILE_BATCH):
+        batch = candidates[start : start + FILE_BATCH]
+        ctx.report_progress(
+            "file_signals",
+            f"Analysing files {start + 1}-{start + len(batch)} of {len(candidates)}",
+            0.2 + 0.7 * start / max(len(candidates), 1),
+        )
+        results = await asyncio.to_thread(
+            lambda b=batch: [_analyse_file(ws, info, methodology) for info in b]  # type: ignore[misc]
+        )
+        for outcome in results:
+            if isinstance(outcome, str):
+                skip_reasons[outcome] += 1
+            else:
+                scored.append(outcome)
+        ctx.check_cancelled()
+
+    touches: Counter[str] = Counter()
+    for sha in marked_shas:
+        touches.update(changed.get(sha, []))
+    for f in scored:
+        f.ai_commit_touches = touches.get(f.path, 0)
+
+    if skip_reasons["unparseable"] or skip_reasons["unreadable"]:
+        n = skip_reasons["unparseable"] + skip_reasons["unreadable"]
+        warnings.append(f"{n} Python files could not be read or parsed and were skipped.")
+        partial = True
+    if params.use_llm_judge:
+        warnings.append(
+            "The LLM judge is not available yet (phase 4); "
+            "the estimate uses heuristic signals only."
+        )
+        partial = True
+
+    # 7. aggregate
+    ctx.report_progress("aggregate", "Combining the evidence", 0.95)
+    main_files = [f for f in scored if not f.is_test]
+    shift = repo_shift(repo_hits, methodology)
+    estimate = round(repo_estimate(main_files, shift, methodology), 4)
+    low, high = estimate_range(main_files, shift, estimate, methodology)
+
+    languages = Counter(f.language for f in ws.files if f.language in CODE_LANGUAGES)
+    supported = {k: v for k, v in languages.items() if k in SUPPORTED_LANGUAGES}
+    unsupported = {k: v for k, v in languages.items() if k not in SUPPORTED_LANGUAGES}
+    code_bytes = sum(f.size for f in ws.files if f.language in CODE_LANGUAGES)
+    supported_bytes = sum(f.size for f in ws.files if f.language in SUPPORTED_LANGUAGES)
+    supported_share = supported_bytes / code_bytes if code_bytes else 0.0
+    families = {h.family for h in repo_hits} | {h.family for f in main_files for h in f.signals}
+    confidence, reasons = confidence_level(
+        ConfidenceFacts(len(families), len(main_files), high - low, supported_share), methodology
+    )
+
+    output = DetectorOutput(
+        methodology_version=methodology_version,
+        estimate=estimate,
+        estimate_range=(low, high),
+        confidence=confidence,
+        confidence_reasons=reasons,
+        metadata_markers=found_markers,
+        repo_signals=repo_hits,
+        files=sorted(scored, key=lambda f: f.probability, reverse=True),
+        files_analyzed=len(scored),
+        files_skipped=len(ws.skipped) + sum(skip_reasons.values()),
+        languages=dict(supported),
+        unsupported_languages=dict(unsupported),
+    )
+    findings = _findings(output, repo_hits, main_files, scored, methodology, supported_share)
+    summary = (
+        f"Estimated likelihood that this code was written with AI assistance: {estimate:.2f} "
+        f"(range {low:.2f}-{high:.2f}, {confidence} confidence), from {len(main_files)} Python "
+        f"files and {len(commits)} commits."
+    )
+    if found_markers:
+        tools = sorted({m.tool for m in found_markers})
+        summary += f" Metadata confirms AI tool usage ({', '.join(tools)})."
+    summary += " " + CAVEAT
+    return Detection(output, summary, findings, warnings, partial)
+
+
+def _findings(
+    output: DetectorOutput,
+    repo_hits: list[SignalHit],
+    main_files: list[FileScore],
+    scored: list[FileScore],
+    methodology: Methodology,
+    supported_share: float,
+) -> list[Finding]:
+    low, high = output.estimate_range
+    estimate_summary = (
+        f"{output.estimate:.2f}, plausibly between {low:.2f} and {high:.2f}; "
+        f"{output.confidence} confidence."
+    )
+    if output.confidence_reasons:
+        estimate_summary += (
+            " Confidence is limited because " + "; ".join(output.confidence_reasons) + "."
+        )
+    findings = [
+        Finding(
+            title="Estimated likelihood of AI assistance",
+            severity_or_score=output.estimate,
+            summary=estimate_summary,
+            evidence=[
+                Evidence(kind="metric", detail=f"range {low:.2f}-{high:.2f}"),
+                Evidence(kind="metric", detail=f"methodology {output.methodology_version}"),
+            ],
+        )
+    ]
+    if output.metadata_markers:
+        findings.append(
+            Finding(
+                title="AI tool usage confirmed by metadata",
+                summary=(
+                    "These traces prove that AI tools were used in this repository. They do not "
+                    "show how much of the code the tools wrote, so they are not part of the "
+                    "estimate."
+                ),
+                evidence=[
+                    Evidence(
+                        kind="config" if m.kind == "config_file" else "commit",
+                        location=m.location,
+                        detail=m.detail,
+                    )
+                    for m in output.metadata_markers
+                ],
+            )
+        )
+    toward_ai = _ranked_evidence(repo_hits, main_files, methodology, toward_ai=True)
+    toward_human = _ranked_evidence(repo_hits, main_files, methodology, toward_ai=False)
+    findings.append(
+        Finding(
+            title="Evidence toward AI assistance",
+            summary="The strongest signs of AI-written code." if toward_ai else "None found.",
+            evidence=toward_ai,
+        )
+    )
+    findings.append(
+        Finding(
+            title="Evidence toward human authorship",
+            summary="The strongest signs of people at work." if toward_human else "None found.",
+            evidence=toward_human,
+        )
+    )
+    tests = [f for f in scored if f.is_test]
+    if tests:
+        mean = sum(f.probability for f in tests) / len(tests)
+        findings.append(
+            Finding(
+                title="Test files",
+                severity_or_score=round(mean, 4),
+                summary=f"{len(tests)} test files average {mean:.2f}; they are not part of the "
+                "estimate.",
+            )
+        )
+    if output.unsupported_languages and supported_share < 0.8:
+        langs = ", ".join(f"{k} ({v})" for k, v in sorted(output.unsupported_languages.items()))
+        findings.append(
+            Finding(
+                title="Coverage",
+                summary=(
+                    f"Only {supported_share:.0%} of the code is Python, the only language "
+                    f"analysed file by file so far. Not analysed: {langs}."
+                ),
+            )
+        )
+    findings.append(Finding(title="How to read this result", summary=CAVEAT))
+    return findings

@@ -1,0 +1,35 @@
+import os
+import sys
+
+
+def ld(p, n=10):
+    # TODO(mike): this breaks on windows paths, fix before release
+    fh = open(p)
+    xs = []
+    for ln in fh:
+        if not ln.strip():
+            continue
+        xs.append(ln.rstrip())
+        # xs.append(ln.strip().lower())
+        # if len(xs) > n: break
+    print("here")
+    return xs[:n]
+
+
+def cnt(xs, k):
+    c = 0
+    for x in xs:
+        if k in x:
+            c += 1
+    # ugly hack, the parser gives us dupes sometimes
+    return c // 2 if c > 4 else c
+
+
+def main(av):
+    fp = av[1] if len(av) > 1 else 'data.txt'
+    if not os.path.exists(fp):
+        print("no file", fp)
+        return 1
+    xs = ld(fp)
+    print(cnt(xs, "err"), cnt(xs, 'warn'))
+    return 0
