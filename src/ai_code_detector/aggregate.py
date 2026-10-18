@@ -113,8 +113,11 @@ def confidence_level(
         (facts.files >= c["medium_files"], f"only {facts.files} files could be analysed"),
         (facts.width <= c["medium_max_width"], f"the range is wide ({facts.width:.2f})"),
     ]  # fmt: skip
+    uncalibrated = (
+        f"methodology {methodology.version} has not been calibrated against evaluation data yet"
+    )
     if all(ok for ok, _ in high_checks):
-        return "high", []
+        return ("high", []) if methodology.calibrated else ("medium", [uncalibrated])
     if all(ok for ok, _ in medium_checks):
         return "medium", [reason for ok, reason in high_checks if not ok]
     return "low", [reason for ok, reason in medium_checks if not ok]

@@ -6,6 +6,10 @@
 
 version = "v0"
 
+# Uncalibrated methodologies never report "high" confidence: a narrow range only shows the
+# files agree with each other under these weights, not that the weights are right.
+calibrated = false
+
 # Inside a signal family, the strongest hit counts fully and the others by this factor.
 secondary_factor = 0.25
 

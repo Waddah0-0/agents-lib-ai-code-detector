@@ -9,7 +9,7 @@ from ai_code_detector.aggregate import (
     file_probability,
     repo_estimate,
 )
-from ai_code_detector.methodology import load_methodology
+from ai_code_detector.methodology import Methodology, load_methodology
 from ai_code_detector.models import FileScore, SignalHit
 
 M = load_methodology()
@@ -58,7 +58,10 @@ def test_range_is_wide_with_few_files_and_contains_estimate() -> None:
 
 
 def test_confidence_levels() -> None:
-    assert confidence_level(ConfidenceFacts(4, 30, 0.1, 0.9), M) == ("high", [])
+    calibrated = Methodology(M.version, {**M.data, "calibrated": True})
+    assert confidence_level(ConfidenceFacts(4, 30, 0.1, 0.9), calibrated) == ("high", [])
+    level, reasons = confidence_level(ConfidenceFacts(4, 30, 0.1, 0.9), M)
+    assert level == "medium" and "not been calibrated" in reasons[0]
     level, reasons = confidence_level(ConfidenceFacts(2, 10, 0.3, 0.9), M)
     assert level == "medium" and len(reasons) == 3
     level, reasons = confidence_level(ConfidenceFacts(1, 2, 0.8, 0.9), M)

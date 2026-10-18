@@ -24,6 +24,10 @@ class Methodology:
         return int(self.data["min_code_lines"])
 
     @property
+    def calibrated(self) -> bool:
+        return bool(self.data.get("calibrated", False))
+
+    @property
     def bias(self) -> float:
         return float(self.data["bias"])
 
