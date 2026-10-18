@@ -4,7 +4,7 @@ This agent estimates how likely it is that a repository, or parts of it, was wri
 AI assistance. It always shows the reasons behind its estimate.
 
 It is in progress: heuristic signals come first (phase 3), and the model-based judge
-follows (phase 4). See the [project plan](../../PLAN.md) for the full design.
+follows (phase 4).
 
 ## How it works
 
