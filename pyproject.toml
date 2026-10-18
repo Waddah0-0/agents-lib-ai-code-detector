@@ -8,8 +8,11 @@ dependencies = [
     "agents-lib-core",
 ]
 
-[tool.uv.sources]
-agents-lib-core = { workspace = true }
+[tool.agents-lib]
+id = "ai-code-detector"
+stage = "planned"
+# Mirroring is turned on in Phase 3, once the agent does real work:
+# mirror = "Waddah0-0/agents-lib-ai-code-detector"
 
 [build-system]
 requires = ["hatchling"]
