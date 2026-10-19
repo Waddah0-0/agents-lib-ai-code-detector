@@ -25,6 +25,7 @@ class AICodeDetector(BaseAgent):
     InputModel = DetectorInput
     OutputModel = DetectorOutput
     primary_input = "target"
+    uses_llm = True  # the LLM judge runs by default when a model is configured
 
     def __init__(self, llm: LLMClient | None = None, config: Mapping[str, Any] | None = None):
         super().__init__(llm=llm, config=config)

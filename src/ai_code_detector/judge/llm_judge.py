@@ -293,7 +293,8 @@ class Judge:
                 result.cache_hits += int(hit)
                 judged.append((score, text))
 
-        await self._agreement(result, judged, t0, max_seconds)
+        if cancelled is None or not cancelled():
+            await self._agreement(result, judged, t0, max_seconds)
         return result
 
     async def _agreement(

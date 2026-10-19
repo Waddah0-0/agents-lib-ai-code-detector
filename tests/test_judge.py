@@ -209,3 +209,25 @@ async def test_v1_judge_moves_the_repository_estimate(
     files = [f for f in high.data["files"] if f["judge"] is not None]
     assert len(files) == 4
     assert all(f["probability"] < 0.5 for f in files)  # v1: verdicts act at repository level
+
+
+async def test_cancelling_during_the_judge_cancels_the_run(tmp_path: Path, ai_code: str) -> None:
+    from agents_core import RunContext
+
+    repo = tmp_path / "big"
+    repo.mkdir()
+    doubled = ai_code + "\n\n" + ai_code.replace("def ", "def v2_")
+    for i in range(6):
+        (repo / f"m{i}.py").write_text(doubled.replace("def ", f"def c{i}_"), "utf-8")
+    ctx = RunContext()
+
+    def responder(messages: list[Message], system: str | None) -> str:
+        ctx.cancel_token.cancel()  # the user cancels while the first file is being judged
+        return verdict(0.9, line=1)
+
+    from ai_code_detector import AICodeDetector
+
+    result = await AICodeDetector(llm=MockLLM(responder)).execute(
+        {"target": str(repo), "max_files_for_judge": 4}, ctx
+    )
+    assert result.status == "error" and result.error == "Run was cancelled"

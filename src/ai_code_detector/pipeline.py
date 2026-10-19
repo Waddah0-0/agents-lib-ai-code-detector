@@ -255,6 +255,7 @@ async def detect(
             judge_outcome.disagreement
             > float(methodology.section("judge")["disagreement_threshold"])
         )
+    ctx.check_cancelled()  # a cancelled judge stops early; don't build a report from it
     judged = any(f.judge is not None for f in scored if not f.is_test)
     if not judged and "repo_model_signals_only" in methodology.data:
         methodology = Methodology(
