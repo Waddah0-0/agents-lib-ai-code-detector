@@ -12,7 +12,7 @@ from ai_code_detector.aggregate import (
 from ai_code_detector.methodology import Methodology, load_methodology
 from ai_code_detector.models import FileScore, SignalHit
 
-M = load_methodology()
+M = load_methodology("v0")  # mechanics; v1 has fitted numbers
 
 
 def hit(family: str, strength: float) -> SignalHit:

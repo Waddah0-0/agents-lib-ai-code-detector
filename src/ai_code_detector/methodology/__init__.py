@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from importlib import resources
 from typing import Any
 
-DEFAULT_METHODOLOGY = "v0"
+DEFAULT_METHODOLOGY = "v1"
 
 
 @dataclass(frozen=True)

@@ -21,7 +21,7 @@ class AICodeDetector(BaseAgent):
         "Estimates how likely a repository was written with AI assistance, as a range with a "
         "confidence level and the evidence for and against."
     )
-    version = "0.1.0"
+    version = "0.2.0"
     InputModel = DetectorInput
     OutputModel = DetectorOutput
     primary_input = "target"

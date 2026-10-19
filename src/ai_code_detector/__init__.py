@@ -3,7 +3,7 @@
 from ai_code_detector.agent import AICodeDetector
 from ai_code_detector.models import DetectorInput, DetectorOutput, FileScore, SignalHit
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "AICodeDetector",

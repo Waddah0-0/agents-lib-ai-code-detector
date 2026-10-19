@@ -79,7 +79,7 @@ async def test_end_to_end_on_local_samples(tmp_path: Path) -> None:
     manifest.write_text("\n".join(json.dumps(x) for x in lines) + "\n", encoding="utf-8")
     out = tmp_path / "results.json"
 
-    report = await run.main_async(manifest, out, None)
+    report = await run.main_async(manifest, out, None, methodology="v0")
 
     assert json.loads(out.read_text("utf-8"))["metrics"] == report["metrics"]
     train = report["metrics"]["train"]

@@ -1,0 +1,141 @@
+# Methodology v1: weights fitted on dataset v1's TRAIN split (eval/fit.py), checked on
+# VALIDATION, reported once on TEST (eval/results/v1_test_*.json). Thresholds are unchanged
+# from v0. See docs/methodology.md for what the numbers mean and their limits.
+
+version = "v1"
+
+# Still not calibrated: validation expected calibration error was 0.27 (target 0.08), so
+# confidence stays capped at medium. Ranking is usable (train AUC 0.86 with the judge);
+# probabilities are not.
+calibrated = false
+
+# Estimates at or above this kept false positives on human repositories at or below 5% on the
+# train split, but caught only 1 of 21 AI repositories. Documented, not used for any label.
+operating_threshold = 0.915
+
+# Inside a signal family, the strongest hit counts fully and the others by this factor.
+secondary_factor = 0.25
+
+# Python files with fewer code lines than this are too small to judge and are skipped.
+min_code_lines = 15
+
+# File model (fitted): intercept and log-odds weight per file-level family. Note the signs:
+# on 2025-26 agent-built code, MORE comments and more generic names lean HUMAN.
+bias = 0.2174
+
+[file_weights]
+comments = -0.9996
+naming = -0.2314
+human_traces = 0.9677
+
+# Repository-level families are shown as context but not scored: `history` separated messy
+# pre-2021 histories from tidy modern ones (era, not authorship) and, when weighted, turned
+# every recent human repository in the dataset into a near or actual false positive.
+[repo_weights]
+history = 0.0
+docs = 0.0
+
+# Repository model when the LLM judge ran (B3, fitted on train, L2 0.3):
+# logit = intercept + file_coefficient x logit(mean file probability)
+#         + judge_coefficient x mean(judge confidence x logit(judge likelihood)).
+[repo_model]
+intercept = 1.3764
+file_coefficient = 0.2678
+judge_coefficient = 1.5425
+
+# Repository model when the judge did not run (B2, signals only). Weak: train AUC 0.73 and
+# 39% false positives at 0.5, so confidence is capped at low (see [confidence]).
+[repo_model_signals_only]
+intercept = -0.0051
+file_coefficient = 2.1731
+judge_coefficient = 0.0
+
+# LLM judge. Its verdicts enter at repository level ([repo_model].judge_coefficient), not per
+# file, so the per-file weight is 0. Model: qwen3.5:9b (chosen by eval/tools/compare_judges.py).
+[judge]
+weight = 0.0
+min_lines = 30
+# Sized for a local 7B model on an 8 GB GPU: a ~7.5K-token prompt took ~30 s per call
+# (2026-10-18), so prompts stay near 3.5K tokens.
+window_lines = 150
+token_budget = 3500
+# Typical answers are ~300-450 tokens at ~20 tokens/s; 800 is a cap for rare long ones.
+max_output_tokens = 800
+agreement_share = 0.2
+agreement_min_files = 2
+disagreement_threshold = 0.3
+
+[bootstrap]
+resamples = 1000
+seed = 1234
+low_quantile = 0.10
+high_quantile = 0.90
+min_files = 5
+
+[confidence]
+# Without the judge, signals alone separate human from AI code poorly; never claim more.
+signals_only_max = "low"
+high_families = 3
+high_files = 20
+high_max_width = 0.25
+high_supported_share = 0.8
+medium_families = 2
+medium_files = 5
+medium_max_width = 0.45
+
+[thresholds.comment_density]
+density_low = 0.20          # (comment + docstring lines) / code lines where AI evidence starts
+density_high = 0.60         # ... and where it is at full strength
+trivial_max_statements = 2  # a function with at most this many statements is "trivial"
+trivial_min_count = 3
+trivial_ratio_low = 0.5     # share of trivial functions with docstrings where evidence starts
+sparse_density = 0.02       # below this, with enough code, comments are evidence of a human
+sparse_min_code_lines = 60
+sparse_strength = -0.3
+
+[thresholds.restating_comments]
+min_words = 2
+max_words = 10
+min_overlap = 0.6
+min_count = 2
+min_ratio = 0.25
+
+[thresholds.naming_patterns]
+min_identifiers = 10
+generic_ratio = 0.15
+min_avg_length = 8.0
+short_ratio = 0.25
+
+[thresholds.idiosyncrasy]
+per_marker = 0.25
+quote_min_strings = 10
+quote_min_minority = 0.25
+quote_strength = 0.2
+max_strength = 0.8
+
+[thresholds.dead_or_debug_code]
+per_block = 0.2
+per_debug = 0.3
+max_strength = 0.8
+
+[thresholds.commit_shape]
+min_files = 10
+first_share = 0.6
+large_commit_files = 15
+large_commit_share = 0.3
+min_commits_for_large = 5
+single_commit_strength = 0.25
+
+[thresholds.history_depth]
+min_commits = 30
+min_span_days = 90
+messy_share = 0.15
+small_min_commits = 10
+small_min_span_days = 30
+small_messy_share = 0.2
+
+[thresholds.readme_patterns]
+emoji_headings = 3
+template_sections = 5
+marketing_words = 3
+max_strength = 0.6

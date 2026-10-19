@@ -243,14 +243,23 @@ async def detect(
         warnings.append(f"{n} source files could not be read or parsed and were skipped.")
         partial = True
     # 5-6. LLM judge on a sample of files
+    # Explicit True: required (partial if it cannot run). None (default): run it when a model
+    # is configured, otherwise fall back to signals only. False: never.
     judge_disagreement = False
-    if params.use_llm_judge:
+    explicit = params.use_llm_judge is True
+    if explicit or (params.use_llm_judge is None and ctx.llm is not None):
         judge_outcome = await _run_judge(ws, params, ctx, methodology, scored)
         warnings += judge_outcome.warnings
-        partial = partial or judge_outcome.partial
+        partial = partial or (explicit and judge_outcome.partial)
         judge_disagreement = judge_outcome.disagreement is not None and (
             judge_outcome.disagreement
             > float(methodology.section("judge")["disagreement_threshold"])
+        )
+    judged = any(f.judge is not None for f in scored if not f.is_test)
+    if not judged and "repo_model_signals_only" in methodology.data:
+        methodology = Methodology(
+            methodology.version,
+            {**methodology.data, "repo_model": methodology.data["repo_model_signals_only"]},
         )
 
     # 7. aggregate
@@ -273,6 +282,13 @@ async def detect(
         ),
         methodology,
     )
+    cap = methodology.section("confidence").get("signals_only_max")
+    if not judged and cap == "low" and confidence != "low":
+        confidence = "low"
+        reasons = [
+            "the LLM judge did not run, and the heuristic signals alone separate human from AI "
+            "code poorly"
+        ]
 
     output = DetectorOutput(
         methodology_version=methodology_version,
@@ -345,6 +361,25 @@ def _findings(
                         detail=m.detail,
                     )
                     for m in output.metadata_markers
+                ],
+            )
+        )
+    context = [h for h in repo_hits if not methodology.repo_weights.get(h.family, 0.0)]
+    if context:
+        findings.append(
+            Finding(
+                title="Repository context (not part of the estimate)",
+                summary=(
+                    "Shown for context only. In evaluation, commit-history and README style "
+                    "mostly separated old projects from new ones, not human from AI authors."
+                ),
+                evidence=[
+                    Evidence(
+                        kind=h.evidence[0].kind if h.evidence else "metric",
+                        location=h.evidence[0].location if h.evidence else None,
+                        detail=h.explanation,
+                    )
+                    for h in context
                 ],
             )
         )

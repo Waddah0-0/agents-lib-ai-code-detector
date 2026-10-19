@@ -15,7 +15,7 @@ from ai_code_detector.signals.file import (
 from ai_code_detector.source import parse_source, split_words
 from ai_code_detector.source.python import parse_python
 
-M = load_methodology()
+M = load_methodology("v0")
 FIXTURES = Path(__file__).parent / "fixtures"
 AI_STYLE_FILE = (FIXTURES / "ai_style.py.txt").read_text(encoding="utf-8")
 HUMAN_STYLE_FILE = (FIXTURES / "human_style.py.txt").read_text(encoding="utf-8")

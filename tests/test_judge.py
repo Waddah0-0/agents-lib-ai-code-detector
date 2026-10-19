@@ -157,11 +157,13 @@ async def test_detector_folds_judge_verdicts_into_file_scores(tmp_path: Path, ai
                            "evidence_for": [{"line": int(line.split("|", 1)[0]), "why": "x"}],
                            "evidence_against": [], "uncertainty_notes": ""})  # fmt: skip
 
-    plain = await run_agent("ai-code-detector", {"target": str(repo)})
+    v0 = {"methodology": "v0"}  # v0 folds verdicts into file probabilities
+    plain = await run_agent("ai-code-detector", {"target": str(repo)}, config=v0)
     judged = await run_agent(
         "ai-code-detector",
         {"target": str(repo), "use_llm_judge": True, "max_files_for_judge": 4},
         llm=MockLLM(responder),
+        config=v0,
     )
     assert judged.status == "ok", judged.warnings
     files = {f["path"]: f for f in judged.data["files"]}
@@ -172,3 +174,38 @@ async def test_detector_folds_judge_verdicts_into_file_scores(tmp_path: Path, ai
     assert judged.data["estimate"] > plain.data["estimate"]
     # identical files: one real judgement, the rest from the cache, plus one agreement re-check
     assert judged.metadata.usage.llm_calls == 2
+
+
+async def test_v1_judge_moves_the_repository_estimate(
+    tmp_path: Path, ai_code: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo = tmp_path / "big"
+    repo.mkdir()
+    doubled = ai_code + "\n\n" + ai_code.replace("def ", "def v2_")
+    for i in range(6):
+        (repo / f"m{i}.py").write_text(doubled.replace("def ", f"def r{i}_"), "utf-8")
+
+    def responder(likelihood: float):  # type: ignore[no-untyped-def]
+        def answer(messages: list[Message], system: str | None) -> str:
+            line = next(n for n in messages[0].content.splitlines() if "| " in n and "#" in n)
+            return json.dumps({"likelihood_ai": likelihood, "confidence": 1.0,
+                               "evidence_for": [{"line": int(line.split("|", 1)[0]), "why": "x"}],
+                               "evidence_against": [], "uncertainty_notes": ""})  # fmt: skip
+
+        return answer
+
+    async def run(likelihood: float):  # type: ignore[no-untyped-def]
+        # a separate cache per run, or the second run would reuse the first one's verdicts
+        monkeypatch.setenv("AGENTS_LIB_CACHE_DIR", str(tmp_path / f"cache-{likelihood}"))
+        return await run_agent(
+            "ai-code-detector", {"target": str(repo), "max_files_for_judge": 4},
+            llm=MockLLM(responder(likelihood)),
+        )  # fmt: skip
+
+    high, low = await run(0.9), await run(0.1)
+    assert high.status == "ok" and low.status == "ok"
+    assert high.data["estimate"] > 0.8 > 0.3 > low.data["estimate"]
+    assert high.data["confidence"] in {"low", "medium"}  # uncalibrated: never high
+    files = [f for f in high.data["files"] if f["judge"] is not None]
+    assert len(files) == 4
+    assert all(f["probability"] < 0.5 for f in files)  # v1: verdicts act at repository level

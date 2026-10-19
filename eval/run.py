@@ -50,18 +50,22 @@ class JudgeOptions:
 
 
 async def evaluate_sample(
-    sample: Sample, manifest_dir: Path, judge: JudgeOptions | None = None
+    sample: Sample,
+    manifest_dir: Path,
+    judge: JudgeOptions | None = None,
+    methodology: str | None = None,
 ) -> dict[str, Any]:
     t0 = time.perf_counter()
     target = fetch(sample, manifest_dir)
-    params: dict[str, Any] = {"target": str(target)}
+    params: dict[str, Any] = {"target": str(target), "use_llm_judge": False}
     llm = None
     if judge is not None:
         params.update(
             use_llm_judge=True, max_files_for_judge=judge.files, max_judge_seconds=judge.seconds
         )
         llm = create_llm(judge.provider, judge.model)
-    result = await run_agent("ai-code-detector", params, llm=llm)
+    config = {"methodology": methodology} if methodology else None
+    result = await run_agent("ai-code-detector", params, llm=llm, config=config)
     record: dict[str, Any] = {
         "id": sample.id,
         "label": sample.label,
@@ -169,6 +173,7 @@ async def main_async(
     only: set[str] | None,
     splits: set[str] | None = None,
     judge: JudgeOptions | None = None,
+    methodology: str | None = None,
 ) -> dict[str, Any]:
     samples = [
         s for s in load_manifest(manifest)
@@ -178,7 +183,7 @@ async def main_async(
     for i, sample in enumerate(samples, start=1):
         print(f"[{i}/{len(samples)}] {sample.id} ({sample.label})", file=sys.stderr, flush=True)
         try:
-            records.append(await evaluate_sample(sample, manifest.parent, judge))
+            records.append(await evaluate_sample(sample, manifest.parent, judge, methodology))
         except Exception as exc:  # a broken sample must not stop the evaluation
             records.append({"id": sample.id, "label": sample.label, "is_ai": sample.is_ai,
                             "era": sample.era, "split": sample.split, "status": "error",
@@ -216,6 +221,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--only", nargs="*", help="evaluate only these sample ids")
+    parser.add_argument("--methodology", help="methodology version (default: the detector's)")
     parser.add_argument("--judge-model", help="also run the LLM judge with this model (B3)")
     parser.add_argument("--judge-provider", default="local")
     parser.add_argument("--judge-files", type=int, default=8, help="files judged per repository")
@@ -234,7 +240,7 @@ def main(argv: list[str] | None = None) -> int:
         else None
     )
     only = set(args.only or []) or None
-    report = asyncio.run(main_async(args.manifest, args.out, only, splits, judge))
+    report = asyncio.run(main_async(args.manifest, args.out, only, splits, judge, args.methodology))
     print(json.dumps(report["metrics"], indent=2))
     return 0
 

@@ -83,7 +83,7 @@ class CommentDensity(FileSignal):
                 self.hit(
                     t["sparse_strength"],
                     f"Almost no comments ({comment_lines} lines for {source.code_lines} code "
-                    "lines); AI-written code is rarely this sparse.",
+                    "lines).",
                     [Evidence(kind="file", location=source.path, detail="sparse comments")],
                 )
             ]

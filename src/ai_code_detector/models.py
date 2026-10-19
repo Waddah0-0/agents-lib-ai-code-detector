@@ -16,8 +16,12 @@ class DetectorInput(AgentInput):
         default=None, description="Restrict the analysis to these files or folders."
     )
     branch: str | None = Field(default=None, description="Branch to analyse (GitHub only).")
-    use_llm_judge: bool = Field(
-        default=False, description="Also ask a model to judge a sample of files (phase 4)."
+    use_llm_judge: bool | None = Field(
+        default=None,
+        description=(
+            "Ask a model to judge a sample of files. Default: when a model is configured. "
+            "Without it the estimate rests on weak signals and confidence is low."
+        ),
     )
     max_files_for_judge: int = Field(default=20, ge=1, le=200)
     max_judge_seconds: float = Field(default=300.0, gt=0)

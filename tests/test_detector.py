@@ -9,8 +9,12 @@ from agents_core.reporting import to_markdown
 from ai_code_detector import AICodeDetector
 
 
-async def detect(target: Path, **extra: object) -> dict:  # type: ignore[type-arg]
-    result = await run_agent("ai-code-detector", {"target": str(target), **extra})
+async def detect(target: Path, methodology: str = "v0", **extra: object) -> dict:  # type: ignore[type-arg]
+    result = await run_agent(
+        "ai-code-detector",
+        {"target": str(target), **extra},
+        config={"methodology": methodology},
+    )
     assert result.status in {"ok", "partial"}, result.error
     return {"result": result, "data": result.data}
 
@@ -103,11 +107,13 @@ async def test_frozen_smoke_scores(ai_repo: Path, human_repo: Path) -> None:
     """CI regression guard: methodology v0 scores for the fixtures must not drift silently."""
     ai = (await detect(ai_repo))["data"]
     human = (await detect(human_repo))["data"]
-    assert ai["methodology_version"] == "detector-0.1.0+methodology-v0+markers-v1"
+    assert ai["methodology_version"] == "detector-0.2.0+methodology-v0+markers-v1"
     assert (round(ai["estimate"], 2), round(human["estimate"], 2)) == (SMOKE["ai"], SMOKE["human"])
 
 
-SMOKE = {"ai": 0.83, "human": 0.27}  # methodology v0; update only with a new methodology version
+# Frozen scores; update only together with a new methodology version.
+SMOKE = {"ai": 0.83, "human": 0.27}  # methodology v0
+SMOKE_V1 = (0.12, 0.33)  # methodology v1, signals only
 
 
 def test_registry_lists_the_detector() -> None:
@@ -131,3 +137,37 @@ async def test_javascript_and_typescript_repositories(tmp_path: Path) -> None:
     assert ts["files_analyzed"] == 6 and js["files_analyzed"] == 6
     assert ts["languages"] == {"typescript": 8} and js["languages"] == {"javascript": 6}
     assert ts["estimate"] > 0.65 > 0.35 > js["estimate"]
+
+
+# ---- methodology v1 (fitted) ------------------------------------------------------------
+
+
+async def test_v1_without_a_model_falls_back_to_signals_with_low_confidence(ai_repo: Path) -> None:
+    data = (await detect(ai_repo, methodology="v1"))["data"]
+    result = (await detect(ai_repo, methodology="v1"))["result"]
+    assert data["methodology_version"] == "detector-0.2.0+methodology-v1+markers-v1"
+    assert data["confidence"] == "low"
+    assert "LLM judge did not run" in data["confidence_reasons"][0]
+    assert result.status == "ok"  # auto mode: no model is not a failure
+
+
+async def test_v1_history_is_context_not_score(human_repo: Path) -> None:
+    result = (await detect(human_repo, methodology="v1"))["result"]
+    context = next(f for f in result.findings if f.title.startswith("Repository context"))
+    assert any("commits over" in e.detail for e in context.evidence)
+    human = next(f for f in result.findings if f.title == "Evidence toward human authorship")
+    assert all("commits over" not in e.detail for e in human.evidence)
+
+
+async def test_v1_explicit_judge_without_model_is_partial(ai_repo: Path) -> None:
+    result = (await detect(ai_repo, methodology="v1", use_llm_judge=True))["result"]
+    assert result.status == "partial"
+
+
+async def test_v1_frozen_smoke_scores(ai_repo: Path, human_repo: Path) -> None:
+    """Signals-only v1 scores for the fixtures. Under fitted weights the textbook,
+    heavily commented 'AI-style' fixture scores LOW: on real 2025-26 code, dense comments
+    leaned human. Update only with a new methodology version."""
+    ai = (await detect(ai_repo, methodology="v1"))["data"]
+    human = (await detect(human_repo, methodology="v1"))["data"]
+    assert (round(ai["estimate"], 2), round(human["estimate"], 2)) == SMOKE_V1
