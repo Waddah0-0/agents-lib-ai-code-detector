@@ -50,6 +50,19 @@ label, language and era, with a fixed seed (`build.py`).
 4. **Agent-built projects only.** Code written with light AI help is not represented.
 5. **Claude is still the most common tool**, though less dominant than in v0.
 
+## Results (methodology v1)
+
+| | Train (44) | Validation (12) | Test (13) |
+|---|---|---|---|
+| With the qwen3.5:9b judge: repository AUC | 0.87 | 0.97 | 1.00 |
+| False positives at 0.5 | 13% | 29% | 0% |
+| Signals only: repository AUC | 0.73 | 1.00 | 0.79 |
+
+Weights were fitted on train, choices made on validation, and the test split scored once
+(`eval/results/v1_final_*.json`). `a-my-blog` could not be fetched: its pinned commit was
+removed upstream after selection; it is kept in the manifest so the splits do not change.
+See `docs/methodology.md` for what these numbers do and do not show.
+
 ## Rebuilding
 
 ```bash

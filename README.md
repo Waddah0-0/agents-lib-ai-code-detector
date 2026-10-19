@@ -3,12 +3,13 @@
 Estimates how likely it is that a repository, or parts of it, was written with AI
 assistance, and always shows the reasons behind the estimate.
 
-> **Status: experimental.** The heuristic signals work, but their weights are uncalibrated
-> guesses (methodology v0), so the detector never reports more than medium confidence. On
-> the first, small evaluation dataset it ranks AI-built repositories above human ones fairly
-> well (AUC 0.86 over 19 repositories), but it also scores a third of the human
-> repositories above 0.5. Treat every number as a rough indication. Calibration and the
-> model-based judge come next.
+> **Status: experimental.** Methodology v1 combines heuristic signals with a local LLM judge,
+> with weights fitted on 44 repositories. On 13 held-out repositories it ranked every AI
+> repository it scored above 0.5 higher than every human one (AUC 1.00, no false positives
+> at 0.5), but that test set is small and the scores are not calibrated, so confidence never
+> goes above medium. Without a model it falls back to much weaker signals (test AUC 0.79,
+> 29% false positives). Read [how it scores](https://github.com/Waddah0-0/agents-lib/blob/main/docs/methodology.md)
+> before relying on any number.
 
 ## What it does
 
@@ -31,13 +32,15 @@ The detector combines two kinds of evidence.
 Some signals point the other way: a long, messy history, personal TODOs and leftover debug
 code are all evidence of human authorship, and they count too.
 
-**A model acting as a judge.** It reviews a sample of files, quotes the specific lines
-behind its opinion, and lists the evidence against its own conclusion. It never sees the
-signal scores, so the two stay independent. It is only switched on by default if
-evaluation shows it makes the results better.
+**A model acting as a judge.** A local model (default `qwen3.5:9b` via Ollama) reviews up to
+20 files, points at the lines behind its opinion, and lists evidence against its own
+conclusion. The quotes in the report come from the file, so evidence cannot be invented.
+It never sees the signal scores. It runs automatically when a model is available, because in
+evaluation it was the only evidence that worked on recent code.
 
-The two are combined into a probability for each file and an estimate for the whole
-repository.
+The two are combined into one estimate for the repository, with weights fitted on data.
+Commit history and README style are shown as context but not scored: in evaluation they
+told old projects from new ones, not people from AI.
 
 ## Input
 
@@ -46,7 +49,7 @@ repository.
 | `target` | required | GitHub URL (`https://github.com/<owner>/<repo>`) or local path. The primary input. |
 | `paths` | all files | Restrict the analysis to these files or folders. |
 | `branch` | default branch | Branch to analyse (GitHub only). |
-| `use_llm_judge` | off | Also ask a model to judge a sample of files. |
+| `use_llm_judge` | when a model is available | Ask a model to judge a sample of files. `false` skips it (weak, low confidence); `true` requires it. |
 | `include_tests` | off | Score test files too (they are reported separately). |
 
 The full list, including the judge's file, time and cost limits, will be in the agent's
@@ -70,8 +73,9 @@ No tool can prove that code was written by AI. Clean human code can look machine
 edited AI code can look human. The detector is tuned to avoid false accusations, even if
 that means it misses some AI-written code.
 
-The first version reads Python files only; other languages contribute repository-level
-evidence but lower the confidence.
+It reads Python, JavaScript and TypeScript; other languages lower the confidence. Projects
+with large generated-looking data files (such as locale tables) can score high. It has not
+been tested on code written with light AI help or on AI code edited by people.
 
 Use it to inform a conversation. It must not be the sole basis for accusing a student,
 a contractor or a job candidate.
@@ -91,7 +95,8 @@ It is mirrored, read-only, to
 [Waddah0-0/agents-lib-ai-code-detector](https://github.com/Waddah0-0/agents-lib-ai-code-detector);
 open issues and pull requests in the main repository.
 
-The evaluation harness lives in `eval/`: `eval/run.py` scores a dataset manifest, and
-`eval/datasets/v0/README.md` describes the first dataset and its biases.
+The evaluation harness lives in `eval/`: `eval/run.py` scores a dataset manifest,
+`eval/fit.py` fits and compares methodologies, `eval/tools/compare_judges.py` compares judge
+models, and `eval/datasets/*/README.md` describe each dataset and its biases.
 
 Run its tests with `uv run pytest agents/ai_code_detector`.
