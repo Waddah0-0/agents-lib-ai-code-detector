@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 
-from agents_core import Evidence
+from margin_core import Evidence
 
 from ai_code_detector.models import SignalHit
 from ai_code_detector.signals.base import RepoContext, RepoSignal, ramp

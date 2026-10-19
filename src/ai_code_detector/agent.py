@@ -5,8 +5,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
-from agents_core import AgentResult, BaseAgent, RunContext
-from agents_core.llm import LLMClient
+from margin_core import AgentResult, BaseAgent, RunContext
+from margin_core.llm import LLMClient
 
 from ai_code_detector.markers import DEFAULT_MARKERS, load_markers
 from ai_code_detector.methodology import DEFAULT_METHODOLOGY, load_methodology

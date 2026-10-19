@@ -6,8 +6,8 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import ClassVar
 
-from agents_core import Evidence
-from agents_core.loaders import GitCommit, Workspace
+from margin_core import Evidence
+from margin_core.loaders import GitCommit, Workspace
 
 from ai_code_detector.methodology import Methodology
 from ai_code_detector.models import SignalHit

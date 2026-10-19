@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from agents_core import AgentRegistry, get_agent, run_agent
-from agents_core.reporting import to_markdown
 from ai_code_detector import AICodeDetector
+from margin_core import AgentRegistry, get_agent, run_agent
+from margin_core.reporting import to_markdown
 
 
 async def detect(target: Path, methodology: str = "v0", **extra: object) -> dict:  # type: ignore[type-arg]

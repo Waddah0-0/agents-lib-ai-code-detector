@@ -8,7 +8,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from importlib import resources
 
-from agents_core.loaders import GitCommit, Workspace
+from margin_core.loaders import GitCommit, Workspace
 
 from ai_code_detector.models import MetadataMarker
 

@@ -7,7 +7,7 @@ from __future__ import annotations
 import re
 from collections.abc import Callable, Iterable
 
-from agents_core.loaders import GitCommit
+from margin_core.loaders import GitCommit
 
 from ai_code_detector.markers import MarkerSet, commit_marker_tools
 from ai_code_detector.methodology import Methodology

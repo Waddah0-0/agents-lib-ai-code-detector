@@ -28,8 +28,8 @@ from dataclasses import dataclass, field
 from importlib import resources
 from pathlib import Path
 
-from agents_core.errors import BudgetExceededError, LLMError
-from agents_core.llm import LLMClient
+from margin_core.errors import BudgetExceededError, LLMError
+from margin_core.llm import LLMClient
 from pydantic import BaseModel, Field, field_validator
 
 from ai_code_detector.models import (
@@ -186,7 +186,7 @@ def resolve_pointers(
 
 
 def _cache_dir() -> Path:
-    base = os.environ.get("AGENTS_LIB_CACHE_DIR") or str(Path.home() / ".cache" / "agents-lib")
+    base = os.environ.get("MARGIN_CACHE_DIR") or str(Path.home() / ".cache" / "margin")
     return Path(base) / "judge"
 
 

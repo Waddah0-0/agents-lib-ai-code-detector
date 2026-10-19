@@ -8,7 +8,7 @@ assistance, and always shows the reasons behind the estimate.
 > repository it scored above 0.5 higher than every human one (AUC 1.00, no false positives
 > at 0.5), but that test set is small and the scores are not calibrated, so confidence never
 > goes above medium. Without a model it falls back to much weaker signals (test AUC 0.79,
-> 29% false positives). Read [how it scores](https://github.com/Waddah0-0/agents-lib/blob/main/docs/methodology.md)
+> 29% false positives). Read [how it scores](https://github.com/Waddah0-0/margin/blob/main/docs/methodology.md)
 > before relying on any number.
 
 ## What it does
@@ -53,7 +53,7 @@ told old projects from new ones, not people from AI.
 | `include_tests` | off | Score test files too (they are reported separately). |
 
 The full list, including the judge's file, time and cost limits, will be in the agent's
-input schema (`agents info ai-code-detector`).
+input schema (`margin info ai-code-detector`).
 
 ## Output
 
@@ -89,16 +89,16 @@ a contractor or a job candidate.
 ## Usage
 
 ```bash
-agents run ai-code-detector https://github.com/owner/repo --format markdown
-agents run ai-code-detector ./path/to/project --format json --out report.json
+margin run ai-code-detector https://github.com/owner/repo --format markdown
+margin run ai-code-detector ./path/to/project --format json --out report.json
 ```
 
 ## Development
 
-This agent lives in the [agents-lib](https://github.com/Waddah0-0/agents-lib) monorepo, in
-[`agents/ai_code_detector`](https://github.com/Waddah0-0/agents-lib/tree/main/agents/ai_code_detector).
+This agent lives in the [margin](https://github.com/Waddah0-0/margin) monorepo, in
+[`agents/ai_code_detector`](https://github.com/Waddah0-0/margin/tree/main/agents/ai_code_detector).
 It is mirrored, read-only, to
-[Waddah0-0/agents-lib-ai-code-detector](https://github.com/Waddah0-0/agents-lib-ai-code-detector);
+[Waddah0-0/margin-ai-code-detector](https://github.com/Waddah0-0/margin-ai-code-detector);
 open issues and pull requests in the main repository.
 
 The evaluation harness lives in `eval/`: `eval/run.py` scores a dataset manifest,

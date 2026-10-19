@@ -5,9 +5,6 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from pathlib import Path
 
-from agents_core import run_agent
-from agents_core.loaders import GitCommit
-from agents_core.models import Evidence
 from ai_code_detector.markers import load_markers
 from ai_code_detector.methodology import load_methodology
 from ai_code_detector.models import (
@@ -26,6 +23,9 @@ from ai_code_detector.report import (
     parse_location,
     unscored,
 )
+from margin_core import run_agent
+from margin_core.loaders import GitCommit
+from margin_core.models import Evidence
 
 M = load_methodology("v1")
 TEXT = "\n".join(f"line {i}" for i in range(1, 201))

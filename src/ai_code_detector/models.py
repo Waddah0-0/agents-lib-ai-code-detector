@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Literal
 
-from agents_core import AgentInput, Evidence
+from margin_core import AgentInput, Evidence
 from pydantic import BaseModel, Field, field_validator
 
 Confidence = Literal["low", "medium", "high"]

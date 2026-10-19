@@ -6,8 +6,6 @@ import json
 from pathlib import Path
 
 import pytest
-from agents_core import run_agent
-from agents_core.llm import Message, MockLLM, ModelPricing
 from ai_code_detector.judge.llm_judge import (
     RUBRIC,
     Judge,
@@ -19,13 +17,15 @@ from ai_code_detector.judge.llm_judge import (
 )
 from ai_code_detector.judge.sampler import sample_files
 from ai_code_detector.models import FileScore
+from margin_core import run_agent
+from margin_core.llm import Message, MockLLM, ModelPricing
 
 CODE = "def add(a, b):\n    # add the numbers\n    return a + b\n"
 
 
 @pytest.fixture(autouse=True)
 def isolated_cache(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
-    monkeypatch.setenv("AGENTS_LIB_CACHE_DIR", str(tmp_path / "cache"))
+    monkeypatch.setenv("MARGIN_CACHE_DIR", str(tmp_path / "cache"))
     return tmp_path / "cache"
 
 
@@ -196,7 +196,7 @@ async def test_v1_judge_moves_the_repository_estimate(
 
     async def run(likelihood: float):  # type: ignore[no-untyped-def]
         # a separate cache per run, or the second run would reuse the first one's verdicts
-        monkeypatch.setenv("AGENTS_LIB_CACHE_DIR", str(tmp_path / f"cache-{likelihood}"))
+        monkeypatch.setenv("MARGIN_CACHE_DIR", str(tmp_path / f"cache-{likelihood}"))
         return await run_agent(
             "ai-code-detector", {"target": str(repo), "max_files_for_judge": 4},
             llm=MockLLM(responder(likelihood)),
@@ -212,7 +212,7 @@ async def test_v1_judge_moves_the_repository_estimate(
 
 
 async def test_cancelling_during_the_judge_cancels_the_run(tmp_path: Path, ai_code: str) -> None:
-    from agents_core import RunContext
+    from margin_core import RunContext
 
     repo = tmp_path / "big"
     repo.mkdir()
@@ -234,8 +234,8 @@ async def test_cancelling_during_the_judge_cancels_the_run(tmp_path: Path, ai_co
 
 
 async def test_repeated_failures_become_one_warning_and_stop_early() -> None:
-    from agents_core.errors import LLMError
     from ai_code_detector.judge.llm_judge import short_error
+    from margin_core.errors import LLMError
 
     body = '{"error":{"message":"model requires more system memory (5.3 GiB) than is available"}}'
     message = short_error(LLMError(f"HTTP 500: {body}"))

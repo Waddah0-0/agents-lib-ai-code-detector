@@ -26,11 +26,11 @@ from typing import Any
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 
-from agents_core.llm import create_llm  # noqa: E402
 from ai_code_detector.judge.llm_judge import Judge, JudgeSettings  # noqa: E402
 from ai_code_detector.methodology import load_methodology  # noqa: E402
 from ai_code_detector.source import is_supported  # noqa: E402
 from dataset import Sample, fetch, load_manifest  # noqa: E402
+from margin_core.llm import create_llm  # noqa: E402
 from metrics import auc  # noqa: E402
 
 

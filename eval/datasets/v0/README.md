@@ -17,8 +17,8 @@ Codex) and two with Devin, so the AI side leans heavily on one tool family.
   author; see `markers/v1.toml`). Label `ai`, era `post2023`.
 
 Every sample is a GitHub URL plus an exact commit; no third-party code is stored here. The
-fetcher clones each one (blobless) into the cache directory (`AGENTS_LIB_CACHE_DIR`,
-default `~/.cache/agents-lib/eval`).
+fetcher clones each one (blobless) into the cache directory (`MARGIN_CACHE_DIR`,
+default `~/.cache/margin/eval`).
 
 ## How the samples were chosen
 

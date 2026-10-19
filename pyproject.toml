@@ -1,11 +1,11 @@
 [project]
-name = "agents-lib-ai-code-detector"
+name = "margin-ai-code-detector"
 version = "0.2.0"
-description = "AI Code Detector agent for agents-lib"
+description = "AI Code Detector agent for margin"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "agents-lib-core",
+    "margin-core",
     # 0.26.0 corrupts memory (reproducible access violation parsing TypeScript, 2026-10-18);
     # 0.24-0.25.2 are fine. Lift the cap only after re-running tests/test_signals.py on a
     # large TS repo.
@@ -14,13 +14,13 @@ dependencies = [
     "tree-sitter-typescript>=0.23",
 ]
 
-[project.entry-points."agents_lib.agents"]
+[project.entry-points."margin.agents"]
 ai-code-detector = "ai_code_detector.agent:AICodeDetector"
 
-[tool.agents-lib]
+[tool.margin]
 id = "ai-code-detector"
 stage = "experimental"
-mirror = "Waddah0-0/agents-lib-ai-code-detector"
+mirror = "Waddah0-0/margin-ai-code-detector"
 
 [build-system]
 requires = ["hatchling"]

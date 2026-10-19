@@ -10,8 +10,8 @@ from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import PurePosixPath
 
-from agents_core import Evidence, Finding, RunContext
-from agents_core.loaders import FileInfo, Workspace
+from margin_core import Evidence, Finding, RunContext
+from margin_core.loaders import FileInfo, Workspace
 
 from ai_code_detector.aggregate import (
     ConfidenceFacts,

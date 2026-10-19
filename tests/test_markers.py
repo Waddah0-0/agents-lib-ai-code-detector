@@ -6,13 +6,13 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
-from agents_core.loaders import GitCommit, LocalLoader
 from ai_code_detector.markers import (
     commit_marker_tools,
     detect_commit_markers,
     detect_config_files,
     load_markers,
 )
+from margin_core.loaders import GitCommit, LocalLoader
 
 MARKERS = load_markers()
 

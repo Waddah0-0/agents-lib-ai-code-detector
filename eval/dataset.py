@@ -14,8 +14,8 @@ import subprocess
 from pathlib import Path
 from typing import Literal
 
-from agents_core.errors import InvalidTargetError
-from agents_core.loaders import parse_github_url
+from margin_core.errors import InvalidTargetError
+from margin_core.loaders import parse_github_url
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 Label = Literal["human", "ai", "mixed"]
@@ -78,7 +78,7 @@ def load_manifest(path: Path) -> list[Sample]:
 
 
 def cache_dir() -> Path:
-    base = os.environ.get("AGENTS_LIB_CACHE_DIR") or str(Path.home() / ".cache" / "agents-lib")
+    base = os.environ.get("MARGIN_CACHE_DIR") or str(Path.home() / ".cache" / "margin")
     return Path(base) / "eval"
 
 
@@ -102,7 +102,7 @@ def fetch(sample: Sample, manifest_dir: Path, cache: Path | None = None) -> Path
         return (manifest_dir / source.path).resolve()
     assert source.url is not None and source.commit is not None
     target = (cache or cache_dir()) / f"{sample.id}-{source.commit[:12]}"
-    marker = target / ".agents-lib-fetched"
+    marker = target / ".margin-fetched"
     if not marker.exists():
         if target.exists():
             import shutil

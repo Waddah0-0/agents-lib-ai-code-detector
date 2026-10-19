@@ -27,12 +27,12 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from agents_core import run_agent  # noqa: E402
-from agents_core.llm import create_llm  # noqa: E402
 from ai_code_detector.aggregate import family_scores  # noqa: E402
 from ai_code_detector.methodology import load_methodology  # noqa: E402
 from ai_code_detector.models import SignalHit  # noqa: E402
 from dataset import Sample, fetch, load_manifest  # noqa: E402
+from margin_core import run_agent  # noqa: E402
+from margin_core.llm import create_llm  # noqa: E402
 from metrics import summarize  # noqa: E402
 
 THRESHOLDS = (0.5, 0.6, 0.7)
