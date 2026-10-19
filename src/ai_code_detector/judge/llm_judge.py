@@ -30,6 +30,7 @@ from pathlib import Path
 
 from margin_core.errors import BudgetExceededError, LLMError
 from margin_core.llm import LLMClient
+from margin_core.llm.catalog import readable_error
 from pydantic import BaseModel, Field, field_validator
 
 from ai_code_detector.models import (
@@ -59,14 +60,7 @@ class LinePointer(BaseModel):
 MAX_FAILURES_IN_A_ROW = 3  # a model that cannot load fails every call; stop early
 
 
-def short_error(exc: Exception) -> str:
-    """The useful part of an LLM error: the server's own message when it sent JSON."""
-    text = str(exc).strip()
-    match = re.search(r'"message"\s*:\s*"((?:[^"\\]|\\.)*)"', text)
-    message = match.group(1) if match else text
-    if "requires more system memory" in message:
-        message += " (close other programs, or use a smaller model)"
-    return message
+short_error = readable_error  # kept under this name for the judge's tests
 
 
 class JudgeAnswer(BaseModel):
