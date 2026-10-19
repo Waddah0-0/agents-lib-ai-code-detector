@@ -126,21 +126,48 @@ def mean_file_logit(beta: list[float], r: dict[str, Any]) -> float:
     return logit(sum(w * p for w, p in zip(weights, probs, strict=True)) / sum(weights))
 
 
-def _repo_features(file_beta: list[float], r: dict[str, Any]) -> list[float]:
+def mean_judge_logit(r: dict[str, Any]) -> float:
+    """Mean of confidence x logit(likelihood) over the repository's judged files (0 if none)."""
+    values = [
+        float(f["judge_confidence"] or 0.0) * logit(min(max(float(f["judge"]), 0.05), 0.95))
+        for f in r["files"]
+        if f.get("judge") is not None
+    ]
+    return sum(values) / len(values) if values else 0.0
+
+
+def _repo_features(
+    file_beta: list[float],
+    r: dict[str, Any],
+    families: Sequence[str] | None = None,
+    signals: bool = True,
+    judge: bool = False,
+) -> list[float]:
     fam = r.get("repo_families", {})
-    return [mean_file_logit(file_beta, r), *(float(fam.get(n, 0.0)) for n in REPO_FAMILIES)]
+    names = REPO_FAMILIES if families is None else families
+    x = [mean_file_logit(file_beta, r)] if signals else []
+    if judge:
+        x.append(mean_judge_logit(r))
+    return x + [float(fam.get(n, 0.0)) for n in names]
 
 
-def fit_repo_model(train: list[dict[str, Any]], file_beta: list[float], l2: float) -> list[float]:
-    rows = [_repo_features(file_beta, r) for r in train]
+def fit_repo_model(
+    train: list[dict[str, Any]],
+    file_beta: list[float],
+    l2: float,
+    **features: Any,
+) -> list[float]:
+    rows = [_repo_features(file_beta, r, **features) for r in train]
     labels = [r["is_ai"] for r in train]
     n_ai = sum(labels)
     weights = [len(train) / 2 / (n_ai if y else len(train) - n_ai) for y in labels]
     return fit_logistic(rows, labels, weights, l2)
 
 
-def repo_probability(file_beta: list[float], repo_beta: list[float], r: dict[str, Any]) -> float:
-    x = _repo_features(file_beta, r)
+def repo_probability(
+    file_beta: list[float], repo_beta: list[float], r: dict[str, Any], **features: Any
+) -> float:
+    x = _repo_features(file_beta, r, **features)
     return sigmoid(repo_beta[0] + sum(b * v for b, v in zip(repo_beta[1:], x, strict=True)))
 
 
@@ -158,11 +185,45 @@ def evaluate(
     }
 
 
+VARIANTS: dict[str, dict[str, Any]] = {
+    "B2 signals": {"families": (), "signals": True, "judge": False},
+    "B2 signals + history/docs": {"families": REPO_FAMILIES, "signals": True, "judge": False},
+    "B3 signals + judge": {"families": (), "signals": True, "judge": True},
+    "B3 signals + judge + history/docs": {
+        "families": REPO_FAMILIES,
+        "signals": True,
+        "judge": True,
+    },
+    "B4 judge only": {"families": (), "signals": False, "judge": True},
+}
+
+
+def compare(records: list[dict[str, Any]], l2: float) -> dict[str, Any]:
+    """Fit every variant on train; report train and val metrics and recent-human scores."""
+    train = [r for r in records if r["split"] == "train"]
+    val = [r for r in records if r["split"] == "val"]
+    recent = [r for r in records if not r["is_ai"] and r["era"] == "post2023"]
+    file_beta = fit_file_model(train, l2)
+    out: dict[str, Any] = {}
+    for name, features in VARIANTS.items():
+        beta = fit_repo_model(train, file_beta, l2, **features)
+        row: dict[str, Any] = {"coefficients": beta}
+        for split, group in (("train", train), ("val", val)):
+            scores = [repo_probability(file_beta, beta, r, **features) for r in group]
+            row[split] = summarize(scores, [r["is_ai"] for r in group], (0.5,))
+        row["recent_human"] = {
+            r["id"]: round(repo_probability(file_beta, beta, r, **features), 2) for r in recent
+        }
+        out[name] = row
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Fit detector weights on the train split.")
     parser.add_argument("--results", type=Path, required=True)
     parser.add_argument("--l2", type=float, default=1.0)
     parser.add_argument("--out", type=Path, help="write the fitted weights as JSON")
+    parser.add_argument("--compare", action="store_true", help="compare B2/B3/B4 variants")
     args = parser.parse_args(argv)
     report = json.loads(args.results.read_text("utf-8"))
     records = [r for r in report["samples"] if r["status"] != "error" and r["label"] != "mixed"]
@@ -170,6 +231,19 @@ def main(argv: list[str] | None = None) -> int:
         print("note: test-split records present in the results; they are ignored here")
     train = [r for r in records if r["split"] == "train"]
     val = [r for r in records if r["split"] == "val"]
+    if args.compare:
+        table = compare(records, args.l2)
+        for name, row in table.items():
+            t, v = row["train"], row["val"]
+            tv, vv = t["at_threshold"][0], v["at_threshold"][0]
+            print(
+                f"{name:36} train AUC {t['auc']} ECE {t['ece']} FPR@.5 {tv['fpr']} | "
+                f"val AUC {v['auc']} ECE {v['ece']} FPR@.5 {vv['fpr']} TPR@.5 {vv['tpr']}"
+            )
+            print(f"{'':36} recent human: {row['recent_human']}")
+        if args.out:
+            args.out.write_text(json.dumps(table, indent=2) + "\n", encoding="utf-8")
+        return 0
 
     file_beta = fit_file_model(train, args.l2)
     repo_beta = fit_repo_model(train, file_beta, args.l2)
