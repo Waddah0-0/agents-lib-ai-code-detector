@@ -11,7 +11,10 @@ Confidence = Literal["low", "medium", "high"]
 
 
 class DetectorInput(AgentInput):
-    target: str = Field(description="GitHub URL (https://github.com/<owner>/<repo>) or local path.")
+    target: str = Field(
+        description="GitHub URL (https://github.com/<owner>/<repo>) or local path.",
+        examples=["https://github.com/psf/requests"],
+    )
     paths: list[str] | None = Field(
         default=None, description="Restrict the analysis to these files or folders."
     )

@@ -20,6 +20,8 @@ All notable changes to this agent are documented here. The format follows
 - The judge runs by default when a model is configured; without one the detector falls back
   to a signals-only model and reports low confidence.
 - Default local model: qwen3.5:9b (chosen by measurement), with hidden reasoning turned off.
+- Progress reporting gives the judge (the slow part) most of the progress bar, and `target`
+  carries an example value for forms.
 
 ### Known limitations
 - Not calibrated (validation calibration error 0.27): confidence is capped at medium.

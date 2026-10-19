@@ -121,7 +121,10 @@ async def _run_judge(
     llm = ctx.llm.session(max_cost_usd=params.max_cost_usd)
 
     def progress(index: int, total: int, path: str) -> None:
-        ctx.report_progress("judge", f"Judging {path} ({index + 1}/{total})", 0.9)
+        # the judge is the slow part (minutes), so it gets most of the bar
+        ctx.report_progress(
+            "judge", f"Judging {path} ({index + 1}/{total})", 0.35 + 0.55 * index / max(total, 1)
+        )
 
     run = await Judge(llm, settings).run(
         list(zip(sample, texts, strict=True)),
@@ -220,7 +223,7 @@ async def detect(
         ctx.report_progress(
             "file_signals",
             f"Analysing files {start + 1}-{start + len(batch)} of {len(candidates)}",
-            0.2 + 0.7 * start / max(len(candidates), 1),
+            0.2 + 0.15 * start / max(len(candidates), 1),
         )
         results = await asyncio.to_thread(
             lambda b=batch: [_analyse_file(ws, info, methodology) for info in b]  # type: ignore[misc]
