@@ -42,6 +42,11 @@ class Methodology:
         return float(self.data.get("repo_model", {}).get("file_coefficient", 1.0))
 
     @property
+    def repo_judge_coefficient(self) -> float:
+        """Repository model: weight on the judge's mean log-odds (v0: 0, judge is per file)."""
+        return float(self.data.get("repo_model", {}).get("judge_coefficient", 0.0))
+
+    @property
     def file_weights(self) -> dict[str, float]:
         return {k: float(v) for k, v in self.data["file_weights"].items()}
 

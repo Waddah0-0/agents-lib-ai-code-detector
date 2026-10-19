@@ -18,6 +18,7 @@ from ai_code_detector.aggregate import (
     confidence_level,
     estimate_range,
     file_probability,
+    judge_shift,
     repo_estimate,
     repo_shift,
 )
@@ -255,7 +256,7 @@ async def detect(
     # 7. aggregate
     ctx.report_progress("aggregate", "Combining the evidence", 0.95)
     main_files = [f for f in scored if not f.is_test]
-    shift = repo_shift(repo_hits, methodology)
+    shift = repo_shift(repo_hits, methodology) + judge_shift(main_files, methodology)
     estimate = round(repo_estimate(main_files, shift, methodology), 4)
     low, high = estimate_range(main_files, shift, estimate, methodology)
 

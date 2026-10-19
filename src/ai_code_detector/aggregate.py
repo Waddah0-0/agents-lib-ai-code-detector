@@ -63,6 +63,20 @@ def repo_shift(repo_hits: Sequence[SignalHit], methodology: Methodology) -> floa
     return sum(weights.get(f, 0.0) * s for f, s in scores.items())
 
 
+def judge_shift(files: Sequence[FileScore], methodology: Methodology) -> float:
+    """Repository-level judge term: coefficient x mean(confidence x logit(likelihood)).
+
+    Zero when the methodology has no repository-level judge coefficient (v0 folds the judge
+    into file probabilities instead) or when no file was judged.
+    """
+    coefficient = methodology.repo_judge_coefficient
+    judged = [f.judge for f in files if f.judge is not None]
+    if not coefficient or not judged:
+        return 0.0
+    values = [v.confidence * logit(min(max(v.likelihood_ai, 0.05), 0.95)) for v in judged]
+    return coefficient * sum(values) / len(values)
+
+
 def _weighted_mean(files: Sequence[FileScore], default: float) -> float:
     if not files:
         return default

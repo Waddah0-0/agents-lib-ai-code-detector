@@ -77,3 +77,14 @@ def test_repo_model_parameters_default_to_v0_behaviour() -> None:
     assert repo_estimate(files, 0.0, fitted) != repo_estimate(files, 0.0, M)
     flat = Methodology("x", {**M.data, "repo_model": {"intercept": 0.0, "file_coefficient": 0.0}})
     assert repo_estimate(files, 0.0, flat) == pytest.approx(0.5)
+
+
+def test_repository_level_judge_term() -> None:
+    from ai_code_detector.aggregate import judge_shift
+    from ai_code_detector.models import JudgeVerdict
+
+    judged = file(0.5).model_copy(update={"judge": JudgeVerdict(likelihood_ai=0.9, confidence=1.0)})
+    assert judge_shift([judged], M) == 0.0  # v0: no repository-level judge coefficient
+    v1 = Methodology("x", {**M.data, "repo_model": {"judge_coefficient": 2.0}})
+    assert judge_shift([judged, file(0.5)], v1) == pytest.approx(2.0 * 2.1972, rel=1e-3)
+    assert judge_shift([file(0.5)], v1) == 0.0  # nothing judged
