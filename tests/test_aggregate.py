@@ -88,3 +88,32 @@ def test_repository_level_judge_term() -> None:
     v1 = Methodology("x", {**M.data, "repo_model": {"judge_coefficient": 2.0}})
     assert judge_shift([judged, file(0.5)], v1) == pytest.approx(2.0 * 2.1972, rel=1e-3)
     assert judge_shift([file(0.5)], v1) == 0.0  # nothing judged
+
+
+def test_range_reflects_how_few_files_the_judge_read() -> None:
+    from ai_code_detector.aggregate import estimate_range, judge_shift, repo_estimate
+    from ai_code_detector.models import JudgeVerdict
+
+    v1 = Methodology("x", {**M.data, "repo_model": {"judge_coefficient": 2.0}})
+    files = [file(0.55) for _ in range(20)]
+    verdict = JudgeVerdict(likelihood_ai=0.9, confidence=1.0)
+    files[0] = files[0].model_copy(update={"judge": verdict})
+    estimate = repo_estimate(files, judge_shift(files, v1), v1)
+    low, high = estimate_range(files, 0.0, estimate, v1)
+    # identical signal scores used to give a zero-width range; one judged file must not
+    assert low <= estimate <= high and high - low > 0.1
+    # and when every file got the same verdict, the evidence agrees: the range is narrow
+    same = [f.model_copy(update={"judge": verdict}) for f in files]
+    everyone = repo_estimate(same, judge_shift(same, v1), v1)
+    low, high = estimate_range(same, 0.0, everyone, v1)
+    assert high - low < 0.02
+
+
+def test_reported_range_is_at_least_as_wide_as_the_confidence_allows() -> None:
+    from ai_code_detector.aggregate import widen_range
+
+    assert widen_range(0.62, 0.63, 0.62, "low", M) == (0.47, 0.77)
+    assert widen_range(0.62, 0.63, 0.62, "medium", M) == (0.55, 0.69)
+    assert widen_range(0.62, 0.63, 0.62, "high", M) == (0.62, 0.63)
+    assert widen_range(0.2, 0.9, 0.5, "low", M) == (0.2, 0.9)  # already wide: unchanged
+    assert widen_range(0.95, 0.97, 0.96, "low", M) == (0.81, 1.0)  # clipped to [0, 1]

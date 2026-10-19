@@ -13,6 +13,8 @@ All notable changes to this agent are documented here. The format follows
   treated as data. Cached, time- and cost-limited, with a self-agreement check.
 - Methodology v1, fitted on dataset v1's train split: the judge carries most of the weight;
   commit-history and README signals are shown as context but not scored.
+- Report data for UIs: code excerpts around the evidence, a commit list (without authors) and
+  every unscored file with its reason. Additive; existing fields are unchanged.
 - Dataset v1 (70 repositories, Python and JS/TS, six AI tools, recent human code) and the
   tools to fit and compare methodologies and judge models.
 
@@ -22,6 +24,15 @@ All notable changes to this agent are documented here. The format follows
 - Default local model: qwen3.5:9b (chosen by measurement), with hidden reasoning turned off.
 - Progress reporting gives the judge (the slow part) most of the progress bar, and `target`
   carries an example value for forms.
+
+### Fixed
+- The range ignored how few files the judge read: under methodology v1 one judged file could
+  give a range like "0.78-0.78". The judge term is now recomputed for every bootstrap
+  resample, and the reported range is at least ±0.15 wide at low confidence and ±0.07 at
+  medium. Estimates are unchanged.
+- Judge failures are reported once per kind of error instead of once per file, with the
+  server's own message, and the judge stops after three failed calls in a row (for example
+  when the local model does not fit in memory).
 
 ### Known limitations
 - Not calibrated (validation calibration error 0.27): confidence is capped at medium.

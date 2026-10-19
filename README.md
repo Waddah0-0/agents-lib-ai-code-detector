@@ -66,6 +66,12 @@ input schema (`agents info ai-code-detector`).
 - **Evidence for and evidence against**, each pointing to a file, line range or commit.
 - **A score per file**, with the signals that fired and, when the judge ran, its quotes.
 - **Coverage**: how many files were analysed or skipped, by language.
+- **The code behind the evidence**: short excerpts around each marked line (capped at 80
+  lines per file and 800 in total), so a report can be checked without the repository.
+- **A commit list for a timeline**: date, subject, files changed, AI-tool markers, and whether
+  the commit was unusually large. Author names are left out on purpose: the report is about
+  code, not people.
+- **Every unscored file and why** (unsupported language, test file, too small, lockfile...).
 
 ## Limits
 

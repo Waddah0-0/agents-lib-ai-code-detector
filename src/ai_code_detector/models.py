@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Literal
 
 from agents_core import AgentInput, Evidence
@@ -126,6 +127,55 @@ class FileScore(BaseModel):
     )
 
 
+Side = Literal["for", "against", "context"]
+
+
+class ExcerptMark(BaseModel):
+    """A marked span in an excerpt: evidence toward AI ("for"), toward a human ("against"),
+    or a signal that is shown but not scored ("context")."""
+
+    line_start: int
+    line_end: int
+    side: Side
+    source: str = Field(description='"judge", or the id of the signal that found it.')
+    note: str
+
+
+class ExcerptHunk(BaseModel):
+    start_line: int
+    lines: list[str]
+
+
+class Excerpt(BaseModel):
+    """The parts of a file around its marked evidence, so a report can show the code."""
+
+    path: str
+    hunks: list[ExcerptHunk]
+    marks: list[ExcerptMark]
+    truncated: bool = Field(default=False, description="Some marked spans were left out.")
+
+
+class CommitSummary(BaseModel):
+    """One commit, as the timeline needs it. Authors are left out on purpose: the report is
+    about code, not about people."""
+
+    sha: str
+    date: datetime
+    subject: str
+    files_changed: int
+    merge: bool = False
+    tools: list[str] = Field(default_factory=list, description="AI tools its metadata names.")
+    large: bool = Field(default=False, description="Touched unusually many files.")
+
+
+class UnscoredFile(BaseModel):
+    path: str
+    reason: str = Field(
+        description="Why it has no score: unsupported_language, test_file, too_small, "
+        "unparseable, unreadable, or a loader reason such as lockfile, binary or generated."
+    )
+
+
 class DetectorOutput(BaseModel):
     methodology_version: str
     estimate: float = Field(ge=0.0, le=1.0)
@@ -139,3 +189,9 @@ class DetectorOutput(BaseModel):
     files_skipped: int
     languages: dict[str, int] = Field(default_factory=dict)
     unsupported_languages: dict[str, int] = Field(default_factory=dict)
+    # for reports and the UI: the code behind the evidence, the history, the unscored files
+    excerpts: list[Excerpt] = Field(default_factory=list)
+    commits: list[CommitSummary] = Field(default_factory=list, description="Newest first.")
+    commits_total: int = 0
+    unscored_files: list[UnscoredFile] = Field(default_factory=list)
+    unscored_truncated: bool = False

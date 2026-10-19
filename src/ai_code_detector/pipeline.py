@@ -21,12 +21,14 @@ from ai_code_detector.aggregate import (
     judge_shift,
     repo_estimate,
     repo_shift,
+    widen_range,
 )
 from ai_code_detector.judge.llm_judge import Judge, JudgeRun, JudgeSettings
 from ai_code_detector.judge.sampler import sample_files
 from ai_code_detector.markers import MarkerSet, detect_commit_markers, detect_config_files
 from ai_code_detector.methodology import Methodology
 from ai_code_detector.models import DetectorInput, DetectorOutput, FileScore, SignalHit
+from ai_code_detector.report import build_excerpts, commit_summaries, unscored
 from ai_code_detector.signals import FILE_SIGNALS, REPO_SIGNALS, RepoContext
 from ai_code_detector.source import is_supported, parse_source
 
@@ -218,6 +220,7 @@ async def detect(
     ]  # fmt: skip
     scored: list[FileScore] = []
     skip_reasons: Counter[str] = Counter()
+    skipped_paths: dict[str, str] = {}
     for start in range(0, len(candidates), FILE_BATCH):
         batch = candidates[start : start + FILE_BATCH]
         ctx.report_progress(
@@ -228,9 +231,10 @@ async def detect(
         results = await asyncio.to_thread(
             lambda b=batch: [_analyse_file(ws, info, methodology) for info in b]  # type: ignore[misc]
         )
-        for outcome in results:
+        for info, outcome in zip(batch, results, strict=True):
             if isinstance(outcome, str):
                 skip_reasons[outcome] += 1
+                skipped_paths[info.path] = outcome
             else:
                 scored.append(outcome)
         ctx.check_cancelled()
@@ -269,9 +273,10 @@ async def detect(
     # 7. aggregate
     ctx.report_progress("aggregate", "Combining the evidence", 0.95)
     main_files = [f for f in scored if not f.is_test]
-    shift = repo_shift(repo_hits, methodology) + judge_shift(main_files, methodology)
+    repo_level = repo_shift(repo_hits, methodology)
+    shift = repo_level + judge_shift(main_files, methodology)
     estimate = round(repo_estimate(main_files, shift, methodology), 4)
-    low, high = estimate_range(main_files, shift, estimate, methodology)
+    low, high = estimate_range(main_files, repo_level, estimate, methodology)
 
     languages = Counter(f.language for f in ws.files if f.language in CODE_LANGUAGES)
     supported = {k: v for k, v in languages.items() if k in SUPPORTED_LANGUAGES}
@@ -293,6 +298,24 @@ async def detect(
             "the LLM judge did not run, and the heuristic signals alone separate human from AI "
             "code poorly"
         ]
+    low, high = widen_range(low, high, estimate, confidence, methodology)
+
+    # 8. what the report shows besides the scores
+    scored_paths = {f.path for f in scored}
+    excerpts = await asyncio.to_thread(build_excerpts, scored, methodology, ws.read_text)
+
+    def unscored_reason(info: FileInfo) -> str:
+        if info.path in skipped_paths:
+            return skipped_paths[info.path]
+        if info.language in SUPPORTED_LANGUAGES and is_supported(info.path):
+            return "test_file"
+        return "unsupported_language"
+
+    unscored_files, unscored_truncated = unscored(
+        [(f.path, unscored_reason(f)) for f in ws.files if f.path not in scored_paths]
+        + [(s.path, s.reason) for s in ws.skipped]
+    )
+    large_files = int(methodology.thresholds_for("commit_shape")["large_commit_files"])
 
     output = DetectorOutput(
         methodology_version=methodology_version,
@@ -307,6 +330,11 @@ async def detect(
         files_skipped=len(ws.skipped) + sum(skip_reasons.values()),
         languages=dict(supported),
         unsupported_languages=dict(unsupported),
+        excerpts=excerpts,
+        commits=commit_summaries(commits, changed, markers, large_files),
+        commits_total=len(commits),
+        unscored_files=unscored_files,
+        unscored_truncated=unscored_truncated,
     )
     findings = _findings(output, repo_hits, main_files, scored, methodology, supported_share)
     summary = (

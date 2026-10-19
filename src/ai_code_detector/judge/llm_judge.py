@@ -56,6 +56,19 @@ class LinePointer(BaseModel):
         return value[:MAX_WHY_CHARS] if isinstance(value, str) else value
 
 
+MAX_FAILURES_IN_A_ROW = 3  # a model that cannot load fails every call; stop early
+
+
+def short_error(exc: Exception) -> str:
+    """The useful part of an LLM error: the server's own message when it sent JSON."""
+    text = str(exc).strip()
+    match = re.search(r'"message"\s*:\s*"((?:[^"\\]|\\.)*)"', text)
+    message = match.group(1) if match else text
+    if "requires more system memory" in message:
+        message += " (close other programs, or use a smaller model)"
+    return message
+
+
 class JudgeAnswer(BaseModel):
     """The model's raw answer. Pointing at lines instead of quoting keeps answers short
     (Ollama does not enforce maxLength, and qwen3.5 quoted a 97-line docstring) and makes
@@ -262,6 +275,9 @@ class Judge:
         result = JudgeRun()
         t0 = time.monotonic()
         judged: list[tuple[FileScore, str]] = []
+        # one warning per kind of error (numbers masked: memory figures vary between calls)
+        failures: dict[str, tuple[str, list[str]]] = {}
+        in_a_row = 0
         for index, (score, text) in enumerate(files):
             if cancelled is not None and cancelled():
                 break
@@ -284,8 +300,18 @@ class Judge:
                 break
             except LLMError as exc:
                 result.partial = True
-                result.warnings.append(f"The judge failed on {score.path}: {exc}")
+                message = short_error(exc)
+                key = re.sub(r"\d+(\.\d+)?", "#", message)
+                failures.setdefault(key, (message, []))[1].append(score.path)
+                in_a_row += 1
+                if in_a_row >= MAX_FAILURES_IN_A_ROW:
+                    result.warnings.append(
+                        f"The judge stopped after {in_a_row} failed calls in a row; "
+                        f"{len(files) - index - 1} sampled files were not judged."
+                    )
+                    break
                 continue
+            in_a_row = 0
             if warning:
                 result.warnings.append(warning)
             if verdict is not None:
@@ -293,6 +319,9 @@ class Judge:
                 result.cache_hits += int(hit)
                 judged.append((score, text))
 
+        for message, paths in failures.values():
+            where = paths[0] if len(paths) == 1 else f"{len(paths)} files ({paths[0]} and others)"
+            result.warnings.insert(0, f"The judge failed on {where}: {message}")
         if cancelled is None or not cancelled():
             await self._agreement(result, judged, t0, max_seconds)
         return result

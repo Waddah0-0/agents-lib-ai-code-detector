@@ -231,3 +231,26 @@ async def test_cancelling_during_the_judge_cancels_the_run(tmp_path: Path, ai_co
         {"target": str(repo), "max_files_for_judge": 4}, ctx
     )
     assert result.status == "error" and result.error == "Run was cancelled"
+
+
+async def test_repeated_failures_become_one_warning_and_stop_early() -> None:
+    from agents_core.errors import LLMError
+    from ai_code_detector.judge.llm_judge import short_error
+
+    body = '{"error":{"message":"model requires more system memory (5.3 GiB) than is available"}}'
+    message = short_error(LLMError(f"HTTP 500: {body}"))
+    assert message.startswith("model requires more system memory") and "smaller model" in message
+    assert short_error(LLMError("timed out")) == "timed out"
+
+    calls = iter(range(100))
+
+    def failing(messages: list[Message], system: str | None) -> str:
+        # the same error with slightly different figures each time
+        raise LLMError(f"HTTP 500: {body.replace('5.3', f'5.{next(calls)}')}")
+
+    files = [(score(f"f{i}.py", 0.5), CODE) for i in range(6)]
+    run = await Judge(MockLLM(failing), cache=False).run(files, max_seconds=60)
+    assert run.partial and not run.verdicts
+    failed = [w for w in run.warnings if w.startswith("The judge failed")]
+    assert len(failed) == 1 and "3 files (f0.py and others)" in failed[0]
+    assert any("stopped after 3 failed calls in a row; 3 sampled files" in w for w in run.warnings)

@@ -92,23 +92,48 @@ def repo_estimate(files: Sequence[FileScore], shift: float, methodology: Methodo
 
 
 def estimate_range(
-    files: Sequence[FileScore], shift: float, estimate: float, methodology: Methodology
+    files: Sequence[FileScore], repo_level_shift: float, estimate: float, methodology: Methodology
 ) -> tuple[float, float]:
-    """10th-90th percentile of the estimate over bootstrap resamples of the files."""
+    """10th-90th percentile of the estimate over bootstrap resamples of the files.
+
+    The judge term is recomputed for every resample, so the range also reflects how few files
+    the judge read (under methodology v1 it carries most of the weight). ``repo_level_shift``
+    is the repository-signal part only.
+    """
     cfg = methodology.section("bootstrap")
     if len(files) < int(cfg["min_files"]):
         return (round(min(0.1, estimate), 4), round(max(0.9, estimate), 4))
     rng = random.Random(int(cfg["seed"]))
-    samples = sorted(
-        repo_estimate([rng.choice(files) for _ in files], shift, methodology)
-        for _ in range(int(cfg["resamples"]))
-    )
+
+    def resample() -> float:
+        sample = [rng.choice(files) for _ in files]
+        shift = repo_level_shift + judge_shift(sample, methodology)
+        return repo_estimate(sample, shift, methodology)
+
+    samples = sorted(resample() for _ in range(int(cfg["resamples"])))
 
     def quantile(q: float) -> float:
         return samples[min(len(samples) - 1, int(q * len(samples)))]
 
     low = min(quantile(float(cfg["low_quantile"])), estimate)
     high = max(quantile(float(cfg["high_quantile"])), estimate)
+    return (round(low, 4), round(high, 4))
+
+
+# The bootstrap measures how much the files disagree, not how unsure the method is: with
+# many similar files it can return a range a few hundredths wide even at low confidence.
+# The reported range is at least this wide on each side of the estimate.
+MIN_HALF_WIDTH: dict[str, float] = {"low": 0.15, "medium": 0.07, "high": 0.0}
+
+
+def widen_range(
+    low: float, high: float, estimate: float, confidence: Confidence, methodology: Methodology
+) -> tuple[float, float]:
+    """``(low, high)`` widened to the minimum half-width for ``confidence``, within [0, 1]."""
+    cfg = methodology.section("bootstrap")
+    half = float(cfg.get(f"min_half_width_{confidence}", MIN_HALF_WIDTH[confidence]))
+    low = max(0.0, min(low, estimate - half))
+    high = min(1.0, max(high, estimate + half))
     return (round(low, 4), round(high, 4))
 
 
