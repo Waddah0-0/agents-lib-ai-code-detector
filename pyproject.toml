@@ -1,11 +1,25 @@
 [project]
 name = "margin-ai-code-detector"
 version = "0.2.0"
-description = "AI Code Detector agent for margin"
+description = "Estimates how likely a codebase was written with AI assistance, as a range with the evidence for and against."
 readme = "README.md"
 requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Waddah Ali" }]
+keywords = ["ai-detection", "code-analysis", "llm", "agents"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+    "Topic :: Software Development :: Quality Assurance",
+]
 dependencies = [
-    "margin-core",
+    "margin-core>=0.1.0,<0.2",
     # 0.26.0 corrupts memory (reproducible access violation parsing TypeScript, 2026-10-18);
     # 0.24-0.25.2 are fine. Lift the cap only after re-running tests/test_signals.py on a
     # large TS repo.
@@ -21,6 +35,12 @@ ai-code-detector = "ai_code_detector.agent:AICodeDetector"
 id = "ai-code-detector"
 stage = "experimental"
 mirror = "Waddah0-0/margin-ai-code-detector"
+
+[project.urls]
+Homepage = "https://github.com/Waddah0-0/margin"
+Source = "https://github.com/Waddah0-0/margin/tree/main/agents/ai_code_detector"
+Issues = "https://github.com/Waddah0-0/margin/issues"
+Changelog = "https://github.com/Waddah0-0/margin/blob/main/agents/ai_code_detector/CHANGELOG.md"
 
 [build-system]
 requires = ["hatchling"]
