@@ -4,7 +4,7 @@ All notable changes to this agent are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 [Semantic Versioning](https://semver.org/).
 
-## [0.2.0] - Unreleased
+## [0.2.0] - 2026-10-21
 
 ### Added
 - JavaScript and TypeScript file signals (tree-sitter).
@@ -40,7 +40,7 @@ All notable changes to this agent are documented here. The format follows
   repositories. Repositories with large generated-looking data files (e.g. locale tables)
   can score high.
 
-## [0.1.0] - Unreleased
+## [0.1.0] - not published (development version)
 
 ### Added
 - Heuristic detector (methodology v0, uncalibrated): repository signals `commit_shape`,
