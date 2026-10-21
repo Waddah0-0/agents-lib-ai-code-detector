@@ -4,6 +4,14 @@ All notable changes to this agent are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 [Semantic Versioning](https://semver.org/).
 
+## [0.2.1] - 2026-10-21
+
+### Security
+- The name of the file being judged went into the prompt outside the protective markers, and
+  file names come from the repository (git even allows line breaks in them). It is now quoted
+  and escaped, so a file can't be named to look like an instruction.
+- Requires margin-core 0.1.1, which stops a repository's git config from running programs.
+
 ## [0.2.0] - 2026-10-21
 
 The first published version.

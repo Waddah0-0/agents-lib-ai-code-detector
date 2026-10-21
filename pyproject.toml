@@ -1,6 +1,6 @@
 [project]
 name = "margin-ai-code-detector"
-version = "0.2.0"
+version = "0.2.1"
 description = "Estimates how likely a codebase was written with AI assistance, as a range with the evidence for and against."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -19,7 +19,7 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
 ]
 dependencies = [
-    "margin-core>=0.1.0,<0.2",
+    "margin-core>=0.1.1,<0.2",  # 0.1.1: git and clone safety fixes
     # 0.26.0 corrupts memory (reproducible access violation parsing TypeScript, 2026-10-18);
     # 0.24-0.25.2 are fine. Lift the cap only after re-running tests/test_signals.py on a
     # large TS repo.

@@ -107,7 +107,7 @@ async def test_frozen_smoke_scores(ai_repo: Path, human_repo: Path) -> None:
     """CI regression guard: methodology v0 scores for the fixtures must not drift silently."""
     ai = (await detect(ai_repo))["data"]
     human = (await detect(human_repo))["data"]
-    assert ai["methodology_version"] == "detector-0.2.0+methodology-v0+markers-v1"
+    assert ai["methodology_version"] == "detector-0.2.1+methodology-v0+markers-v1"
     assert (round(ai["estimate"], 2), round(human["estimate"], 2)) == (SMOKE["ai"], SMOKE["human"])
 
 
@@ -145,7 +145,7 @@ async def test_javascript_and_typescript_repositories(tmp_path: Path) -> None:
 async def test_v1_without_a_model_falls_back_to_signals_with_low_confidence(ai_repo: Path) -> None:
     data = (await detect(ai_repo, methodology="v1"))["data"]
     result = (await detect(ai_repo, methodology="v1"))["result"]
-    assert data["methodology_version"] == "detector-0.2.0+methodology-v1+markers-v1"
+    assert data["methodology_version"] == "detector-0.2.1+methodology-v1+markers-v1"
     assert data["confidence"] == "low"
     assert "LLM judge did not run" in data["confidence_reasons"][0]
     assert result.status == "ok"  # auto mode: no model is not a failure
