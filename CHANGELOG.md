@@ -6,49 +6,32 @@ All notable changes to this agent are documented here. The format follows
 
 ## [0.2.0] - 2026-10-21
 
+The first published version.
+
 ### Added
-- JavaScript and TypeScript file signals (tree-sitter).
-- LLM judge (`judge_v2`): the model reads a sample of files and points at lines as evidence
-  for and against; quotes are taken from the file. Code is fenced by random markers and
-  treated as data. Cached, time- and cost-limited, with a self-agreement check.
-- Methodology v1, fitted on dataset v1's train split: the judge carries most of the weight;
-  commit-history and README signals are shown as context but not scored.
-- Report data for UIs: code excerpts around the evidence, a commit list (without authors) and
-  every unscored file with its reason. Additive; existing fields are unchanged.
-- Dataset v1 (70 repositories, Python and JS/TS, six AI tools, recent human code) and the
-  tools to fit and compare methodologies and judge models.
-
-### Changed
-- The judge runs by default when a model is configured; without one the detector falls back
-  to a signals-only model and reports low confidence.
-- Default local model: qwen3.5:9b (chosen by measurement), with hidden reasoning turned off.
-- Progress reporting gives the judge (the slow part) most of the progress bar, and `target`
-  carries an example value for forms.
-
-### Fixed
-- The range ignored how few files the judge read: under methodology v1 one judged file could
-  give a range like "0.78-0.78". The judge term is now recomputed for every bootstrap
-  resample, and the reported range is at least ±0.15 wide at low confidence and ±0.07 at
-  medium. Estimates are unchanged.
-- Judge failures are reported once per kind of error instead of once per file, with the
-  server's own message, and the judge stops after three failed calls in a row (for example
-  when the local model does not fit in memory).
+- Reads Python, JavaScript and TypeScript, and the repository's git history.
+- A local model judges a sample of files and points at the lines behind its view, for and
+  against. The quotes in the report are taken from the file, not from the model, and the code
+  it reads is fenced off so instructions hidden in a repository can't steer it.
+- Methodology v1: the judge's verdicts and the file-level checks are combined with weights
+  fitted on 44 repositories. Commit history and README style are shown for context but not
+  scored, because in testing they separated old projects from new ones rather than people
+  from AI.
+- Traces left by AI tools (config files such as `CLAUDE.md`, co-author trailers, bot authors)
+  for nine tools, each checked against a real commit. They're reported on their own and
+  never change the estimate.
+- An estimate with a range and a confidence level, the evidence on both sides, a score per
+  file, code excerpts around the evidence, and a commit history without author names.
+- Without a model it still runs on the file checks alone, and says the confidence is low.
 
 ### Known limitations
-- Not calibrated (validation calibration error 0.27): confidence is capped at medium.
-- At a threshold that keeps false positives at or below 5%, it catches very few AI
-  repositories. Repositories with large generated-looking data files (e.g. locale tables)
-  can score high.
+- The scores aren't calibrated yet, so confidence never goes above medium.
+- Tuned to avoid false accusations: at a setting that keeps false positives at 5% or less,
+  it misses most AI-written repositories.
+- Repositories with big generated-looking data files, such as locale tables, can score high.
+- Not yet tested on code written with light AI help, or on AI code that people edited.
 
-## [0.1.0] - not published (development version)
+## [0.1.0] - not published
 
-### Added
-- Heuristic detector (methodology v0, uncalibrated): repository signals `commit_shape`,
-  `history_depth`, `readme_patterns`; Python file signals `comment_density`,
-  `restating_comments`, `naming_patterns`, `idiosyncrasy`, `dead_or_debug_code`.
-- Metadata markers (`markers/v1.toml`) for Claude, Claude Code, Gemini, Codex, Cursor, Aider,
-  the Copilot coding agent, Devin and Jules, each verified against a real public commit.
-  Reported separately; never part of the estimate.
-- Estimate with a bootstrap range and a confidence level with reasons. Confidence is capped
-  at "medium" while the methodology is uncalibrated.
-- Evaluation harness (`eval/`) and dataset v0 with baseline results (`eval/results/v0.json`).
+A development version with file checks only (methodology v0), used to build the evaluation
+data. Never released.

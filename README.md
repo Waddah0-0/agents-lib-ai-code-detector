@@ -19,9 +19,8 @@ the evidence for and against, so a person can judge the result for themselves.
 
 ## How it works
 
-The detector combines two kinds of evidence.
-
-**Cheap, explicit signals.** These look at the repository itself. Examples:
+It combines two kinds of evidence. The first is a set of quick checks on the repository
+itself, such as:
 
 - config files left behind by AI coding tools, such as `CLAUDE.md`, `.cursorrules` or
   `.github/copilot-instructions.md`;
@@ -32,9 +31,9 @@ The detector combines two kinds of evidence.
 Some signals point the other way: a long, messy history, personal TODOs and leftover debug
 code are all evidence of human authorship, and they count too.
 
-**A model acting as a judge.** A local model (default `qwen3.5:9b` via Ollama) reviews up to
-20 files, points at the lines behind its opinion, and lists evidence against its own
-conclusion. The quotes in the report come from the file, so evidence cannot be invented.
+The second is a language model acting as a judge. A local model (`qwen3.5:9b` through Ollama
+by default) reads up to 20 files, points at the lines behind its opinion, and lists what
+argues against it. The quotes in the report come from the file, so evidence cannot be invented.
 It never sees the signal scores. It runs automatically when a model is available, because in
 evaluation it was the only evidence that worked on recent code.
 
@@ -52,26 +51,29 @@ told old projects from new ones, not people from AI.
 | `use_llm_judge` | when a model is available | Ask a model to judge a sample of files. `false` skips it (weak, low confidence); `true` requires it. |
 | `include_tests` | off | Score test files too (they are reported separately). |
 
-The full list, including the judge's file, time and cost limits, will be in the agent's
-input schema (`margin info ai-code-detector`).
+`margin info ai-code-detector` shows the rest, including the judge's limits on files, time
+and cost.
 
 ## Output
 
-- **An estimate with a range and a confidence level**, such as "0.55 to 0.80, medium
-  confidence", never a bare percentage. Confidence is low when few signals fired, few
-  files could be analysed, or the evidence disagrees, and the report says which.
-- **"AI tool usage confirmed by metadata"**, shown separately when an explicit marker such
-  as an AI co-author trailer is found. It proves a tool was used, not how much code it
-  wrote, so it does not change the estimate.
-- **Evidence for and evidence against**, each pointing to a file, line range or commit.
-- **A score per file**, with the signals that fired and, when the judge ran, its quotes.
-- **Coverage**: how many files were analysed or skipped, by language.
-- **The code behind the evidence**: short excerpts around each marked line (capped at 80
-  lines per file and 800 in total), so a report can be checked without the repository.
-- **A commit list for a timeline**: date, subject, files changed, AI-tool markers, and whether
-  the commit was unusually large. Author names are left out on purpose: the report is about
-  code, not people.
-- **Every unscored file and why** (unsupported language, test file, too small, lockfile...).
+The headline is an estimate with a range and a confidence level, for example "0.55 to 0.80,
+medium confidence", never a bare percentage. When confidence is low, the report says why:
+few signals fired, few files could be read, or the evidence pulled both ways.
+
+If the repository's own metadata names an AI tool (a `Co-authored-by` trailer, say), the
+report says so separately. That proves the tool was used, not how much of the code it wrote,
+so it doesn't move the estimate.
+
+Then comes the evidence: what points toward AI and what points toward a person, each item
+tied to a file, a line range or a commit. Every file gets its own score with the signals that
+fired and, if the judge read it, the lines it quoted. The report also includes short excerpts
+of the code around each marked line (at most 80 lines per file and 800 overall), so you can
+check it without opening the repository.
+
+Finally there's the history: each commit's date, subject, the number of files it touched,
+any AI tool it names, and whether it was unusually large. Author names are left out on
+purpose. The report is about code, not about people. It also lists every file that wasn't
+scored and why (another language, a test file, too small, a lockfile and so on).
 
 ## Limits
 
