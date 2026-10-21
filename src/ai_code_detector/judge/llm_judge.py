@@ -227,6 +227,10 @@ class Judge:
         system = build_system_prompt(open_marker, close_marker, rubric_seed)
         start, end = self._fit_window(lines, flagged, system)
         window_text = numbered(lines, start, end)
+        while boundary in window_text:  # astronomically unlikely, but the fence must hold
+            boundary = secrets.token_hex(6)
+            open_marker, close_marker = f"<<<CODE-{boundary}", f"CODE-{boundary}>>>"
+            system = build_system_prompt(open_marker, close_marker, rubric_seed)
         variant = f"rubric:{rubric_seed}"
         key = _cache_key(self.llm, window_text, variant)
         cache_file = _cache_dir() / f"{key}.json"
@@ -238,7 +242,9 @@ class Judge:
 
         scope = "the whole file" if (start, end) == (1, len(lines)) else f"lines {start}-{end}"
         prompt = (
-            f"File: {path} ({scope} of {len(lines)} lines)\n\n"
+            # the name comes from the repository too: quoted and escaped, so it cannot add
+            # lines or instructions of its own outside the markers
+            f"File: {json.dumps(path[:200])} ({scope} of {len(lines)} lines)\n\n"
             f"{open_marker}\n{window_text}\n{close_marker}"
         )
         answer = await self.llm.complete_structured(

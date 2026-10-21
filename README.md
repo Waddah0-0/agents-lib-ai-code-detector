@@ -91,9 +91,15 @@ a contractor or a job candidate.
 ## Usage
 
 ```bash
+pip install margin-cli margin-ai-code-detector
 margin run ai-code-detector https://github.com/owner/repo --format markdown
 margin run ai-code-detector ./path/to/project --format json --out report.json
 ```
+
+For the web UI, install `margin-api` as well and run `margin-api`. The detector has its own
+results page there, with the evidence side by side and the flagged lines marked in the code.
+To use Anthropic or OpenAI instead of a local model, pick it on the Settings page, or pass
+`--provider` and `--model` to `margin run`.
 
 ## Development
 
